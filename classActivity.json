@@ -6,7 +6,7 @@
     "slots": 10,
     "price": 150.0,
     "rating": 5,
-    "image": "/asset/images/ballot.jpg"
+    "image": "/images/ballot.jpg"
   },
 
   {
@@ -16,7 +16,7 @@
     "slots": 7,
     "price": 80.0,
     "rating": 5,
-    "image": "/asset/images/swim.jpg"
+    "image": "/images/swim.jpg"
   },
   {
     "id": 3,
@@ -25,7 +25,7 @@
     "slots": 10,
     "price": 100.0,
     "rating": 5,
-    "image": "/asset/images/soccer.jpg"
+    "image": "/images/soccer.jpg"
   },
   {
     "id": 4,
@@ -34,7 +34,7 @@
     "slots": 10,
     "price": 75.0,
     "rating": 4,
-    "image": "/asset/images/artClass.jpg"
+    "image": "/images/artClass.jpg"
   },
   {
     "id": 2005,
@@ -43,7 +43,7 @@
     "slots": 5,
     "price": 200.0,
     "rating": 5,
-    "image": "/asset/images/robot.jpg"
+    "image": "/images/robot.jpg"
   },
   {
     "id": 6,
@@ -52,7 +52,7 @@
     "slots": 4,
     "price": 120.0,
     "rating": 4,
-    "image": "/asset/images/guitar.jpg"
+    "image": "/images/guitar.jpg"
   },
 
   {
@@ -62,7 +62,7 @@
     "slots": 10,
     "price": 50.0,
     "rating": 4,
-    "image": "/asset/images/chess.jpg"
+    "image": "/images/chess.jpg"
   },
   {
     "id": 8,
@@ -71,7 +71,7 @@
     "slots": 8,
     "price": 300.0,
     "rating": 4,
-    "image": "/asset/images/codeCamp.jpg"
+    "image": "/images/codeCamp.jpg"
   },
   {
     "id": 9,
@@ -80,7 +80,7 @@
     "slots": 10,
     "price": 50.0,
     "rating": 4,
-    "image": "/asset/images/chess.jpg"
+    "image": "/images/chess.jpg"
   },
   {
     "id": 10,
@@ -89,7 +89,7 @@
     "slots": 8,
     "price": 300.0,
     "rating": 4,
-    "image": "/asset/images/codeCamp.jpg"
+    "image": "/images/codeCamp.jpg"
   },
   {
     "id": 11,
@@ -98,6 +98,6 @@
     "slots": 8,
     "price": 300.0,
     "rating": 4,
-    "image": "/asset/images/codeCamp.jpg"
+    "image": "/images/codeCamp.jpg"
   }
 ]
