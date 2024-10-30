@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>School Activities</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bangers&family=Luckiest+Guy&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/custom.css" />
+  </head>
+  <body>
+    <div id="app">
+      <!-- NavBar -->
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+          <!-- Logo and Site Name -->
+          <div class="navbar-brand d-flex align-items-center" id="fullLogo">
+            <img src="/asset/logo/logo.jpg" alt="ParentPay Logo" class="logo" />
+            <h1 class="text-white fs-3 luckiest-guy-regular mb-0">
+              {{ siteName }}
+            </h1>
+          </div>
+          <!-- Search Bar with Icon -->
+          <form class="position-relative d-flex ms-lg-3" role="search">
+            <input
+              class="form-control search-input ps-3"
+              type="search"
+              placeholder="Search activities"
+              aria-label="Search"
+            />
+            <i class="fa-solid fa-search search-icon"></i>
+          </form>
+
+          <!-- Navbar links -->
+          <div
+            class="collapse navbar-collapse justify-content-start ms-4"
+            id="navbarNav"
+          >
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a
+                  class="nav-link text-white"
+                  aria-current="page"
+                  href="#carouselExampleIndicators"
+                  >Home</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="#classes">Classes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="#contact">Contact Us</a>
+              </li>
+
+              <li class="nav item dropdown">
+                <button
+                  class="btn btn-outline-light dropdown-toggle no-border"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  24/7 Help
+                </button>
+                <ul class="dropdown-menu dropdown-menu-secondary mt-3">
+                  <li class="dropdown-item">07855 464 55 755</li>
+                  <li>
+                    <a class="dropdown-item" href="https://mail.google.com"
+                      >parentpay@gmail.com</a
+                    >
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <!-- Cart button -->
+          <button
+            type="button"
+            class="btn btn-outline-light cart-button ms-lg-3"
+            @click="toggleCart"
+            :disabled="DisabledEmptyCart"
+          >
+            <i class="fa-solid fa-cart-shopping orange fs-5"></i> Cart {{
+            cartItemCount }}
+          </button>
+
+          <!-- Toggle button for mobile view -->
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </nav>
+      <!-- Off-Canvas Cart information -->
+      <div
+        class="offcanvas offcanvas-end"
+        tabindex="-1"
+        id="cartCanvas"
+        aria-labelledby="cartCanvasLabel"
+      >
+        <div class="offcanvas-header">
+          <h5 class="text-secondary fs-4 fw-bold" id="cartCanvasLabel">
+            Your Cart
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="offcanvas-body">
+          <!-- Display Cart Items or "Cart is empty" message -->
+          <ul class="list-group mb-4" v-if="cartItems.length > 0">
+            <li
+              v-for="(item, index) in cartItems"
+              :key="item.id"
+              class="list-group-item"
+            >
+              <!-- Delete button placed on the left -->
+              <button class="btn delete-btn" @click="removeFromCart(item.id)">
+                <i class="fa-solid fa-trash-can text-danger fs-4"></i>
+              </button>
+
+              <img :src="item.image" class="small-cart-img" />
+              {{ item.name }}
+              <br />
+              {{ item.location}} <br />
+              £{{ item.price }} <br />
+              Quantity: {{ cartCount(item.id) }}
+            </li>
+          </ul>
+
+          <p v-else class="text-center">
+            Your cart is empty. <br /><i
+              class="fa-solid fa-cart-shopping orange fs-1 mt-lg-5"
+            ></i>
+          </p>
+
+          <!-- Checkout Form -->
+          <div v-if="cartItems.length > 0">
+            <h5>Order Information</h5>
+            <form @submit.prevent="submitOrder">
+              <div class="mb-3">
+                <input
+                  type="checkbox"
+                  id="gift"
+                  value="true"
+                  v-model="order.gift"
+                />
+                <label for="gift">Ship As Gift?</label>
+              </div>
+              <div class="mb-3">
+                <label>Shipping Method:</label><br />
+                <input
+                  type="radio"
+                  id="home"
+                  value="Home"
+                  v-model="order.method"
+                />
+                <label for="home">Home</label>
+                <input
+                  type="radio"
+                  id="business"
+                  value="Business"
+                  v-model="order.method"
+                />
+                <label for="business">Business</label>
+              </div>
+              <div>
+                <label for="firstName" class="form-label">First Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="firstName"
+                  v-model="order.firstName"
+                  required
+                />
+              </div>
+              <div>
+                <label for="lastName" class="form-label">Last Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="lastName"
+                  v-model="order.lastName"
+                  required
+                />
+              </div>
+              <div>
+                <label for="address" class="form-label">Address</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="address"
+                  v-model="order.address"
+                  required
+                />
+              </div>
+              <div class="my-3 row align-items-center">
+                <div>
+                  <select v-model="order.state" id="state" class="form-control">
+                    <option disabled value="">Select a State</option>
+                    <option v-for="state in states" :key="state" :value="state">
+                      {{ state }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="zip" class="form-label">Zip / Postal Code</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="zip"
+                  v-model="order.zip"
+                  required
+                />
+              </div>
+
+              <div class="">
+                <label for="city" class="form-label">Phone Number</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="city"
+                  v-model="order.city"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-success">Place Order</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Carousel hero section-->
+      <div id="carouselExampleIndicators" class="carousel slide">
+        <div class="carousel-indicators">
+          <button
+            type="button"
+            data-bs-target="#carouselExampleIndicators"
+            data-bs-slide-to="0"
+            class="active"
+            aria-current="true"
+            aria-label="Slide 1"
+          ></button>
+          <button
+            type="button"
+            data-bs-target="#carouselExampleIndicators"
+            data-bs-slide-to="1"
+            aria-label="Slide 2"
+          ></button>
+          <button
+            type="button"
+            data-bs-target="#carouselExampleIndicators"
+            data-bs-slide-to="2"
+            aria-label="Slide 3"
+          ></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img
+              src="/asset/images/carousel-1.avif"
+              class="d-block w-100"
+              alt="..."
+            />
+          </div>
+          <div class="carousel-item">
+            <img
+              src="/asset/images/carousel-2.avif"
+              class="d-block w-100"
+              alt="..."
+            />
+          </div>
+          <div class="carousel-item">
+            <img
+              src="asset/images/carousel-3.avif"
+              class="d-block w-100"
+              alt="..."
+            />
+          </div>
+        </div>
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#carouselExampleIndicators"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#carouselExampleIndicators"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+
+      <!-- Sorting Controls -->
+      <div
+        id="classes"
+        class="sort-controls text-center mb-4 d-flex flex-column justify-content-center align-items-center"
+      >
+        <img
+          src="/asset/logo/logo.jpg"
+          alt="ParentPay Logo"
+          class="logo align-items-center fs-3 logoCenter"
+        />
+
+        <h1 class="text-center fw-bold mt-3">
+          Stay Active with Our Class Activities
+        </h1>
+
+        <div class="d-flex align-items-center mt-3">
+          <label for="sortCriteria" class="me-2 fw-bold">Sort by:</label>
+          <select
+            id="sortCriteria"
+            class="form-select w-auto me-3 pe-5"
+            v-model="sortCriteria"
+            @change="sortedClasses"
+          >
+            <option value="name">Name</option>
+            <option value="price">Price</option>
+            <option value="slots">Available Item</option>
+            <option value="location">Location</option>
+          </select>
+
+          <label for="sortOrder" class="me-2 fw-bold">Order:</label>
+          <select
+            id="sortOrder"
+            class="form-select w-auto pe-5"
+            v-model="sortOrder"
+            @change="sortedClasses"
+          >
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- List of classes activities  -->
+      <div
+        class="container d-flex flex-wrap justify-content-around align-items-center pt-3 mt-2"
+      >
+        <!-- Use sortedClasses instead of classes -->
+        <div
+          class="card mb-3 position-relative"
+          style="width: 18.5rem"
+          v-for="classActivity in sortedClasses"
+          :key="classActivity.id"
+        >
+          <!-- Clicking on this image opens it in the modal -->
+          <img
+            :src="classActivity.image"
+            class="card-img-top"
+            alt="classActivity image"
+            @click="viewImage(classActivity.image)"
+            style="cursor: pointer"
+          />
+          <div class="card-body">
+            <h6 class="card-title fw-bold">{{ classActivity.name }}</h6>
+            <p class="cart-text mb-1">Location: {{ classActivity.location }}</p>
+            <p class="card-text mb-1">Space: {{ classActivity.slots }}</p>
+            <p class="card-text">Price: £{{ classActivity.price }}</p>
+            <button
+              class="btn btn-primary"
+              @click="addToCart(classActivity)"
+              :disabled="classActivity.slots <= 0"
+            >
+              Add to Cart
+            </button>
+            <span class="ms-4" v-if="classActivity.slots === 0">All Out!</span>
+            <span class="ms-4" v-else-if="classActivity.slots < 5">
+              Only {{ classActivity.slots }} left!
+            </span>
+            <span class="ms-4" v-else>Buy Now!</span>
+            <!-- Display the rating as stars -->
+            <div class="mt-2">
+              <span v-for="n in classActivity.rating" :key="n">★</span>
+              <span v-for="n in 5 - classActivity.rating" :key="n">☆</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal for viewing image -->
+        <div
+          class="modal fade"
+          id="imageModal"
+          tabindex="-1"
+          aria-labelledby="imageModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Image View</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body text-center">
+                <!-- Display selected image in modal -->
+                <img
+                  :src="selectedImage"
+                  class="img-fluid"
+                  alt="classActivity image"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let app = new Vue({
+        el: "#app",
+        data() {
+          return {
+            siteName: "ParentPay",
+            classes: [], // classActivity list fetched from JSON
+            cart: [], // Holds the classActivity IDs added to the cart
+            order: {
+              firstName: "",
+              lastName: "",
+              address: "",
+              city: "",
+              zip: "",
+              gift: false,
+              method: "Home",
+              state: "",
+            },
+            selectedImage: null,
+            sortCriteria: "name", // Default sort by name
+            sortOrder: "asc", // Default sorting order is ascending
+            states: ["Alabama", "Alaska", "Arizona", "California", "Nevada"],
+            swipedIndex: null, // Tracks the swiped item
+            startX: 0, // Stores the initial X position of the touch
+          };
+        },
+        created() {
+          fetch("/classActivity.json")
+            .then((response) => response.json())
+            .then((data) => {
+              this.classes = data;
+            })
+            .catch((error) => {
+              console.error("Error fetching classes:", error);
+            });
+        },
+        methods: {
+          addToCart(classActivity) {
+            if (classActivity.slots > 0) {
+              this.cart.push(classActivity.id);
+              classActivity.slots--;
+            }
+          },
+          viewImage(image) {
+            this.selectedImage = image;
+            const modal = new bootstrap.Modal(
+              document.getElementById("imageModal")
+            );
+            modal.show();
+          },
+          cartCount(id) {
+            return this.cart.filter((itemId) => itemId === id).length;
+          },
+          toggleCart() {
+            let cartCanvas = new bootstrap.Offcanvas(
+              document.getElementById("cartCanvas")
+            );
+            cartCanvas.toggle();
+          },
+          removeFromCart(classActivityId) {
+            // Find the class activity associated with the item being removed
+            const classActivity = this.classes.find(
+              (item) => item.id === classActivityId
+            );
+
+            if (classActivity) {
+              // Count how many times the item is in the cart
+              const itemCount = this.cart.filter(
+                (itemId) => itemId === classActivityId
+              ).length;
+
+              // Restore the slots for all instances of the item removed
+              classActivity.slots += itemCount;
+            }
+
+            // Remove all instances of the class activity from the cart
+            this.cart = this.cart.filter(
+              (itemId) => itemId !== classActivityId
+            );
+          },
+          sortCart() {
+            // Sort the cart based on the same criteria and order as the class list
+            this.cart.sort((a, b) => {
+              let comparison = 0;
+              if (this.sortCriteria === "name") {
+                comparison = a.name.localeCompare(b.name);
+              } else if (this.sortCriteria === "price") {
+                comparison = a.price - b.price;
+              } else if (this.sortCriteria === "slots") {
+                comparison = a.slots - b.slots;
+              } else if (this.sortCriteria === "location") {
+                comparison = a.location - b.location;
+              }
+
+              // Reverse the order if sortOrder is 'desc'
+              return this.sortOrder === "asc" ? comparison : -comparison;
+            });
+          },
+          submitOrder() {
+            alert("Order submitted!");
+            setTimeout(() => {
+              location.reload();
+            }, 100);
+          },
+        },
+        computed: {
+          // Display how many item are in the cart button
+          cartItemCount() {
+            return this.cart.length;
+          },
+          DisabledEmptyCart() {
+            return this.cart.length <= 0;
+          },
+          // This will return an item user select to buy in the cart
+          cartItems() {
+            return this.classes.filter((classActivity) =>
+              this.cart.includes(classActivity.id)
+            );
+          },
+          // Computed property to return the sorted list based on the selected criteria and order
+          sortedClasses() {
+            return this.classes.slice().sort((a, b) => {
+              let comparison = 0;
+              if (this.sortCriteria === "name") {
+                comparison = a.name.localeCompare(b.name);
+              } else if (this.sortCriteria === "price") {
+                comparison = a.price - b.price;
+              } else if (this.sortCriteria === "slots") {
+                comparison = a.slots - b.slots;
+              } else if (this.sortCriteria === "location") {
+                comparison = a.sortCriteria.comparison(b.location);
+              }
+
+              // Reverse the order if sortOrder is 'desc'
+              return this.sortOrder === "asc" ? comparison : -comparison;
+            });
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
