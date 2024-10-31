@@ -72,32 +72,5 @@
     "price": 300.0,
     "rating": 4,
     "image": "images/codeCamp.jpg"
-  },
-  {
-    "id": 9,
-    "name": "Chess Club - Beginners",
-    "location": "Library, Orlando,",
-    "slots": 10,
-    "price": 50.0,
-    "rating": 4,
-    "image": "images/chess.jpg"
-  },
-  {
-    "id": 10,
-    "name": "Advanced Coding BootCamp",
-    "location": "Room 101, Santos",
-    "slots": 8,
-    "price": 300.0,
-    "rating": 4,
-    "image": "images/codeCamp.jpg"
-  },
-  {
-    "id": 11,
-    "name": "Advanced Coding BootCamp",
-    "location": "Room 101, Santos",
-    "slots": 8,
-    "price": 300.0,
-    "rating": 4,
-    "image": "images/codeCamp.jpg"
   }
 ]
