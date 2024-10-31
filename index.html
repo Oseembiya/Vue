@@ -455,7 +455,7 @@
         },
         created() {
           // fetching data from the file json
-          fetch("/classActivity.json")
+          fetch("classActivity.json")
             .then((response) => response.json())
             .then((data) => {
               this.classes = data;
