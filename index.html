@@ -445,10 +445,12 @@
               method: "Home",
               state: "",
             },
+            states: ["Alabama", "Alaska", "Arizona", "California", "Nevada"],
             selectedImage: null,
+
             sortCriteria: "name", // Default sort by name
             sortOrder: "asc", // Default sorting order is ascending
-            states: ["Alabama", "Alaska", "Arizona", "California", "Nevada"],
+
             swipedIndex: null, // Tracks the swiped item
             startX: 0, // Stores the initial X position of the touch
           };
@@ -463,6 +465,14 @@
             .catch((error) => {
               console.error("Error fetching classes:", error);
             });
+
+          /* fetch('https://localhost:8000/classActivity')
+             .then(function(response){
+              response.json().then(function (json){
+             console.log(json);
+               webstore.classes = json;
+               })
+            })*/
         },
         methods: {
           addToCart(classActivity) {

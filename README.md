@@ -1,2 +1,3 @@
-https://github.com/Oseembiya/Full-Stack
-ONLINE- io:https://oseembiya.github.io/Vue/
+https://github.com/Oseembiya/Vue
+
+Github io:https://oseembiya.github.io/Vue/
