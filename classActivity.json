@@ -72,5 +72,23 @@
     "price": 300.0,
     "rating": 4,
     "image": "images/codeCamp.jpg"
+  },
+  {
+    "id": 9,
+    "name": "Math",
+    "location": "Room 45, campus",
+    "slots": 8,
+    "price": 300.0,
+    "rating": 4,
+    "image": "images/codeCamp.jpg"
+  },
+  {
+    "id": 10,
+    "name": "Quiz ",
+    "location": "Room 68, santany",
+    "slots": 8,
+    "price": 300.0,
+    "rating": 4,
+    "image": "images/codeCamp.jpg"
   }
 ]

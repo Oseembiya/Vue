@@ -65,6 +65,8 @@ h1 {
 /* search bar */
 .search-input {
   padding-right: 35px;
+ 
+   
 }
 
 .search-icon {
@@ -170,4 +172,10 @@ h1 {
 .list-group-item {
   position: relative;
   overflow: hidden;
+
+
+.getuser-image{
+backgoud-color: #ffffff;
+color:white;
+align-content: center; 
 }

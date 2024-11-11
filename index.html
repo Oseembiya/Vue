@@ -363,12 +363,13 @@
         >
           <!-- Clicking on this image opens it in the modal -->
           <img
-            :src="classActivity.image"
+            :src="`http://localhost:8000/${classActivity.image}`"
             class="card-img-top"
             alt="classActivity image"
             @click="viewImage(classActivity.image)"
             style="cursor: pointer"
           />
+
           <div class="card-body">
             <h6 class="card-title fw-bold">{{ classActivity.name }}</h6>
             <p class="cart-text mb-1">Location: {{ classActivity.location }}</p>
@@ -456,23 +457,20 @@
           };
         },
         created() {
-          // fetching data from the file json
-          fetch("classActivity.json")
-            .then((response) => response.json())
+          // Fetching data from the server
+          fetch("http://localhost:8000/classActivity")
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+              }
+              return response.json();
+            })
             .then((data) => {
-              this.classes = data;
+              this.classes = data; // Store the fetched data in the classes array
             })
             .catch((error) => {
-              console.error("Error fetching classes:", error);
+              console.error("Error fetching class activities:", error);
             });
-
-          /* fetch('https://localhost:8000/classActivity')
-             .then(function(response){
-              response.json().then(function (json){
-             console.log(json);
-               webstore.classes = json;
-               })
-            })*/
         },
         methods: {
           addToCart(classActivity) {
@@ -481,8 +479,9 @@
               classActivity.slots--;
             }
           },
+
           viewImage(image) {
-            this.selectedImage = image;
+            this.selectedImage = `http://localhost:8000/${image}`;
             const modal = new bootstrap.Modal(
               document.getElementById("imageModal")
             );
@@ -498,28 +497,22 @@
             cartCanvas.toggle();
           },
           removeFromCart(classActivityId) {
-            // Find the class activity associated with the item being removed
             const classActivity = this.classes.find(
               (item) => item.id === classActivityId
             );
 
             if (classActivity) {
-              // Count how many times the item is in the cart
               const itemCount = this.cart.filter(
                 (itemId) => itemId === classActivityId
               ).length;
-
-              // Restore the slots for all instances of the item removed
               classActivity.slots += itemCount;
             }
 
-            // Remove all instances of the class activity from the cart
             this.cart = this.cart.filter(
               (itemId) => itemId !== classActivityId
             );
           },
           sortCart() {
-            // Sort the cart based on the same criteria and order as the class list
             this.cart.sort((a, b) => {
               let comparison = 0;
               if (this.sortCriteria === "name") {
@@ -529,10 +522,8 @@
               } else if (this.sortCriteria === "slots") {
                 comparison = a.slots - b.slots;
               } else if (this.sortCriteria === "location") {
-                comparison = a.location - b.location;
+                comparison = a.location.localeCompare(b.location);
               }
-
-              // Reverse the order if sortOrder is 'desc'
               return this.sortOrder === "asc" ? comparison : -comparison;
             });
           },
@@ -544,20 +535,17 @@
           },
         },
         computed: {
-          // Display how many item are in the cart button
           cartItemCount() {
             return this.cart.length;
           },
           DisabledEmptyCart() {
             return this.cart.length <= 0;
           },
-          // This will return an item user select to buy in the cart
           cartItems() {
             return this.classes.filter((classActivity) =>
               this.cart.includes(classActivity.id)
             );
           },
-          // Computed property to return the sorted list based on the selected criteria and order
           sortedClasses() {
             return this.classes.slice().sort((a, b) => {
               let comparison = 0;
@@ -568,10 +556,8 @@
               } else if (this.sortCriteria === "slots") {
                 comparison = a.slots - b.slots;
               } else if (this.sortCriteria === "location") {
-                comparison = a.sortCriteria.comparison(b.location);
+                comparison = a.location.localeCompare(b.location);
               }
-
-              // Reverse the order if sortOrder is 'desc'
               return this.sortOrder === "asc" ? comparison : -comparison;
             });
           },
