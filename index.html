@@ -134,31 +134,21 @@
             <li
               v-for="(item, index) in cartItems"
               :key="item.id"
-              class="list-group-item d-flex align-items-start"
+              class="list-group-item"
             >
               <!-- Delete button placed on the left -->
-              <button
-                class="btn delete-btn me-2"
-                @click="removeFromCart(item.id)"
-              >
+              <button class="btn delete-btn" @click="removeFromCart(item.id)">
                 <i class="fa-solid fa-trash-can text-danger fs-4"></i>
               </button>
 
-              <!-- Display item image, name, location, price, and quantity in cart -->
-              <img
-                :src="getItemImageUrl(item.image)"
-                class="small-cart-img me-3"
-                alt="classActivity image"
-              />
-              <div>
-                <div class="fw-bold">{{ item.name }}</div>
-                <div>{{ item.location }}</div>
-                <div>£{{ item.price }}</div>
-                <div>Quantity: {{ cartCount(item.id) }}</div>
-              </div>
+              <img :src="item.image" class="small-cart-img" />
+              {{ item.name }}
+              <br />
+              {{ item.location}} <br />
+              £{{ item.price }} <br />
+              Quantity: {{ cartCount(item.id) }}
             </li>
           </ul>
-
           <p v-else class="text-center">
             Your cart is empty. <br /><i
               class="fa-solid fa-cart-shopping orange fs-1 mt-lg-5"
@@ -288,13 +278,13 @@
         </div>
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <img src="images/carousel-1.jpg" class="d-block w-100" alt="..." />
+            <img src="asset/carousel-1.jpg" class="d-block w-100" alt="..." />
           </div>
           <div class="carousel-item">
-            <img src="images/carousel-2.jpg" class="d-block w-100" alt="..." />
+            <img src="asset/carousel-2.jpg" class="d-block w-100" alt="..." />
           </div>
           <div class="carousel-item">
-            <img src="images/carousel-3.jpg" class="d-block w-100" alt="..." />
+            <img src="asset/carousel-3.jpg" class="d-block w-100" alt="..." />
           </div>
         </div>
         <button
