@@ -159,6 +159,7 @@
           <div v-if="cartItems.length > 0">
             <h5>Order Information</h5>
             <form @submit.prevent="submitOrder">
+              <!-- Gift Checkbox -->
               <div class="mb-3">
                 <input
                   type="checkbox"
@@ -168,6 +169,8 @@
                 />
                 <label for="gift">Ship As Gift?</label>
               </div>
+
+              <!-- Shipping Method Radio Buttons -->
               <div class="mb-3">
                 <label>Shipping Method:</label><br />
                 <input
@@ -185,6 +188,8 @@
                 />
                 <label for="business">Business</label>
               </div>
+
+              <!-- Personal Details Inputs -->
               <div>
                 <label for="firstName" class="form-label">First Name</label>
                 <input
@@ -235,7 +240,6 @@
                   required
                 />
               </div>
-
               <div class="">
                 <label for="city" class="form-label">Phone Number</label>
                 <input
@@ -246,12 +250,18 @@
                   required
                 />
               </div>
-              <button type="submit" class="btn btn-success">Place Order</button>
+              <!-- Submit Button -->
+              <button
+                type="submit"
+                class="btn btn-success"
+                @click="submitOrder"
+              >
+                Place Order
+              </button>
             </form>
           </div>
         </div>
       </div>
-
       <!-- Carousel hero section-->
       <div id="carouselExampleIndicators" class="carousel slide">
         <div class="carousel-indicators">
@@ -456,7 +466,7 @@
           };
         },
         created() {
-          // Fetching data from the server
+          // Fetching all the lesson form the database
           fetch("http://localhost:8000/classActivity")
             .then((response) => {
               if (!response.ok) {
@@ -472,6 +482,46 @@
             });
         },
         methods: {
+          async submitOrder() {
+            try {
+              const response = await fetch("http://localhost:8000/order", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(this.order),
+              });
+
+              if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+              }
+
+              // Clear the order form data
+              this.order = {
+                firstName: "",
+                lastName: "",
+                address: "",
+                city: "",
+                zip: "",
+                gift: false,
+                method: "Home",
+                state: "",
+              };
+
+              // Close the cart or order form modal (if applicable)
+              this.toggleCart();
+
+              // Show a success message and then refresh after the alert is closed
+              alert("Order submitted successfully!");
+
+              // Refresh the page after the alert is dismissed
+              window.location.reload(); // Refresh the page after the alert
+            } catch (error) {
+              console.error("Error submitting order:", error);
+              alert("Error submitting order.");
+            }
+          },
+
           addToCart(classActivity) {
             if (classActivity.slots > 0) {
               this.cart.push(classActivity.id);
@@ -525,12 +575,6 @@
               }
               return this.sortOrder === "asc" ? comparison : -comparison;
             });
-          },
-          submitOrder() {
-            alert("Order submitted!");
-            setTimeout(() => {
-              location.reload();
-            }, 100);
           },
         },
         computed: {
