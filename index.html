@@ -29,7 +29,7 @@
         <div class="container-fluid">
           <!-- Logo and Site Name -->
           <div class="navbar-brand d-flex align-items-center" id="fullLogo">
-            <img src="images/logo.jpg" alt="ParentPay Logo" class="logo" />
+            <img src="/Vue/asset/logo.jpg" alt="ParentPay Logo" class="logo" />
             <h1 class="text-white fs-3 luckiest-guy-regular mb-0">
               {{ siteName }}
             </h1>
@@ -134,19 +134,28 @@
             <li
               v-for="(item, index) in cartItems"
               :key="item.id"
-              class="list-group-item"
+              class="list-group-item d-flex align-items-start"
             >
               <!-- Delete button placed on the left -->
-              <button class="btn delete-btn" @click="removeFromCart(item.id)">
+              <button
+                class="btn delete-btn me-2"
+                @click="removeFromCart(item.id)"
+              >
                 <i class="fa-solid fa-trash-can text-danger fs-4"></i>
               </button>
 
-              <img :src="item.image" class="small-cart-img" />
-              {{ item.name }}
-              <br />
-              {{ item.location}} <br />
-              £{{ item.price }} <br />
-              Quantity: {{ cartCount(item.id) }}
+              <!-- Display item image, name, location, price, and quantity in cart -->
+              <img
+                :src="getItemImageUrl(item.image)"
+                class="small-cart-img me-3"
+                alt="classActivity image"
+              />
+              <div>
+                <div class="fw-bold">{{ item.name }}</div>
+                <div>{{ item.location }}</div>
+                <div>£{{ item.price }}</div>
+                <div>Quantity: {{ cartCount(item.id) }}</div>
+              </div>
             </li>
           </ul>
 
@@ -314,7 +323,7 @@
         class="sort-controls text-center mb-4 d-flex flex-column justify-content-center align-items-center"
       >
         <img
-          src="images/logo.jpg"
+          src="/Vue/asset/logo.jpg"
           alt="ParentPay Logo"
           class="logo align-items-center fs-3 logoCenter"
         />
@@ -458,7 +467,7 @@
         },
         created() {
           // Fetching data from the server
-          fetch("http://localhost:8000/classActivity")
+          fetch("http://localhost:8000/lessons")
             .then((response) => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
