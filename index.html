@@ -482,43 +482,49 @@
             });
         },
         methods: {
+          // Vue method to submit order data
           async submitOrder() {
             try {
+              // Construct the orderData object with separate fields for orderInfo and lessonId
+              const orderData = {
+                orderInfo: {
+                  firstName: this.order.firstName,
+                  lastName: this.order.lastName,
+                  address: this.order.address,
+                  city: this.order.city,
+                  zip: this.order.zip,
+                  gift: this.order.gift,
+                  method: this.order.method,
+                  state: this.order.state,
+                },
+                lessonId: this.cart, // Separate array for class activity IDs
+              };
+
+              // Send the orderData as a POST request
               const response = await fetch("http://localhost:8000/order", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
                 },
-                body: JSON.stringify(this.order),
+                body: JSON.stringify(orderData), // Send data as JSON
               });
 
               if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                const errorData = await response.json();
+                throw new Error(errorData.error || "Failed to submit order.");
               }
 
-              // Clear the order form data
-              this.order = {
-                firstName: "",
-                lastName: "",
-                address: "",
-                city: "",
-                zip: "",
-                gift: false,
-                method: "Home",
-                state: "",
-              };
+              const result = await response.json();
+              console.log("Order submitted successfully:", result);
 
-              // Close the cart or order form modal (if applicable)
-              this.toggleCart();
-
-              // Show a success message and then refresh after the alert is closed
+              // Show success message, reset form, and reload page
               alert("Order submitted successfully!");
-
-              // Refresh the page after the alert is dismissed
-              window.location.reload(); // Refresh the page after the alert
+              this.order = {};
+              this.cart = [];
+              window.location.reload();
             } catch (error) {
               console.error("Error submitting order:", error);
-              alert("Error submitting order.");
+              alert(error.message || "Error submitting order.");
             }
           },
 
@@ -528,7 +534,6 @@
               classActivity.slots--;
             }
           },
-
           viewImage(image) {
             this.selectedImage = `http://localhost:8000/${image}`;
             const modal = new bootstrap.Modal(
