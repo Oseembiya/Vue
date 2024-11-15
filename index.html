@@ -110,6 +110,7 @@
           </button>
         </div>
       </nav>
+
       <!-- Off-Canvas Cart information -->
       <div
         class="offcanvas offcanvas-end"
@@ -130,14 +131,17 @@
         </div>
         <div class="offcanvas-body">
           <!-- Display Cart Items or "Cart is empty" message -->
-          <ul class="list-group mb-4" v-if="cartItems.length > 0">
+          <ul class="list-group mb-4" v-if="cartLesson.length > 0">
             <li
-              v-for="(item, index) in cartItems"
-              :key="item.id"
+              v-for="(item, index) in cartLesson"
+              :key="item.id + '-' + index"
               class="list-group-item"
             >
               <!-- Delete button placed on the left -->
-              <button class="btn delete-btn" @click="removeFromCart(item.id)">
+              <button
+                class="btn delete-btn"
+                @click="removeLessonInCart(item.id)"
+              >
                 <i class="fa-solid fa-trash-can text-danger fs-4"></i>
               </button>
 
@@ -156,7 +160,7 @@
           </p>
 
           <!-- Checkout Form -->
-          <div v-if="cartItems.length > 0">
+          <div v-if="cartLesson.length > 0">
             <h5>Order Information</h5>
             <form @submit.prevent="submitOrder">
               <!-- Gift Checkbox -->
@@ -190,42 +194,47 @@
               </div>
 
               <!-- Personal Details Inputs -->
-              <div>
+              <div class="mb-3">
                 <label for="firstName" class="form-label">First Name</label>
                 <input
                   type="text"
                   class="form-control"
                   id="firstName"
                   v-model="order.firstName"
+                  @input="isNameValid = /^[A-Za-z\s]+$/.test(order.firstName)"
                   required
                 />
+                <small
+                  v-if="!isNameValid && order.firstName"
+                  class="text-danger"
+                >
+                  Name must contain letters only.
+                </small>
               </div>
-              <div>
-                <label for="lastName" class="form-label">Last Name</label>
+              <div class="mb-3">
+                <label for="firstName" class="form-label">lastName</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="lastName"
+                  id="firstName"
                   v-model="order.lastName"
+                  @input="isNameValid = /^[A-Za-z\s]+$/.test(order.lastName)"
                   required
                 />
+                <small
+                  v-if="!isNameValid && order.lastName"
+                  class="text-danger"
+                >
+                  Name must contain letters only.
+                </small>
               </div>
-              <div>
-                <label for="address" class="form-label">Address</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="address"
-                  v-model="order.address"
-                  required
-                />
-              </div>
-              <div class="my-3 row align-items-center">
+
+              <div class="mb-3 row align-items-center">
                 <div>
-                  <select v-model="order.state" id="state" class="form-control">
-                    <option disabled value="">Select a State</option>
-                    <option v-for="state in states" :key="state" :value="state">
-                      {{ state }}
+                  <select v-model="order.city" id="city" class="form-control">
+                    <option disabled value="">Select a city</option>
+                    <option v-for="city in cities" :key="city" :value="city">
+                      {{ city }}
                     </option>
                   </select>
                 </div>
@@ -240,21 +249,25 @@
                   required
                 />
               </div>
-              <div class="">
+              <div class="mb-3">
                 <label for="city" class="form-label">Phone Number</label>
                 <input
-                  type="number"
+                  type="text"
                   class="form-control"
                   id="city"
-                  v-model="order.city"
+                  v-model="order.number"
+                  @input="isPhoneValid = /^\d{10}$/.test(order.number)"
                   required
                 />
+                <small v-if="!isPhoneValid && order.number" class="text-danger">
+                  Phone number must be 10 digits.
+                </small>
               </div>
               <!-- Submit Button -->
               <button
                 type="submit"
                 class="btn btn-success"
-                @click="submitOrder"
+                :disabled="!isSubmitEnabled"
               >
                 Place Order
               </button>
@@ -262,6 +275,7 @@
           </div>
         </div>
       </div>
+
       <!-- Carousel hero section-->
       <div id="carouselExampleIndicators" class="carousel slide">
         <div class="carousel-indicators">
@@ -338,7 +352,7 @@
             id="sortCriteria"
             class="form-select w-auto me-3 pe-5"
             v-model="sortCriteria"
-            @change="sortedClasses"
+            @change="sortedLessons"
           >
             <option value="name">Name</option>
             <option value="price">Price</option>
@@ -351,7 +365,7 @@
             id="sortOrder"
             class="form-select w-auto pe-5"
             v-model="sortOrder"
-            @change="sortedClasses"
+            @change="sortedLessons"
           >
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
@@ -359,51 +373,49 @@
         </div>
       </div>
 
-      <!-- List of classes activities  -->
+      <!-- List of  lessons classes   -->
       <div
         class="container d-flex flex-wrap justify-content-around align-items-center pt-3 mt-2"
       >
-        <!-- Use sortedClasses instead of classes -->
+        <!-- using sortedLessons to sort the lessons  -->
         <div
           class="card mb-3 position-relative"
           style="width: 18.5rem"
-          v-for="classActivity in sortedClasses"
-          :key="classActivity.id"
+          v-for="lesson in sortedLessons"
+          :key="lesson.id"
         >
-          <!-- Clicking on this image opens it in the modal -->
           <img
-            :src="`http://localhost:8000/${classActivity.image}`"
+            :src="`http://localhost:8000/${lesson.image}`"
             class="card-img-top"
-            alt="classActivity image"
-            @click="viewImage(classActivity.image)"
+            alt="lesson image"
+            @click="viewImage(lesson.image)"
             style="cursor: pointer"
           />
 
           <div class="card-body">
-            <h6 class="card-title fw-bold">{{ classActivity.name }}</h6>
-            <p class="cart-text mb-1">Location: {{ classActivity.location }}</p>
-            <p class="card-text mb-1">Space: {{ classActivity.slots }}</p>
-            <p class="card-text">Price: £{{ classActivity.price }}</p>
+            <h6 class="card-title fw-bold">{{ lesson.name }}</h6>
+            <p class="cart-text mb-1">Location: {{ lesson.location }}</p>
+            <p class="card-text mb-1">Space: {{ lesson.slots }}</p>
+            <p class="card-text">Price: £{{ lesson.price }}</p>
             <button
               class="btn btn-primary"
-              @click="addToCart(classActivity)"
-              :disabled="classActivity.slots <= 0"
+              @click="addToCart(lesson)"
+              :disabled="lesson.slots <= 0"
             >
               Add to Cart
             </button>
-            <span class="ms-4" v-if="classActivity.slots === 0">All Out!</span>
-            <span class="ms-4" v-else-if="classActivity.slots < 5">
-              Only {{ classActivity.slots }} left!
+            <span class="ms-4" v-if="lesson.slots === 0">All Out!</span>
+            <span class="ms-4" v-else-if="lesson.slots < 5">
+              Only {{ lesson.slots }} left!
             </span>
             <span class="ms-4" v-else>Buy Now!</span>
             <!-- Display the rating as stars -->
             <div class="mt-2">
-              <span v-for="n in classActivity.rating" :key="n">★</span>
-              <span v-for="n in 5 - classActivity.rating" :key="n">☆</span>
+              <span v-for="n in lesson.rating" :key="n">★</span>
+              <span v-for="n in 5 - lesson.rating" :key="n">☆</span>
             </div>
           </div>
         </div>
-
         <!-- Modal for viewing image -->
         <div
           class="modal fade"
@@ -428,7 +440,7 @@
                 <img
                   :src="selectedImage"
                   class="img-fluid"
-                  alt="classActivity image"
+                  alt="lesson image"
                 />
               </div>
             </div>
@@ -443,31 +455,34 @@
         data() {
           return {
             siteName: "ParentPay",
-            classes: [], // classActivity list fetched from JSON
-            cart: [], // Holds the classActivity IDs added to the cart
-            order: {
-              firstName: "",
-              lastName: "",
-              address: "",
-              city: "",
-              zip: "",
-              gift: false,
-              method: "Home",
-              state: "",
-            },
-            states: ["Alabama", "Alaska", "Arizona", "California", "Nevada"],
-            selectedImage: null,
-
+            classes: [], // lesson list fetched from JSON
+            cart: [], // Holds the lesson IDs added to the cart
             sortCriteria: "name", // Default sort by name
             sortOrder: "asc", // Default sorting order is ascending
-
-            swipedIndex: null, // Tracks the swiped item
-            startX: 0, // Stores the initial X position of the touch
+            selectedImage: null,
+            order: {
+              gift: false,
+              method: "Home",
+              firstName: "",
+              lastName: "",
+              city: "",
+              zip: "",
+              phoneNum: "",
+            },
+            cities: [
+              "London",
+              "Manchester",
+              "Birmingham ",
+              "Edinburgh",
+              "Liverpool",
+            ],
+            isNameValid: false,
+            isPhoneValid: false,
           };
         },
         created() {
           // Fetching all the lesson form the database
-          fetch("http://localhost:8000/classActivity")
+          fetch("http://localhost:8000/lessons")
             .then((response) => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -482,24 +497,21 @@
             });
         },
         methods: {
-          // Vue method to submit order data
           async submitOrder() {
             try {
               // Construct the orderData object with separate fields for orderInfo and lessonId
               const orderData = {
                 orderInfo: {
-                  firstName: this.order.firstName,
-                  lastName: this.order.lastName,
-                  address: this.order.address,
-                  city: this.order.city,
-                  zip: this.order.zip,
                   gift: this.order.gift,
                   method: this.order.method,
-                  state: this.order.state,
+                  firstName: this.order.firstName,
+                  lastName: this.order.lastName,
+                  city: this.order.city,
+                  zip: this.order.zip,
+                  phoneNum: this.order.number,
                 },
                 lessonId: this.cart, // Separate array for class activity IDs
               };
-
               // Send the orderData as a POST request
               const response = await fetch("http://localhost:8000/order", {
                 method: "POST",
@@ -508,30 +520,22 @@
                 },
                 body: JSON.stringify(orderData), // Send data as JSON
               });
-
               if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.error || "Failed to submit order.");
               }
-
               const result = await response.json();
-              console.log("Order submitted successfully:", result);
-
-              // Show success message, reset form, and reload page
-              alert("Order submitted successfully!");
-              this.order = {};
-              this.cart = [];
+              alert("Order submitted successfully:", result);
               window.location.reload();
             } catch (error) {
               console.error("Error submitting order:", error);
               alert(error.message || "Error submitting order.");
             }
           },
-
-          addToCart(classActivity) {
-            if (classActivity.slots > 0) {
-              this.cart.push(classActivity.id);
-              classActivity.slots--;
+          addToCart(lesson) {
+            if (lesson.slots > 0) {
+              this.cart.push(lesson.id);
+              lesson.slots--;
             }
           },
           viewImage(image) {
@@ -550,36 +554,15 @@
             );
             cartCanvas.toggle();
           },
-          removeFromCart(classActivityId) {
-            const classActivity = this.classes.find(
-              (item) => item.id === classActivityId
-            );
-
-            if (classActivity) {
+          removeLessonInCart(lessonId) {
+            const lesson = this.classes.find((item) => item.id === lessonId);
+            if (lesson) {
               const itemCount = this.cart.filter(
-                (itemId) => itemId === classActivityId
+                (itemId) => itemId === lessonId
               ).length;
-              classActivity.slots += itemCount;
+              lesson.slots += itemCount;
             }
-
-            this.cart = this.cart.filter(
-              (itemId) => itemId !== classActivityId
-            );
-          },
-          sortCart() {
-            this.cart.sort((a, b) => {
-              let comparison = 0;
-              if (this.sortCriteria === "name") {
-                comparison = a.name.localeCompare(b.name);
-              } else if (this.sortCriteria === "price") {
-                comparison = a.price - b.price;
-              } else if (this.sortCriteria === "slots") {
-                comparison = a.slots - b.slots;
-              } else if (this.sortCriteria === "location") {
-                comparison = a.location.localeCompare(b.location);
-              }
-              return this.sortOrder === "asc" ? comparison : -comparison;
-            });
+            this.cart = this.cart.filter((itemId) => itemId !== lessonId);
           },
         },
         computed: {
@@ -589,12 +572,12 @@
           DisabledEmptyCart() {
             return this.cart.length <= 0;
           },
-          cartItems() {
-            return this.classes.filter((classActivity) =>
-              this.cart.includes(classActivity.id)
+          cartLesson() {
+            return this.classes.filter((lesson) =>
+              this.cart.includes(lesson.id)
             );
           },
-          sortedClasses() {
+          sortedLessons() {
             return this.classes.slice().sort((a, b) => {
               let comparison = 0;
               if (this.sortCriteria === "name") {
@@ -608,6 +591,19 @@
               }
               return this.sortOrder === "asc" ? comparison : -comparison;
             });
+          },
+          isSubmitEnabled() {
+            // Check if both name and phone number fields are valid
+            return this.isNameValid && this.isPhoneValid;
+          },
+        },
+        watch: {
+          // validation firstName and number
+          "order.firstName"(newValue) {
+            this.isNameValid = /^[A-Za-z\s]+$/.test(newValue); // Regex for letters only
+          },
+          "order.number"(newValue) {
+            this.isPhoneValid = /^\d{12}$/.test(newValue); //  12-digit number only
           },
         },
       });

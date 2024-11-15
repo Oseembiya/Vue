@@ -134,7 +134,7 @@ h1 {
   object-fit: cover; /* Ensures the image covers the area without distortion */
 }
 
-/* sort items */
+/* sorting  items */
 .sort-controls {
   margin-top: 2rem;
 }
@@ -149,7 +149,7 @@ h1 {
   font-size: 1.1rem;
   color: #333;
 }
-
+/* form information */
 .form-select {
   padding: 0.5rem 1.25rem;
   background-color: #f8f9fa;
@@ -157,11 +157,9 @@ h1 {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease-in-out;
 }
-
 .form-select:hover {
   border-color: #007bff;
 }
-
 .form-select:focus {
   border-color: #007bff;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
