@@ -35,16 +35,44 @@
             </h1>
           </div>
           <!-- Search Bar with Icon -->
-          <form class="position-relative d-flex ms-lg-3" role="search">
-            <input
-              class="form-control search-input ps-3"
-              type="search"
-              placeholder="Search activities"
-              aria-label="Search"
-            />
-            <i class="fa-solid fa-search search-icon"></i>
-          </form>
+          <div>
+            <!-- Search Bar -->
+            <form
+              class="position-relative d-flex ms-lg-3"
+              role="search"
+              @submit.prevent="performSearch"
+            >
+              <input
+                v-model="searchQuery"
+                class="form-control search-input ps-3"
+                type="search"
+                placeholder="Search lessons"
+                aria-label="Search"
+              />
+              <i class="fa-solid fa-search search-icon"></i>
+            </form>
 
+            <!-- Search Results -->
+            <div v-if="searchQuery && searchResults.length > 0">
+              <div
+                v-for="lesson in searchResults"
+                :key="lesson._id"
+                class="card mb-3 position-relative"
+                style="width: 18.5rem"
+              >
+                <img
+                  :src="`http://localhost:8000/${lesson.image}`"
+                  class="card-img-top"
+                  alt="lesson image"
+                />
+                <div class="card-body">
+                  <h6 class="card-title fw-bold">{{ lesson.name }}</h6>
+                  <p class="card-text mb-1">Location: {{ lesson.location }}</p>
+                  <p class="card-text">Price: £{{ lesson.price }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
           <!-- Navbar links -->
           <div
             class="collapse navbar-collapse justify-content-start ms-4"
@@ -93,7 +121,7 @@
             :disabled="DisabledEmptyCart"
           >
             <i class="fa-solid fa-cart-shopping orange fs-5"></i> Cart {{
-            cartItemCount }}
+            cartCount }}
           </button>
 
           <!-- Toggle button for mobile view -->
@@ -133,24 +161,21 @@
           <!-- Display Cart Items or "Cart is empty" message -->
           <ul class="list-group mb-4" v-if="cartLesson.length > 0">
             <li
-              v-for="(item, index) in cartLesson"
-              :key="item.id + '-' + index"
+              v-for="(lesson, index) in cartLesson"
+              :key="lesson.id + '-' + index"
               class="list-group-item"
             >
               <!-- Delete button placed on the left -->
-              <button
-                class="btn delete-btn"
-                @click="removeLessonInCart(item.id)"
-              >
+              <button class="btn delete-btn" @click="removeInCart(lesson.id)">
                 <i class="fa-solid fa-trash-can text-danger fs-4"></i>
               </button>
 
-              <img :src="item.image" class="small-cart-img" />
-              {{ item.name }}
+              <img :src="lesson.image" class="small-cart-img" />
+              {{ lesson.name }}
               <br />
-              {{ item.location}} <br />
-              £{{ item.price }} <br />
-              Quantity: {{ cartCount(item.id) }}
+              {{ lesson.location}} <br />
+              £{{ lesson.price }} <br />
+              Quantity: {{ cartItemCount(lesson.id) }}
             </li>
           </ul>
           <p v-else class="text-center">
@@ -194,41 +219,23 @@
               </div>
 
               <!-- Personal Details Inputs -->
-              <div class="mb-3">
-                <label for="firstName" class="form-label">First Name</label>
+              <div class="mb-4">
+                <label for="firstName" class="form-label">Full Name</label>
                 <input
                   type="text"
                   class="form-control"
                   id="firstName"
-                  v-model="order.firstName"
-                  @input="isNameValid = /^[A-Za-z\s]+$/.test(order.firstName)"
+                  v-model="order.fullName"
+                  @input="isFullNameValid = /^[A-Za-z\s]+$/.test(order.fullName)"
                   required
                 />
                 <small
-                  v-if="!isNameValid && order.firstName"
+                  v-if="!isFullNameValid && order.fullName"
                   class="text-danger"
                 >
-                  Name must contain letters only.
+                  Full Name must contain letters only.
                 </small>
               </div>
-              <div class="mb-3">
-                <label for="firstName" class="form-label">lastName</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="firstName"
-                  v-model="order.lastName"
-                  @input="isNameValid = /^[A-Za-z\s]+$/.test(order.lastName)"
-                  required
-                />
-                <small
-                  v-if="!isNameValid && order.lastName"
-                  class="text-danger"
-                >
-                  Name must contain letters only.
-                </small>
-              </div>
-
               <div class="mb-3 row align-items-center">
                 <div>
                   <select v-model="order.city" id="city" class="form-control">
@@ -240,12 +247,12 @@
                 </div>
               </div>
               <div class="mb-3">
-                <label for="zip" class="form-label">Zip / Postal Code</label>
+                <label for="zip" class="form-label">PostCode</label>
                 <input
                   type="text"
                   class="form-control"
                   id="zip"
-                  v-model="order.zip"
+                  v-model="order.PostCode"
                   required
                 />
               </div>
@@ -260,7 +267,7 @@
                   required
                 />
                 <small v-if="!isPhoneValid && order.number" class="text-danger">
-                  Phone number must be 10 digits.
+                  Phone must be number only & 10 digits.
                 </small>
               </div>
               <!-- Submit Button -->
@@ -352,12 +359,11 @@
             id="sortCriteria"
             class="form-select w-auto me-3 pe-5"
             v-model="sortCriteria"
-            @change="sortedLessons"
           >
-            <option value="name">Name</option>
-            <option value="price">Price</option>
-            <option value="slots">Available Item</option>
+            <option value="subject">Subject</option>
             <option value="location">Location</option>
+            <option value="price">Price</option>
+            <option value="slots">Spaces</option>
           </select>
 
           <label for="sortOrder" class="me-2 fw-bold">Order:</label>
@@ -365,14 +371,12 @@
             id="sortOrder"
             class="form-select w-auto pe-5"
             v-model="sortOrder"
-            @change="sortedLessons"
           >
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
           </select>
         </div>
       </div>
-
       <!-- List of  lessons classes   -->
       <div
         class="container d-flex flex-wrap justify-content-around align-items-center pt-3 mt-2"
@@ -411,8 +415,16 @@
             <span class="ms-4" v-else>Buy Now!</span>
             <!-- Display the rating as stars -->
             <div class="mt-2">
-              <span v-for="n in lesson.rating" :key="n">★</span>
-              <span v-for="n in 5 - lesson.rating" :key="n">☆</span>
+              <span
+                v-for="(star, index) in lesson.rating"
+                :key="`filled-${index}`"
+                >★</span
+              >
+              <span
+                v-for="(star, index) in 5 - lesson.rating"
+                :key="`empty-${index}`"
+                >☆</span
+              >
             </div>
           </div>
         </div>
@@ -455,33 +467,34 @@
         data() {
           return {
             siteName: "ParentPay",
-            classes: [], // lesson list fetched from JSON
+            searchQuery: "", // Store the search query
+            searchResults: [], // Stores the filtered results
+            classes: [], // Lessons fetched from the database store in classes array
             cart: [], // Holds the lesson IDs added to the cart
-            sortCriteria: "name", // Default sort by name
+            sortCriteria: "subject", // Default sort by name
             sortOrder: "asc", // Default sorting order is ascending
             selectedImage: null,
             order: {
               gift: false,
               method: "Home",
-              firstName: "",
-              lastName: "",
+              fullName: "",
               city: "",
               zip: "",
-              phoneNum: "",
+              phoneNum: "", // Corrected field name
             },
             cities: [
               "London",
               "Manchester",
-              "Birmingham ",
+              "Birmingham",
               "Edinburgh",
               "Liverpool",
             ],
-            isNameValid: false,
+            isFullNameValid: false,
             isPhoneValid: false,
           };
         },
         created() {
-          // Fetching all the lesson form the database
+          // Fetching all the lessons from the database
           fetch("http://localhost:8000/lessons")
             .then((response) => {
               if (!response.ok) {
@@ -493,68 +506,18 @@
               this.classes = data; // Store the fetched data in the classes array
             })
             .catch((error) => {
-              console.error("Error fetching class activities:", error);
+              console.error("Error fetching lesson", error);
             });
         },
         methods: {
-          async submitOrder() {
-            try {
-              // Construct the orderData object with separate fields for orderInfo and lessonId
-              const orderData = {
-                orderInfo: {
-                  gift: this.order.gift,
-                  method: this.order.method,
-                  firstName: this.order.firstName,
-                  lastName: this.order.lastName,
-                  city: this.order.city,
-                  zip: this.order.zip,
-                  phoneNum: this.order.number,
-                },
-                lessonId: this.cart, // Separate array for class activity IDs
-              };
-              // Send the orderData as a POST request
-              const response = await fetch("http://localhost:8000/order", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(orderData), // Send data as JSON
-              });
-              if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || "Failed to submit order.");
-              }
-              const result = await response.json();
-              alert("Order submitted successfully:", result);
-              window.location.reload();
-            } catch (error) {
-              console.error("Error submitting order:", error);
-              alert(error.message || "Error submitting order.");
-            }
-          },
           addToCart(lesson) {
+            // this function add a slot lesson Id to cart if slots are available
             if (lesson.slots > 0) {
               this.cart.push(lesson.id);
               lesson.slots--;
             }
           },
-          viewImage(image) {
-            this.selectedImage = `http://localhost:8000/${image}`;
-            const modal = new bootstrap.Modal(
-              document.getElementById("imageModal")
-            );
-            modal.show();
-          },
-          cartCount(id) {
-            return this.cart.filter((itemId) => itemId === id).length;
-          },
-          toggleCart() {
-            let cartCanvas = new bootstrap.Offcanvas(
-              document.getElementById("cartCanvas")
-            );
-            cartCanvas.toggle();
-          },
-          removeLessonInCart(lessonId) {
+          removeInCart(lessonId) {
             const lesson = this.classes.find((item) => item.id === lessonId);
             if (lesson) {
               const itemCount = this.cart.filter(
@@ -564,9 +527,96 @@
             }
             this.cart = this.cart.filter((itemId) => itemId !== lessonId);
           },
+
+          viewImage(image) {
+            this.selectedImage = `http://localhost:8000/${image}`;
+            const modal = new bootstrap.Modal(
+              document.getElementById("imageModal")
+            );
+            modal.show();
+          },
+
+          cartItemCount(id) {
+            return this.cart.filter((itemId) => itemId === id).length;
+          },
+
+          toggleCart() {
+            const cartCanvas = new bootstrap.Offcanvas(
+              document.getElementById("cartCanvas")
+            );
+            cartCanvas.toggle();
+          },
+
+          async performSearch() {
+            const query = this.searchQuery.trim();
+            if (!query) {
+              this.searchResults = [];
+              return;
+            }
+
+            try {
+              const response = await fetch(
+                `http://localhost:8000/search?q=${encodeURIComponent(query)}`
+              );
+
+              if (!response.ok) {
+                throw new Error("No lessons found");
+              }
+
+              const data = await response.json();
+
+              // Filter the results by subject
+              this.searchResults = data.filter((lesson) =>
+                lesson.subject.toLowerCase().includes(query.toLowerCase())
+              );
+            } catch (error) {
+              console.error("Search error:", error);
+              this.searchResults = [];
+            }
+          },
+
+          async submitOrder() {
+            try {
+              if (!this.isSubmitEnabled) {
+                throw new Error("Please ensure all fields are valid.");
+              }
+
+              const orderData = {
+                orderInfo: {
+                  gift: this.order.gift,
+                  method: this.order.method,
+                  fullName: this.order.fullName,
+                  city: this.order.city,
+                  postCode: this.order.zip, // Fixed field
+                  phoneNum: this.order.phoneNum, // Fixed field
+                },
+                lessonId: this.cart, // Class activity IDs
+              };
+
+              const response = await fetch("http://localhost:8000/order", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(orderData),
+              });
+
+              if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || "Failed to submit order.");
+              }
+
+              const result = await response.json();
+              alert("Order submitted successfully!");
+              window.location.reload();
+            } catch (error) {
+              console.error("Error submitting order:", error);
+              alert(error.message || "Error submitting order.");
+            }
+          },
         },
         computed: {
-          cartItemCount() {
+          cartCount() {
             return this.cart.length;
           },
           DisabledEmptyCart() {
@@ -580,30 +630,39 @@
           sortedLessons() {
             return this.classes.slice().sort((a, b) => {
               let comparison = 0;
-              if (this.sortCriteria === "name") {
-                comparison = a.name.localeCompare(b.name);
+
+              // Sorting based on the selected criteria
+              if (this.sortCriteria === "subject") {
+                comparison = a.name.localeCompare(b.name); // Sorting by name (subject)
+              } else if (this.sortCriteria === "location") {
+                comparison = a.location.localeCompare(b.location);
               } else if (this.sortCriteria === "price") {
                 comparison = a.price - b.price;
               } else if (this.sortCriteria === "slots") {
                 comparison = a.slots - b.slots;
-              } else if (this.sortCriteria === "location") {
-                comparison = a.location.localeCompare(b.location);
               }
+
+              // Return based on sort order (ascending or descending)
               return this.sortOrder === "asc" ? comparison : -comparison;
             });
           },
           isSubmitEnabled() {
-            // Check if both name and phone number fields are valid
-            return this.isNameValid && this.isPhoneValid;
+            return this.isFullNameValid && this.isPhoneValid;
           },
         },
         watch: {
-          // validation firstName and number
-          "order.firstName"(newValue) {
-            this.isNameValid = /^[A-Za-z\s]+$/.test(newValue); // Regex for letters only
+          "order.fullName"(newValue) {
+            this.isFullNameValid = /^[A-Za-z\s]+$/.test(newValue);
           },
-          "order.number"(newValue) {
-            this.isPhoneValid = /^\d{12}$/.test(newValue); //  12-digit number only
+          "order.phoneNum"(newValue) {
+            this.isPhoneValid = /^\d{12}$/.test(newValue);
+          },
+          searchQuery(newQuery) {
+            if (newQuery.trim() === "") {
+              this.searchResults = [];
+            } else {
+              this.performSearch();
+            }
           },
         },
       });
