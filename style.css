@@ -108,7 +108,7 @@ h1 {
 .delete-btn {
   position: absolute;
   right: 10px; /* Align the delete button to the right*/
-  bottom: 50%;
+  bottom: 38%;
   transform: translateY(280%);
   display: none;
 }
