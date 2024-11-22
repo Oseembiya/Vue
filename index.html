@@ -497,7 +497,7 @@
             this.cart = this.cart.filter((itemId) => itemId !== lessonId);
           },
           viewImage(image) {
-            this.selectedImage = `https://localhost:8000/${image}`;
+            this.selectedImage = `https://vueappliaction-env.eba-qkd3evgp.eu-west-2.elasticbeanstalk.com/${image}`;
             const modal = new bootstrap.Modal(
               document.getElementById("imageModal")
             );
@@ -521,7 +521,9 @@
 
             try {
               const response = await fetch(
-                `https://localhost:8000/search?q=${encodeURIComponent(query)}`
+                `https://vueappliaction-env.eba-qkd3evgp.eu-west-2.elasticbeanstalk.com/search?q=${encodeURIComponent(
+                  query
+                )}`
               );
 
               if (!response.ok) {
