@@ -154,7 +154,7 @@
               </button>
 
               <img
-                :src="`https://localhost:8000/${lesson.image}`"
+                :src="`https://vueappliaction-env.eba-qkd3evgp.eu-west-2.elasticbeanstalk.com/${lesson.image}`"
                 style="width: 20rem"
               />
               {{ lesson.subject }}
@@ -384,7 +384,7 @@
           :key="lesson.id"
         >
           <img
-            :src="`http://localhost:8000/${lesson.image}`"
+            :src="`https://vueappliaction-env.eba-qkd3evgp.eu-west-2.elasticbeanstalk.com/${lesson.image}`"
             class="card-img-top"
             alt="lesson image"
             @click="viewImage(lesson.image)"
