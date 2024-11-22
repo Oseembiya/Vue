@@ -154,7 +154,7 @@
               </button>
 
               <img
-                :src="`http://localhost:8000/${lesson.image}`"
+                :src="`https://localhost:8000/${lesson.image}`"
                 style="width: 20rem"
               />
               {{ lesson.subject }}
@@ -497,7 +497,7 @@
             this.cart = this.cart.filter((itemId) => itemId !== lessonId);
           },
           viewImage(image) {
-            this.selectedImage = `http://localhost:8000/${image}`;
+            this.selectedImage = `https://localhost:8000/${image}`;
             const modal = new bootstrap.Modal(
               document.getElementById("imageModal")
             );
@@ -521,7 +521,7 @@
 
             try {
               const response = await fetch(
-                `http://localhost:8000/search?q=${encodeURIComponent(query)}`
+                `https://localhost:8000/search?q=${encodeURIComponent(query)}`
               );
 
               if (!response.ok) {
