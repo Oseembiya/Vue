@@ -559,13 +559,16 @@
                 lessonId: this.cart, // Class activity IDs
               };
 
-              const response = await fetch("http://localhost:8000/order", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(orderData),
-              });
+              const response = await fetch(
+                "https://vueappliaction-env.eba-qkd3evgp.eu-west-2.elasticbeanstalk.com/order",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(orderData),
+                }
+              );
 
               if (!response.ok) {
                 const errorData = await response.json();
