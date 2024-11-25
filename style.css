@@ -194,3 +194,13 @@ h1 {
   position: relative;
   overflow: hidden;
 }
+
+.pagination .page-item.active .page-link {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: white;
+}
+
+.pagination .page-item .page-link {
+  cursor: pointer;
+}
