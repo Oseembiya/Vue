@@ -361,3 +361,309 @@ footer {
     padding-right: 1rem;
   }
 }
+
+/* Additional Responsive Enhancements */
+
+/* Ensure proper spacing on all devices */
+@media (max-width: 992px) {
+  /* Adjust container padding for better spacing */
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  /* Make off-canvas cart more mobile-friendly */
+  .offcanvas {
+    width: 85% !important;
+  }
+
+  /* Improve cart item display */
+  .list-group-item {
+    padding: 1rem 0.5rem;
+  }
+
+  /* Adjust footer column spacing */
+  footer .col-md-4 {
+    padding-bottom: 1.5rem;
+  }
+}
+
+/* Tablet-specific adjustments */
+@media (min-width: 577px) and (max-width: 768px) {
+  /* Adjust card layout for tablets */
+  .lesson-card {
+    margin: 0 0.5rem 1.5rem;
+  }
+
+  /* Improve carousel height for tablets */
+  #carouselExampleIndicators {
+    height: 35vh;
+  }
+
+  /* Adjust form controls on tablets */
+  .form-control,
+  .form-select {
+    font-size: 0.9rem;
+  }
+}
+
+/* Small phones and portrait orientation */
+@media (max-width: 480px) {
+  /* Optimize for very small screens */
+  body {
+    font-size: 0.9rem;
+  }
+
+  /* Make navbar more compact */
+  .navbar {
+    padding: 0.5rem 0;
+  }
+
+  /* Improve cart display on small screens */
+  .offcanvas-body img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Better layout for cart items on small screens */
+  .list-group-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Adjust delete button position for small screens */
+  .delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    transform: none;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+  }
+
+  .list-group-item:hover .delete-btn {
+    display: flex;
+  }
+
+  /* Make carousel smaller on very small screens */
+  #carouselExampleIndicators {
+    height: 25vh;
+  }
+
+  /* Improve form elements on small screens */
+  .form-control,
+  .form-select,
+  .btn {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.75rem;
+  }
+
+  /* Make sorting controls more usable on small screens */
+  .sort-controls {
+    margin-top: 1rem;
+  }
+
+  .sort-controls select {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Landscape orientation for phones */
+@media (max-height: 500px) and (orientation: landscape) {
+  /* Adjust layout for landscape mode */
+  #carouselExampleIndicators {
+    height: 70vh;
+  }
+
+  /* Adjust navbar in landscape */
+  .navbar-brand h1 {
+    font-size: 1rem !important;
+  }
+
+  /* Make cart overlay shorter in landscape */
+  .offcanvas {
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+}
+
+/* Fix for iOS Safari 100vh issue */
+@supports (-webkit-touch-callout: none) {
+  #carouselExampleIndicators {
+    height: 50vh; /* Fallback */
+    height: -webkit-fill-available;
+  }
+
+  .offcanvas {
+    height: 100vh; /* Fallback */
+    height: -webkit-fill-available;
+  }
+}
+
+/* High-density (retina) displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Optimize images for high-density displays */
+  .card-img-top,
+  .carousel-item img {
+    image-rendering: -webkit-optimize-contrast;
+  }
+}
+
+/* Improve cart display */
+.list-group-item {
+  padding: 1.5rem 1rem;
+}
+
+.list-group-item img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .list-group-item img {
+    width: 100% !important;
+    max-width: 300px !important;
+  }
+}
+
+/* Cart Item Styling */
+.cart-item-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cart-image {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+
+.cart-item-details {
+  width: 100%;
+  text-align: center;
+}
+
+@media (min-width: 576px) {
+  .cart-item-content {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .cart-image {
+    width: 150px;
+    max-width: 150px;
+    margin-right: 1rem;
+    margin-bottom: 0;
+  }
+
+  .cart-item-details {
+    text-align: left;
+    flex: 1;
+  }
+}
+
+/* Improved Form Responsiveness */
+.form-control,
+.form-select,
+.btn {
+  width: 100%;
+}
+
+/* Fix for the carousel images on mobile */
+@media (max-width: 576px) {
+  .carousel-item img {
+    width: 100% !important;
+  }
+
+  .sort-controls h1 {
+    font-size: 1.3rem !important;
+    margin-bottom: 1rem;
+  }
+}
+
+/* Responsive meta tag enhancement for proper mobile scaling */
+@viewport {
+  width: device-width;
+  zoom: 1;
+}
+
+/* Checkout Form Styling */
+.checkout-form {
+  padding: 1rem 0;
+}
+
+/* Making form elements more touch-friendly on mobile */
+@media (max-width: 768px) {
+  .form-control,
+  .form-select,
+  .form-check-input,
+  .btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+  }
+
+  .form-check-input {
+    width: 1.2em;
+    height: 1.2em;
+    margin-top: 0.25em;
+  }
+
+  .form-label {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+
+  /* Add spacing between form elements */
+  .mb-3 {
+    margin-bottom: 1.25rem !important;
+  }
+
+  /* Offcanvas improvements for mobile */
+  .offcanvas-body {
+    padding: 1rem;
+  }
+
+  .offcanvas-header {
+    padding: 0.75rem 1rem;
+  }
+
+  /* Improve button sizing for touch */
+  .btn {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Improve visibility of form validation messages */
+.text-danger {
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* Fix for offcanvas on iOS */
+.offcanvas {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Better scrolling in the cart area */
+.offcanvas-body {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
