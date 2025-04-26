@@ -204,3 +204,160 @@ h1 {
 .pagination .page-item .page-link {
   cursor: pointer;
 }
+
+/* Footer Styles */
+footer {
+  margin-top: 4rem;
+}
+
+.footer-heading {
+  font-weight: 600;
+  color: #fff;
+}
+
+.footer-link {
+  color: #adb5bd;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.social-icon {
+  color: #ffffff;
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+}
+
+.social-icon:hover {
+  color: #ff8800;
+}
+
+/* Enhanced Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    margin-top: 4rem;
+  }
+
+  #carouselExampleIndicators {
+    height: 40vh;
+    margin-top: 4rem;
+  }
+
+  .card {
+    width: 100% !important;
+    margin-bottom: 1.5rem;
+  }
+
+  .sort-controls select,
+  .sort-controls label {
+    font-size: 0.9rem;
+  }
+
+  .d-flex.align-items-center.mt-3 {
+    flex-direction: column;
+  }
+
+  .sort-controls select {
+    margin-bottom: 0.5rem;
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar-brand h1 {
+    font-size: 1.2rem !important;
+  }
+
+  .logo {
+    width: 35px;
+  }
+
+  .search-input {
+    width: 180px;
+  }
+
+  #carouselExampleIndicators {
+    height: 30vh;
+  }
+
+  .carousel-item img {
+    height: 30vh;
+  }
+
+  h1 {
+    font-size: 1.5rem !important;
+  }
+
+  .card-img-top {
+    height: 15vh;
+  }
+}
+
+/* Fix for cart modal on small screens */
+@media (max-width: 400px) {
+  .offcanvas {
+    width: 100% !important;
+  }
+
+  .offcanvas-body img {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* Lesson Cards Responsive Grid */
+.lesson-card {
+  width: 18.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.lesson-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 1200px) {
+  #lessonCards {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .lesson-card {
+    width: 22%;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .lesson-card {
+    width: 30%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .lesson-card {
+    width: 45%;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+  .lesson-card {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto 1.5rem;
+  }
+}
+
+@media (max-width: 575px) {
+  .lesson-card {
+    width: 100%;
+  }
+
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
