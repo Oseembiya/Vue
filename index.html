@@ -562,7 +562,7 @@
         },
         created() {
           // Fetching all the lessons from the database
-          fetch("https://myserver-xy36.onrender.com/lessons")
+          fetch("https://myserver-xy36.onrender.com")
             .then((response) => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
