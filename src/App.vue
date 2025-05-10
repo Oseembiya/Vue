@@ -57,9 +57,9 @@ export default {
       searchQuery: "",
       searchResults: [],
       carouselImages: [
-        "/Vue/asset/carousel-1.jpg",
-        "/Vue/asset/carousel-2.jpg",
-        "/Vue/asset/carousel-3.jpg",
+        `${this.apiBaseUrl}/images/carousel-1.jpg`,
+        `${this.apiBaseUrl}/images/carousel-2.jpg`,
+        `${this.apiBaseUrl}/images/carousel-3.jpg`,
       ],
     };
   },

@@ -94,7 +94,7 @@
 
 <script>
 export default {
-  name: "Navbar",
+  name: "MainNavbar",
   props: {
     siteName: {
       type: String,
