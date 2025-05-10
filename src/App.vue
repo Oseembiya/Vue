@@ -26,7 +26,6 @@
       @add-to-cart="addToCart"
       @view-image="viewImage"
     />
-
     <footer-section :site-name="siteName" />
   </div>
 </template>
@@ -37,6 +36,7 @@ import CartCanvas from "./components/CartCanvas.vue";
 import CarouselHero from "./components/CarouselHero.vue";
 import LessonList from "./components/LessonList.vue";
 import FooterSection from "./components/FooterSection.vue";
+import "./styles/style.css"; // Updated import path
 
 export default {
   name: "App",
@@ -185,66 +185,3 @@ export default {
   },
 };
 </script>
-
-<style>
-/* Global styles that apply to the entire app */
-body {
-  font-family: Work Sans, Verdana, Lucida Sans, Helvetica Neue, Arial, Roboto,
-    sans-serif;
-  overflow-x: hidden;
-  margin: 0;
-  padding: 0;
-}
-
-.luckiest-guy-regular {
-  font-family: "Luckiest Guy", cursive;
-  font-weight: 400;
-  font-style: normal;
-}
-
-/* Global responsive styles */
-.container {
-  width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
-}
-
-/* Bootstrap navbar toggle fix */
-.navbar-toggler:focus {
-  box-shadow: none;
-  outline: none;
-}
-
-.navbar-toggler {
-  border: none;
-  padding: 0.5rem;
-}
-
-.navbar-toggler-icon {
-  width: 1.5em;
-  height: 1.5em;
-}
-
-/* Fix for mobile content spacing */
-@media (max-width: 767.98px) {
-  .container {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-  /* Adjust content to account for fixed navbar */
-  body {
-    padding-top: 56px;
-  }
-}
-
-/* Fix for iOS Safari 100vh issue */
-@supports (-webkit-touch-callout: none) {
-  body,
-  html {
-    height: -webkit-fill-available;
-  }
-}
-</style>

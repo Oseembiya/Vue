@@ -1,6 +1,10 @@
+/* Global styles that apply to the entire app */
 body {
   font-family: Work Sans, Verdana, Lucida Sans, Helvetica Neue, Arial, Roboto,
     sans-serif;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 /*site name  margin*/
@@ -117,11 +121,11 @@ h1 {
 }
 
 .container {
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center; /* Center items vertically */
-  margin-top: 6rem;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .card {
@@ -666,4 +670,50 @@ footer {
 .offcanvas-body {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+}
+
+/* Global responsive styles */
+.container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* Bootstrap navbar toggle fix */
+.navbar-toggler:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.navbar-toggler {
+  border: none;
+  padding: 0.5rem;
+}
+
+.navbar-toggler-icon {
+  width: 1.5em;
+  height: 1.5em;
+}
+
+/* Fix for mobile content spacing */
+@media (max-width: 767.98px) {
+  .container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  /* Adjust content to account for fixed navbar */
+  body {
+    padding-top: 56px;
+  }
+}
+
+/* Fix for iOS Safari 100vh issue */
+@supports (-webkit-touch-callout: none) {
+  body,
+  html {
+    height: -webkit-fill-available;
+  }
 }
