@@ -36,7 +36,8 @@ import CartCanvas from "./components/CartCanvas.vue";
 import CarouselHero from "./components/CarouselHero.vue";
 import LessonList from "./components/LessonList.vue";
 import FooterSection from "./components/FooterSection.vue";
-import "./styles/style.css"; // Updated import path
+import "./styles/style.css";
+import apiConfig from "./config/api";
 
 export default {
   name: "App",
@@ -50,8 +51,7 @@ export default {
   data() {
     return {
       siteName: "ParentPay",
-      apiBaseUrl:
-        "https://vueappliaction-env.eba-qkd3evgp.eu-west-2.elasticbeanstalk.com",
+      apiBaseUrl: "https://myserver-xy36.onrender.com",
       lessons: [],
       cart: [],
       searchQuery: "",
