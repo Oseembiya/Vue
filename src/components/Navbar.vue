@@ -3,7 +3,11 @@
     <div class="container-fluid">
       <!-- Logo and Site Name -->
       <div class="navbar-brand d-flex align-items-center" id="fullLogo">
-        <img src="/Vue/asset/logo.jpg" alt="ParentPay Logo" class="logo" />
+        <img
+          :src="require('@/assets/logo.jpg')"
+          alt="ParentPay Logo"
+          class="logo"
+        />
         <h1 class="text-white fs-3 luckiest-guy-regular mb-0">
           {{ siteName }}
         </h1>

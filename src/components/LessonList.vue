@@ -6,7 +6,7 @@
       class="sort-controls text-center mb-4 d-flex flex-column justify-content-center align-items-center"
     >
       <img
-        src="/Vue/asset/logo.jpg"
+        :src="require('@/assets/logo.jpg')"
         alt="ParentPay Logo"
         class="logo align-items-center fs-3 logoCenter"
       />

@@ -51,15 +51,15 @@ export default {
   data() {
     return {
       siteName: "ParentPay",
-      apiBaseUrl: "https://myserver-xy36.onrender.com",
+      apiBaseUrl: apiConfig.apiBaseUrl,
       lessons: [],
       cart: [],
       searchQuery: "",
       searchResults: [],
       carouselImages: [
-        `${this.apiBaseUrl}/images/carousel-1.jpg`,
-        `${this.apiBaseUrl}/images/carousel-2.jpg`,
-        `${this.apiBaseUrl}/images/carousel-3.jpg`,
+        require("@/assets/carousel-1.jpg"),
+        require("@/assets/carousel-2.jpg"),
+        require("@/assets/carousel-3.jpg"),
       ],
     };
   },
