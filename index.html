@@ -153,7 +153,7 @@
 
               <div class="cart-item-content">
                 <img
-                  :src="`https://myserver-xy36.onrender.com/images/${lesson.image}`"
+                  :src="`https://myserver-xy36.onrender.com/${lesson.image}`"
                   alt="Lesson image"
                   class="cart-image"
                 />
@@ -405,7 +405,7 @@
           :key="lesson.id"
         >
           <img
-            :src="`https://myserver-xy36.onrender.com/images/${lesson.image}`"
+            :src="`https://myserver-xy36.onrender.com/${lesson.image}`"
             class="card-img-top"
             alt="lesson image"
             @click="viewImage(lesson.image)"
@@ -596,7 +596,7 @@
             this.cart = this.cart.filter((itemId) => itemId !== lessonId);
           },
           viewImage(image) {
-            this.selectedImage = `https://myserver-xy36.onrender.com/images/${image}`;
+            this.selectedImage = `https://myserver-xy36.onrender.com/${image}`;
             const modal = new bootstrap.Modal(
               document.getElementById("imageModal")
             );
