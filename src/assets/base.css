@@ -1,10 +1,14 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
+  --color-background: #f0f0f0;
+  --color-text: #2c3e50;
+  --color-primary: #007bff;
+  --color-secondary: #6c757d;
+  --color-accent: #f8f9fa;
+  --color-error: #dc3545;
 }
 
-*,
-*::before,
-*::after {
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;

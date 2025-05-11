@@ -2,11 +2,7 @@
   <div>
     <!-- Sorting Controls -->
     <div id="classes" class="sort-controls">
-      <img
-        :src="require('@/assets/logo.jpg')"
-        alt="ParentPay Logo"
-        class="logo logo-center"
-      />
+      <img :src="logoUrl" alt="ParentPay Logo" class="logo logo-center" />
 
       <h1 class="section-title">Stay Active with Our Class Activities</h1>
 
@@ -43,6 +39,7 @@
 
 <script>
 import LessonCard from "./LessonCard.vue";
+import logoImage from "@/assets/logo.jpg";
 
 export default {
   name: "LessonList",
@@ -70,6 +67,7 @@ export default {
   },
   data() {
     return {
+      logoUrl: logoImage,
       sortCriteria: "subject",
       sortOrder: "asc",
     };

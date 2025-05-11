@@ -7,12 +7,7 @@
   >
     <div class="canvas-header">
       <h5 class="canvas-title" id="cartCanvasLabel">Your Cart</h5>
-      <button
-        type="button"
-        class="close-button"
-        data-bs-dismiss="offcanvas"
-        aria-label="Close"
-      ></button>
+      <button type="button" class="close-button" aria-label="Close"></button>
     </div>
     <div class="canvas-body">
       <!-- Display Cart Items or "Cart is empty" message -->

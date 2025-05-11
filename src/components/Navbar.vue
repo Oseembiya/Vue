@@ -3,11 +3,7 @@
     <div class="container">
       <!-- Logo and Site Name -->
       <div class="navbar-brand" id="fullLogo">
-        <img
-          :src="require('@/assets/logo.jpg')"
-          alt="ParentPay Logo"
-          class="logo"
-        />
+        <img :src="logoUrl" alt="ParentPay Logo" class="logo" />
         <h1 class="site-name">
           {{ siteName }}
         </h1>
@@ -36,12 +32,7 @@
         <!-- Navbar links -->
         <ul class="nav-links">
           <li class="nav-item">
-            <a
-              class="nav-link"
-              aria-current="page"
-              href="#carouselExampleIndicators"
-              >Home</a
-            >
+            <a class="nav-link" aria-current="page" href="#carousel">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#classes">Classes</a>
@@ -81,6 +72,8 @@
 </template>
 
 <script>
+import logoImage from "@/assets/logo.jpg";
+
 export default {
   name: "MainNavbar",
   props: {
@@ -99,6 +92,7 @@ export default {
   },
   data() {
     return {
+      logoUrl: logoImage,
       searchQuery: "",
       mobileMenuOpen: false,
       dropdownOpen: false,
