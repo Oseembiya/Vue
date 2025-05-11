@@ -1,7 +1,7 @@
 import "./assets/main.css";
 
-// Use the production build of Vue
-import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.prod.js";
+// Use the production build of Vue from node_modules
+import { createApp } from "vue";
 import App from "./App.vue";
 
 createApp(App).mount("#app");
