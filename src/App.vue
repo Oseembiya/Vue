@@ -63,7 +63,7 @@ export default {
   data() {
     return {
       siteName: "ParentPay",
-      apiBaseUrl: "https://myserver-xy36.onrender.com",
+      apiBaseUrl: import.meta.env.GITHUB_URL,
       cartItems: [],
       lessons: [],
       searchResults: [],
