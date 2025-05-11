@@ -1,32 +1,31 @@
 <template>
-  <div class="card mb-4 mx-2 position-relative lesson-card">
+  <div class="lesson-card">
     <img
       :src="`${apiBaseUrl}/${lesson.image}`"
-      class="card-img-top"
+      class="card-image"
       alt="lesson image"
       @click="viewImage"
-      style="cursor: pointer"
     />
 
-    <div class="card-body">
-      <h6 class="card-title fw-bold">{{ lesson.subject }}</h6>
-      <p class="cart-text mb-1">Location: {{ lesson.location }}</p>
-      <p class="card-text mb-1">Space: {{ lesson.slots }}</p>
+    <div class="card-content">
+      <h6 class="card-title">{{ lesson.subject }}</h6>
+      <p class="card-text">Location: {{ lesson.location }}</p>
+      <p class="card-text">Space: {{ lesson.slots }}</p>
       <p class="card-text">Price: £{{ lesson.price }}</p>
-      <div class="d-flex justify-content-between align-items-center mt-2">
+      <div class="card-actions">
         <button
-          class="btn btn-primary"
+          class="add-button"
           @click="addToCart"
           :disabled="lesson.slots <= 0"
         >
           Add to Cart
         </button>
         <span
-          class="badge"
+          class="status-badge"
           :class="{
-            'bg-danger': lesson.slots === 0,
-            'bg-warning': lesson.slots < 5,
-            'bg-success': lesson.slots >= 5,
+            'sold-out': lesson.slots === 0,
+            'low-stock': lesson.slots < 5,
+            'in-stock': lesson.slots >= 5,
           }"
         >
           <span v-if="lesson.slots === 0">All Out!</span>
@@ -37,17 +36,17 @@
         </span>
       </div>
       <!-- Display the rating as stars -->
-      <div class="mt-2">
+      <div class="rating">
         <span
           v-for="(star, index) in lesson.rating"
           :key="`filled-${index}`"
-          class="text-warning"
+          class="star filled"
           >★</span
         >
         <span
           v-for="(star, index) in 5 - lesson.rating"
           :key="`empty-${index}`"
-          class="text-muted"
+          class="star empty"
           >☆</span
         >
       </div>
@@ -89,6 +88,13 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+  background-color: white;
 }
 
 .lesson-card:hover {
@@ -96,42 +102,112 @@ export default {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-.card-body {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.card-body .mt-2:last-child {
-  margin-top: auto !important;
-}
-
-.card-img-top {
+.card-image {
   width: 100%;
   height: 20vh;
   object-fit: cover;
   transition: transform 0.2s;
+  cursor: pointer;
 }
 
-.card-img-top:hover {
+.card-image:hover {
   transform: scale(1.05);
+}
+
+.card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.card-title {
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.card-text {
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.add-button {
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.add-button:hover {
+  background-color: #0b5ed7;
+}
+
+.add-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.status-badge {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  color: white;
+}
+
+.status-badge.sold-out {
+  background-color: #dc3545;
+}
+
+.status-badge.low-stock {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.status-badge.in-stock {
+  background-color: #198754;
+}
+
+.rating {
+  margin-top: 0.5rem;
+  margin-top: auto;
+}
+
+.star {
+  font-size: 1.2rem;
+}
+
+.star.filled {
+  color: #ffc107;
+}
+
+.star.empty {
+  color: #6c757d;
 }
 
 /* Improved touch targets for mobile */
 @media (max-width: 767px) {
-  .btn-primary {
+  .add-button {
     padding: 0.5rem 0.75rem;
     font-size: 0.9rem;
     min-height: 44px; /* Better for touch */
   }
-
-  .card-title {
-    font-size: 1rem;
-  }
 }
 
 @media (max-width: 576px) {
-  .card-img-top {
+  .card-image {
     height: 15vh;
   }
 
@@ -175,17 +251,9 @@ export default {
   }
 }
 
-/* Equal height cards in each row */
-@media (min-width: 768px) {
-  .lesson-card {
-    margin-bottom: 2rem;
-  }
-}
-
 /* Fix star rating display on small screens */
 @media (max-width: 320px) {
-  .text-warning,
-  .text-muted {
+  .star {
     font-size: 0.9rem;
   }
 }

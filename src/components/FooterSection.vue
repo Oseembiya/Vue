@@ -1,21 +1,21 @@
 <template>
-  <footer class="bg-dark text-white py-4 mt-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4 mb-4 mb-md-0">
-          <h5 class="mb-3 footer-heading">{{ siteName }}</h5>
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-row">
+        <div class="footer-column">
+          <h5 class="footer-heading">{{ siteName }}</h5>
           <p>
             Connecting parents with the best school activities for their
             children. Pay with confidence, learn with joy.
           </p>
-          <div class="d-flex mt-3">
-            <a href="#" class="me-3 social-icon"
+          <div class="social-icons">
+            <a href="#" class="social-icon"
               ><i class="fa-brands fa-facebook-f"></i
             ></a>
-            <a href="#" class="me-3 social-icon"
+            <a href="#" class="social-icon"
               ><i class="fa-brands fa-twitter"></i
             ></a>
-            <a href="#" class="me-3 social-icon"
+            <a href="#" class="social-icon"
               ><i class="fa-brands fa-instagram"></i
             ></a>
             <a href="#" class="social-icon"
@@ -23,47 +23,46 @@
             ></a>
           </div>
         </div>
-        <div class="col-md-4 mb-4 mb-md-0">
-          <h5 class="mb-3 footer-heading">Quick Links</h5>
-          <ul class="list-unstyled">
-            <li class="mb-2"><a href="#" class="footer-link">About Us</a></li>
-            <li class="mb-2">
+        <div class="footer-column">
+          <h5 class="footer-heading">Quick Links</h5>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link">About Us</a></li>
+            <li>
               <a href="#" class="footer-link">Terms of Service</a>
             </li>
-            <li class="mb-2">
+            <li>
               <a href="#" class="footer-link">Privacy Policy</a>
             </li>
-            <li class="mb-2">
+            <li>
               <a href="#" class="footer-link">Contact Support</a>
             </li>
           </ul>
         </div>
-        <div class="col-md-4">
-          <h5 class="mb-3 footer-heading">Contact Us</h5>
-          <ul class="list-unstyled">
-            <li class="mb-2">
-              <i class="fa-solid fa-location-dot me-2"></i> 123 Education St,
-              London, UK
+        <div class="footer-column">
+          <h5 class="footer-heading">Contact Us</h5>
+          <ul class="footer-links">
+            <li>
+              <i class="fa-solid fa-location-dot icon-space"></i> 123 Education
+              St, London, UK
             </li>
-            <li class="mb-2">
-              <i class="fa-solid fa-phone me-2"></i> +44 7855 464 55 755
+            <li>
+              <i class="fa-solid fa-phone icon-space"></i> +44 7855 464 55 755
             </li>
-            <li class="mb-2">
-              <i class="fa-solid fa-envelope me-2"></i> support@parentpay.com
+            <li>
+              <i class="fa-solid fa-envelope icon-space"></i>
+              support@parentpay.com
             </li>
           </ul>
         </div>
       </div>
-      <hr class="my-4" />
-      <div class="row">
-        <div class="col-md-6 text-center text-md-start">
-          <p class="mb-0">
-            &copy; {{ currentYear }} {{ siteName }}. All rights reserved.
-          </p>
+      <hr class="footer-divider" />
+      <div class="footer-bottom">
+        <div class="copyright">
+          <p>&copy; {{ currentYear }} {{ siteName }}. All rights reserved.</p>
         </div>
-        <div class="col-md-6 text-center text-md-end">
-          <p class="mb-0">
-            Designed with <i class="fa-solid fa-heart text-danger"></i> for
+        <div class="credits">
+          <p>
+            Designed with <i class="fa-solid fa-heart heart-icon"></i> for
             education
           </p>
         </div>
@@ -90,13 +89,48 @@ export default {
 </script>
 
 <style scoped>
-footer {
-  margin-top: 4rem;
+.footer {
+  background-color: #212529;
+  color: #ffffff;
+  padding: 2rem 0;
+  margin-top: 5rem;
+}
+
+.footer-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.footer-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.footer-column {
+  flex: 1;
+  padding: 0 1rem;
+  margin-bottom: 2rem;
+  min-width: 250px;
 }
 
 .footer-heading {
   font-weight: 600;
   color: #fff;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.5rem;
 }
 
 .footer-link {
@@ -110,6 +144,11 @@ footer {
   text-decoration: underline;
 }
 
+.social-icons {
+  display: flex;
+  margin-top: 1rem;
+}
+
 .social-icon {
   color: #ffffff;
   font-size: 1.2rem;
@@ -119,23 +158,55 @@ footer {
   justify-content: center;
   width: 36px;
   height: 36px;
+  margin-right: 1rem;
 }
 
 .social-icon:hover {
   color: #ff8800;
 }
 
-/* Improved spacing for footer on different devices */
+.icon-space {
+  margin-right: 0.5rem;
+}
+
+.footer-divider {
+  border: 0;
+  border-top: 1px solid #495057;
+  margin: 1.5rem 0;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.copyright,
+.credits {
+  margin-bottom: 1rem;
+}
+
+.heart-icon {
+  color: #dc3545;
+}
+
 @media (max-width: 992px) {
-  footer .col-md-4 {
-    padding-bottom: 1.5rem;
+  .footer-column {
+    flex: 1 0 calc(50% - 2rem);
   }
 }
 
-/* Better touch targets on mobile */
 @media (max-width: 768px) {
-  footer {
+  .footer {
     text-align: center;
+  }
+
+  .footer-column {
+    flex: 1 0 100%;
+  }
+
+  .social-icons {
+    justify-content: center;
   }
 
   .social-icon {
@@ -149,39 +220,31 @@ footer {
     padding: 6px 0;
   }
 
-  footer ul.list-unstyled li {
+  .footer-links li {
     margin-bottom: 0.5rem;
   }
 
-  .d-flex.mt-3 {
-    justify-content: center;
+  .footer-bottom {
+    flex-direction: column;
+    align-items: center;
   }
 }
 
-/* Small mobile devices */
 @media (max-width: 480px) {
-  footer {
+  .footer {
     margin-top: 3rem;
-    padding-top: 2rem !important;
-    padding-bottom: 2rem !important;
+    padding: 2rem 0;
   }
 
   .footer-heading {
     font-size: 1.1rem;
   }
 
-  footer .container {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  .my-4 {
-    margin-top: 1.5rem !important;
-    margin-bottom: 1.5rem !important;
+  .footer-divider {
+    margin: 1rem 0;
   }
 }
 
-/* Extra small devices */
 @media (max-width: 320px) {
   .social-icon {
     width: 36px;
@@ -189,7 +252,7 @@ footer {
     font-size: 1.2rem;
   }
 
-  footer {
+  .footer {
     font-size: 0.9rem;
   }
 }

@@ -1,42 +1,30 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-    <div class="container-fluid">
+  <nav class="navbar fixed-top">
+    <div class="container">
       <!-- Logo and Site Name -->
-      <div class="navbar-brand d-flex align-items-center" id="fullLogo">
+      <div class="navbar-brand" id="fullLogo">
         <img
           :src="require('@/assets/logo.jpg')"
           alt="ParentPay Logo"
           class="logo"
         />
-        <h1 class="text-white fs-3 luckiest-guy-regular mb-0">
+        <h1 class="site-name">
           {{ siteName }}
         </h1>
       </div>
 
       <!-- Mobile toggle button -->
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarContent"
-        aria-controls="navbarContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
+      <button class="nav-toggler" type="button" @click="toggleMobileMenu">
+        <span class="toggler-icon"></span>
       </button>
 
       <!-- Combined navigation elements -->
-      <div class="collapse navbar-collapse" id="navbarContent">
+      <div class="nav-content" :class="{ show: mobileMenuOpen }">
         <!-- Search Bar -->
-        <form
-          class="position-relative d-flex mb-2 mb-lg-0 mt-2 mt-lg-0 mx-lg-3"
-          role="search"
-          @submit.prevent="search"
-        >
+        <form class="search-form" role="search" @submit.prevent="search">
           <input
             v-model="searchQuery"
-            class="form-control search-input ps-3"
+            class="search-input"
             id="search"
             type="search"
             placeholder="Search lessons"
@@ -46,31 +34,27 @@
         </form>
 
         <!-- Navbar links -->
-        <ul class="navbar-nav ms-lg-4 mb-2 mb-lg-0">
+        <ul class="nav-links">
           <li class="nav-item">
             <a
-              class="nav-link text-white"
+              class="nav-link"
               aria-current="page"
               href="#carouselExampleIndicators"
               >Home</a
             >
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" href="#classes">Classes</a>
+            <a class="nav-link" href="#classes">Classes</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" href="#contact">Contact Us</a>
+            <a class="nav-link" href="#contact">Contact Us</a>
           </li>
 
           <li class="nav-item dropdown">
-            <button
-              class="btn btn-outline-light dropdown-toggle no-border"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
+            <button class="dropdown-toggle" @click="toggleDropdown">
               24/7 Help
             </button>
-            <ul class="dropdown-menu dropdown-menu-secondary mt-3">
+            <ul class="dropdown-menu" :class="{ show: dropdownOpen }">
               <li class="dropdown-item">Office line: 07855 464 55 755</li>
               <li>
                 <a class="dropdown-item" href="https://mail.google.com"
@@ -84,11 +68,11 @@
         <!-- Cart button -->
         <button
           type="button"
-          class="btn btn-outline-light cart-button ms-lg-auto mt-2 mt-lg-0"
+          class="cart-button"
           @click="toggleCart"
           :disabled="cartIsEmpty"
         >
-          <i class="fa-solid fa-cart-shopping orange fs-5"></i> Cart
+          <i class="fa-solid fa-cart-shopping orange"></i> Cart
           {{ cartCount }}
         </button>
       </div>
@@ -116,6 +100,8 @@ export default {
   data() {
     return {
       searchQuery: "",
+      mobileMenuOpen: false,
+      dropdownOpen: false,
     };
   },
   methods: {
@@ -124,6 +110,12 @@ export default {
     },
     toggleCart() {
       this.$emit("toggle-cart");
+    },
+    toggleMobileMenu() {
+      this.mobileMenuOpen = !this.mobileMenuOpen;
+    },
+    toggleDropdown() {
+      this.dropdownOpen = !this.dropdownOpen;
     },
   },
   watch: {
@@ -137,12 +129,46 @@ export default {
 </script>
 
 <style scoped>
+/* Navbar Styling */
+.navbar {
+  background-color: #0d6efd;
+  padding: 0.5rem 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.site-name {
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 0;
+  font-family: "Luckiest Guy", cursive;
+}
+
 .logo {
   width: 45px;
   height: auto;
   border-radius: 50%;
   object-fit: cover;
   animation: spin 4s linear infinite;
+  margin-right: 10px;
 }
 
 @keyframes spin {
@@ -154,23 +180,25 @@ export default {
   }
 }
 
-.orange {
-  color: #ff8800;
+/* Navigation Content */
+.nav-content {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
 }
 
-.no-border {
-  border: none;
-}
-
-.no-border:hover,
-.no-border:active,
-.no-border:focus {
-  background-color: transparent !important;
-  color: #ffffff;
+/* Search Form */
+.search-form {
+  position: relative;
+  display: flex;
+  margin: 0 1rem;
 }
 
 .search-input {
-  padding-right: 35px;
+  padding: 0.5rem 2rem 0.5rem 0.75rem;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  width: 200px;
 }
 
 .search-icon {
@@ -182,61 +210,183 @@ export default {
   cursor: pointer;
 }
 
-/* Enhanced mobile navbar styles */
-.navbar {
-  padding: 0.5rem 1rem;
+/* Navigation Links */
+.nav-links {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.navbar-toggler {
-  z-index: 100;
+.nav-item {
+  margin: 0 10px;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 0;
+  display: block;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+/* Dropdown */
+.dropdown {
   position: relative;
 }
 
-.navbar-toggler:focus {
-  outline: none;
+.dropdown-toggle {
+  background: transparent;
+  color: white;
+  border: 1px solid white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-/* Improved mobile menu animation */
-.navbar-collapse {
-  transition: all 0.3s ease-in-out;
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  min-width: 200px;
+  z-index: 1001;
+  list-style: none;
+  padding: 0.5rem 0;
 }
 
-/* Prevent content shift when toggling mobile menu */
-@media (max-width: 991.98px) {
-  .navbar-collapse {
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-item {
+  padding: 0.5rem 1rem;
+  color: #333;
+}
+
+a.dropdown-item {
+  display: block;
+  text-decoration: none;
+}
+
+a.dropdown-item:hover {
+  background-color: #f8f9fa;
+}
+
+/* Cart Button */
+.cart-button {
+  background: transparent;
+  color: white;
+  border: 1px solid white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.cart-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.orange {
+  color: #ff8800;
+  font-size: 1.25rem;
+}
+
+/* Toggle Button for Mobile */
+.nav-toggler {
+  display: none;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Mobile Styles */
+@media (max-width: 991px) {
+  .nav-toggler {
+    display: block;
+    z-index: 100;
+  }
+
+  .toggler-icon {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px;
+    background-color: white;
+    position: relative;
+  }
+
+  .toggler-icon::before,
+  .toggler-icon::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    left: 0;
+  }
+
+  .toggler-icon::before {
+    top: -8px;
+  }
+
+  .toggler-icon::after {
+    bottom: -8px;
+  }
+
+  .nav-content {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
     position: absolute;
     top: 56px;
     left: 0;
     right: 0;
     background-color: #0d6efd;
     padding: 1rem;
-    z-index: 99;
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
   }
 
-  .navbar-nav {
-    padding-top: 0.5rem;
+  .nav-content.show {
+    display: flex;
   }
 
-  .navbar-nav .nav-item {
-    margin-bottom: 0.5rem;
+  .search-form {
+    width: 100%;
+    margin: 1rem 0;
   }
 
   .search-input {
     width: 100%;
   }
 
-  .navbar-brand h1 {
-    font-size: 1.2rem !important;
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav-item {
+    margin: 0.5rem 0;
   }
 
   .cart-button {
-    margin-top: 0.75rem !important;
+    margin: 1rem 0 0 0;
     width: 100%;
-    text-align: center;
   }
 }
 
+/* Small screens */
 @media (max-width: 576px) {
   .navbar-brand h1 {
     font-size: 1.2rem !important;
@@ -246,18 +396,8 @@ export default {
     width: 35px;
   }
 
-  .search-input {
-    width: 100%;
-  }
-
-  /* Make navbar more compact on very small screens */
   .navbar {
     padding: 0.4rem 0.75rem;
-  }
-
-  /* Adjust logo position */
-  #fullLogo {
-    margin-left: 0;
   }
 }
 

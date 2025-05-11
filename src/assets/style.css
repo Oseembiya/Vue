@@ -1,11 +1,3 @@
-/* Global styles that apply to the entire app */
-body {
-  font-family: Work Sans, Verdana, Lucida Sans, Helvetica Neue, Arial, Roboto,
-    sans-serif;
-  overflow-x: hidden;
-  margin: 0;
-  padding: 0;
-}
 
 /*site name  margin*/
 @media (min-width: 1024px) {

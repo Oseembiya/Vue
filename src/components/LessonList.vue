@@ -1,39 +1,26 @@
 <template>
   <div>
     <!-- Sorting Controls -->
-    <div
-      id="classes"
-      class="sort-controls text-center mb-4 d-flex flex-column justify-content-center align-items-center"
-    >
+    <div id="classes" class="sort-controls">
       <img
         :src="require('@/assets/logo.jpg')"
         alt="ParentPay Logo"
-        class="logo align-items-center fs-3 logoCenter"
+        class="logo logo-center"
       />
 
-      <h1 class="text-center fw-bold mt-3">
-        Stay Active with Our Class Activities
-      </h1>
+      <h1 class="section-title">Stay Active with Our Class Activities</h1>
 
-      <div class="d-flex align-items-center mt-3">
-        <label for="sortCriteria" class="me-2 fw-bold">Sort by:</label>
-        <select
-          id="sortCriteria"
-          class="form-select w-auto me-3 pe-5"
-          v-model="sortCriteria"
-        >
+      <div class="sort-options">
+        <label for="sortCriteria" class="sort-label">Sort by:</label>
+        <select id="sortCriteria" class="sort-select" v-model="sortCriteria">
           <option value="subject">Subject</option>
           <option value="location">Location</option>
           <option value="price">Price</option>
           <option value="slots">Spaces</option>
         </select>
 
-        <label for="sortOrder" class="me-2 fw-bold">Order:</label>
-        <select
-          id="sortOrder"
-          class="form-select w-auto pe-5"
-          v-model="sortOrder"
-        >
+        <label for="sortOrder" class="sort-label">Order:</label>
+        <select id="sortOrder" class="sort-select" v-model="sortOrder">
           <option value="asc">Ascending</option>
           <option value="desc">Descending</option>
         </select>
@@ -41,10 +28,7 @@
     </div>
 
     <!-- List of lessons -->
-    <div
-      class="container d-flex flex-wrap justify-content-around align-items-start pt-3 mt-2"
-      id="lessonCards"
-    >
+    <div class="lesson-container" id="lessonCards">
       <lesson-card
         v-for="lesson in displayedLessons"
         :key="lesson.id"
@@ -136,7 +120,7 @@ export default {
   animation: spin 4s linear infinite;
 }
 
-.logoCenter {
+.logo-center {
   height: auto;
   width: 100px;
 }
@@ -153,32 +137,59 @@ export default {
 /* sorting controls */
 .sort-controls {
   margin-top: 2rem;
+  margin-bottom: 1.5rem;
   padding: 0 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.sort-controls select {
+.section-title {
+  font-weight: bold;
+  margin-top: 0.75rem;
+  text-align: center;
+}
+
+.sort-options {
+  display: flex;
+  align-items: center;
+  margin-top: 0.75rem;
+}
+
+.sort-select {
   font-size: 1rem;
   padding: 0.375rem 1rem;
   border-radius: 0.25rem;
-  min-height: 44px; /* Better for touch */
+  min-height: 44px;
+  border: 1px solid #ced4da;
+  margin-right: 1rem;
+  padding-right: 2rem;
+  width: auto;
+  background-color: white;
 }
 
-.sort-controls label {
+.sort-label {
   font-size: 1.1rem;
   color: #333;
+  font-weight: bold;
+  margin-right: 0.5rem;
 }
 
-#lessonCards {
+.lesson-container {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
   padding: 1rem;
+  padding-top: 0.75rem;
+  margin-top: 0.5rem;
 }
 
 /* Responsive grid layout */
 @media (min-width: 1200px) {
-  #lessonCards {
+  .lesson-container {
     max-width: 1200px;
     margin: 0 auto;
     grid-template-columns: repeat(4, 1fr);
@@ -186,62 +197,62 @@ export default {
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
-  #lessonCards {
+  .lesson-container {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
-  #lessonCards {
+  .lesson-container {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 767px) {
-  #lessonCards {
+  .lesson-container {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   }
 
-  .d-flex.align-items-center.mt-3 {
+  .sort-options {
     flex-direction: column;
     width: 100%;
   }
 
-  .sort-controls select {
+  .sort-select {
     margin-bottom: 0.75rem;
     width: 100% !important;
     padding: 0.5rem 0.75rem;
   }
 
-  .sort-controls label {
+  .sort-label {
     margin-bottom: 0.25rem;
     width: 100%;
     text-align: left;
   }
 
-  .sort-controls h1 {
-    font-size: 1.5rem !important;
+  .section-title {
+    font-size: 1.5rem;
     margin-bottom: 1.25rem;
   }
 
-  .logoCenter {
+  .logo-center {
     width: 80px;
     margin-bottom: 0.5rem;
   }
 }
 
 @media (max-width: 576px) {
-  .sort-controls h1 {
-    font-size: 1.3rem !important;
+  .section-title {
+    font-size: 1.3rem;
     margin-bottom: 1rem;
     padding: 0 0.5rem;
   }
 
-  .logoCenter {
+  .logo-center {
     width: 70px;
   }
 
-  #lessonCards {
+  .lesson-container {
     padding: 0.5rem;
     gap: 1rem;
   }
@@ -253,11 +264,11 @@ export default {
     padding: 0 0.5rem;
   }
 
-  .sort-controls h1 {
-    font-size: 1.2rem !important;
+  .section-title {
+    font-size: 1.2rem;
   }
 
-  .sort-controls select {
+  .sort-select {
     font-size: 0.9rem;
   }
 }

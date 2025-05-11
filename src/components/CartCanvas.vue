@@ -1,32 +1,30 @@
 <template>
   <div
-    class="offcanvas offcanvas-end"
+    class="cart-canvas"
     tabindex="-1"
     id="cartCanvas"
     aria-labelledby="cartCanvasLabel"
   >
-    <div class="offcanvas-header">
-      <h5 class="text-secondary fs-4 fw-bold" id="cartCanvasLabel">
-        Your Cart
-      </h5>
+    <div class="canvas-header">
+      <h5 class="canvas-title" id="cartCanvasLabel">Your Cart</h5>
       <button
         type="button"
-        class="btn-close"
+        class="close-button"
         data-bs-dismiss="offcanvas"
         aria-label="Close"
       ></button>
     </div>
-    <div class="offcanvas-body">
+    <div class="canvas-body">
       <!-- Display Cart Items or "Cart is empty" message -->
-      <ul class="list-group mb-4" v-if="cartItems.length > 0">
+      <ul class="cart-list" v-if="cartItems.length > 0">
         <li
           v-for="(lesson, index) in cartItems"
           :key="lesson.id + '-' + index"
-          class="list-group-item"
+          class="cart-item"
         >
           <!-- Delete button placed on the left -->
-          <button class="btn delete-btn" @click="removeItem(lesson.id)">
-            <i class="fa-solid fa-trash-can text-danger fs-4"></i>
+          <button class="delete-btn" @click="removeItem(lesson.id)">
+            <i class="fa-solid fa-trash-can delete-icon"></i>
           </button>
 
           <div class="cart-item-content">
@@ -36,77 +34,79 @@
               class="cart-image"
             />
             <div class="cart-item-details">
-              <h6 class="fw-bold mb-1">{{ lesson.subject }}</h6>
-              <p class="mb-1">
+              <h6 class="item-title">{{ lesson.subject }}</h6>
+              <p class="item-info">
                 <small>Location: {{ lesson.location }}</small>
               </p>
-              <p class="mb-1">
+              <p class="item-info">
                 <small>Price: £{{ lesson.price }}</small>
               </p>
-              <p class="mb-0">
+              <p class="item-info">
                 <small>Quantity: {{ getItemCount(lesson.id) }}</small>
               </p>
             </div>
           </div>
         </li>
       </ul>
-      <p v-else class="text-center">
+      <p v-else class="empty-cart-message">
         Your cart is empty. <br /><i
-          class="fa-solid fa-cart-shopping orange fs-1 mt-lg-5"
+          class="fa-solid fa-cart-shopping orange cart-icon"
         ></i>
       </p>
 
       <!-- Checkout Form -->
       <div v-if="cartItems.length > 0" class="checkout-form">
-        <h5 class="mb-3 text-center text-md-start">Order Information</h5>
+        <h5 class="form-title">Order Information</h5>
         <form @submit.prevent="submitOrder">
           <!-- Gift Checkbox -->
-          <div class="mb-3">
-            <div class="form-check">
+          <div class="form-group">
+            <div class="checkbox-field">
               <input
                 type="checkbox"
-                class="form-check-input"
+                class="form-checkbox"
                 id="gift"
                 value="true"
                 v-model="orderInfo.gift"
               />
-              <label class="form-check-label" for="gift">Ship As Gift?</label>
+              <label class="checkbox-label" for="gift">Ship As Gift?</label>
             </div>
           </div>
 
           <!-- Shipping Method Radio Buttons -->
-          <div class="mb-3">
-            <label class="d-block mb-2">Shipping Method:</label>
-            <div class="form-check form-check-inline">
-              <input
-                type="radio"
-                class="form-check-input"
-                id="home"
-                name="shippingMethod"
-                value="Home"
-                v-model="orderInfo.method"
-              />
-              <label class="form-check-label" for="home">Home</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                type="radio"
-                class="form-check-input"
-                id="business"
-                name="shippingMethod"
-                value="Business"
-                v-model="orderInfo.method"
-              />
-              <label class="form-check-label" for="business">Business</label>
+          <div class="form-group">
+            <label class="radio-group-label">Shipping Method:</label>
+            <div class="radio-options">
+              <div class="radio-field">
+                <input
+                  type="radio"
+                  class="form-radio"
+                  id="home"
+                  name="shippingMethod"
+                  value="Home"
+                  v-model="orderInfo.method"
+                />
+                <label class="radio-label" for="home">Home</label>
+              </div>
+              <div class="radio-field">
+                <input
+                  type="radio"
+                  class="form-radio"
+                  id="business"
+                  name="shippingMethod"
+                  value="Business"
+                  v-model="orderInfo.method"
+                />
+                <label class="radio-label" for="business">Business</label>
+              </div>
             </div>
           </div>
 
           <!-- Personal Details Inputs -->
-          <div class="mb-3">
+          <div class="form-group">
             <label for="fullName" class="form-label">Full Name</label>
             <input
               type="text"
-              class="form-control"
+              class="form-input"
               id="fullName"
               v-model="orderInfo.fullName"
               @input="validateFullName"
@@ -114,12 +114,12 @@
             />
             <small
               v-if="!isFullNameValid && orderInfo.fullName"
-              class="text-danger"
+              class="error-message"
             >
               Full Name must contain letters only.
             </small>
           </div>
-          <div class="mb-3">
+          <div class="form-group">
             <label for="city" class="form-label">City</label>
             <select
               v-model="orderInfo.city"
@@ -133,21 +133,21 @@
               </option>
             </select>
           </div>
-          <div class="mb-3">
+          <div class="form-group">
             <label for="postCode" class="form-label">PostCode</label>
             <input
               type="text"
-              class="form-control"
+              class="form-input"
               id="postCode"
               v-model="orderInfo.postCode"
               required
             />
           </div>
-          <div class="mb-3">
+          <div class="form-group">
             <label for="num" class="form-label">Phone Number</label>
             <input
               type="text"
-              class="form-control"
+              class="form-input"
               id="num"
               v-model="orderInfo.phoneNum"
               @input="validatePhone"
@@ -155,16 +155,16 @@
             />
             <small
               v-if="!isPhoneValid && orderInfo.phoneNum"
-              class="text-danger"
+              class="error-message"
             >
               Phone must be number only & 12 digits.
             </small>
           </div>
           <!-- Submit Button -->
-          <div class="text-center">
+          <div class="submit-container">
             <button
               type="submit"
-              class="btn btn-success"
+              class="submit-button"
               :disabled="!isSubmitEnabled"
             >
               Place Order
@@ -241,12 +241,93 @@ export default {
 </script>
 
 <style scoped>
-.orange {
-  color: #ff8800;
+.cart-canvas {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 400px;
+  max-width: 100%;
+  background-color: white;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  visibility: hidden;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
 }
 
-.checkout-form {
-  padding: 1rem 0;
+.cart-canvas.show {
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.canvas-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.canvas-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #6c757d;
+}
+
+.close-button {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  position: relative;
+}
+
+.close-button::before,
+.close-button::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 2px;
+  background-color: #000;
+  top: 14px;
+  left: 5px;
+}
+
+.close-button::before {
+  transform: rotate(45deg);
+}
+
+.close-button::after {
+  transform: rotate(-45deg);
+}
+
+.canvas-body {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.cart-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+}
+
+.cart-item {
+  position: relative;
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.cart-item:last-child {
+  border-bottom: none;
 }
 
 .delete-btn {
@@ -255,10 +336,19 @@ export default {
   bottom: 38%;
   transform: translateY(280%);
   display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
 }
 
-.list-group-item:hover .delete-btn {
+.cart-item:hover .delete-btn {
   display: inline-block;
+}
+
+.delete-icon {
+  color: #dc3545;
+  font-size: 1.25rem;
 }
 
 .cart-item-content {
@@ -282,10 +372,128 @@ export default {
   text-align: center;
 }
 
-/* Responsive offcanvas sizing */
+.item-title {
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.item-info {
+  margin-bottom: 0.25rem;
+}
+
+.empty-cart-message {
+  text-align: center;
+}
+
+.cart-icon {
+  color: #ff8800;
+  font-size: 2rem;
+  margin-top: 1.5rem;
+  display: block;
+}
+
+.orange {
+  color: #ff8800;
+}
+
+.checkout-form {
+  padding: 1rem 0;
+}
+
+.form-title {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.form-input,
+.form-select {
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out;
+}
+
+.form-input:focus,
+.form-select:focus {
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.checkbox-field,
+.radio-field {
+  display: flex;
+  align-items: center;
+}
+
+.form-checkbox,
+.form-radio {
+  margin-right: 0.5rem;
+}
+
+.radio-group-label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.radio-options {
+  display: flex;
+}
+
+.radio-field {
+  margin-right: 1rem;
+}
+
+.error-message {
+  color: #dc3545;
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.submit-container {
+  text-align: center;
+}
+
+.submit-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.submit-button:hover {
+  background-color: #218838;
+}
+
+.submit-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
 @media (min-width: 576px) {
-  .offcanvas {
-    width: 400px !important;
+  .cart-canvas {
+    width: 400px;
   }
 
   .cart-item-content {
@@ -304,23 +512,26 @@ export default {
     text-align: left;
     flex: 1;
   }
+
+  .form-title {
+    text-align: left;
+  }
 }
 
-/* Improved mobile cart experience */
 @media (max-width: 575px) {
-  .offcanvas {
-    width: 100% !important;
+  .cart-canvas {
+    width: 100%;
   }
 
-  .offcanvas-header {
+  .canvas-header {
     padding: 0.75rem 1rem;
   }
 
-  .offcanvas-body {
+  .canvas-body {
     padding: 1rem;
   }
 
-  .list-group-item {
+  .cart-item {
     padding: 2rem 0.75rem 1rem;
     position: relative;
   }
@@ -343,18 +554,19 @@ export default {
     z-index: 5;
   }
 
-  .list-group-item:hover .delete-btn {
+  .cart-item:hover .delete-btn {
     display: flex;
   }
 
   /* Make form controls easier to tap */
-  .form-control,
+  .form-input,
   .form-select,
-  .btn {
+  .submit-button {
     min-height: 44px;
   }
 
-  .form-check-input {
+  .form-checkbox,
+  .form-radio {
     width: 1.2em;
     height: 1.2em;
     margin-top: 0.25em;
@@ -367,21 +579,21 @@ export default {
 }
 
 /* Better scrolling in the cart area */
-.offcanvas-body {
+.canvas-body {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   max-height: calc(100vh - 56px);
 }
 
 /* Make sure images scale properly */
-.list-group-item img {
+.cart-item img {
   max-width: 100%;
   height: auto;
 }
 
 /* Ensure form controls are fully visible */
 @media (max-height: 640px) {
-  .offcanvas-body {
+  .canvas-body {
     padding-bottom: 4rem;
   }
 }
