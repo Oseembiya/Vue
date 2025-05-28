@@ -2,8 +2,6 @@
   <div>
     <!-- Sorting Controls -->
     <div id="classes" class="sort-controls">
-      <img :src="logoUrl" alt="ParentPay Logo" class="logo logo-center" />
-
       <h1 class="section-title">Stay Active with Our Class Activities</h1>
 
       <div class="sort-options">
@@ -39,7 +37,6 @@
 
 <script>
 import LessonCard from "./LessonCard.vue";
-import logoImage from "@/assets/logo.jpg";
 
 export default {
   name: "LessonList",
@@ -61,19 +58,18 @@ export default {
     },
     apiBaseUrl: {
       type: String,
-      default:
-        "https://vueappliaction-env.eba-qkd3evgp.eu-west-2.elasticbeanstalk.com",
+      default: "https://myserver-xy36.onrender.com",
     },
   },
   data() {
     return {
-      logoUrl: logoImage,
       sortCriteria: "subject",
       sortOrder: "asc",
     };
   },
   computed: {
     sortedLessons() {
+      console.log("Sorting lessons:", this.lessons);
       return [...this.lessons].sort((a, b) => {
         let comparison = 0;
 
@@ -93,6 +89,10 @@ export default {
       });
     },
     displayedLessons() {
+      console.log(
+        "Displayed lessons:",
+        this.searchActive ? this.searchResults : this.sortedLessons
+      );
       return this.searchActive && this.searchResults.length > 0
         ? this.searchResults
         : this.sortedLessons;
@@ -116,11 +116,6 @@ export default {
   border-radius: 50%;
   object-fit: cover;
   animation: spin 4s linear infinite;
-}
-
-.logo-center {
-  height: auto;
-  width: 100px;
 }
 
 @keyframes spin {
@@ -179,10 +174,8 @@ export default {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
+  gap: 1rem;
   padding: 1rem;
-  padding-top: 0.75rem;
-  margin-top: 0.5rem;
 }
 
 /* Responsive grid layout */
@@ -232,11 +225,6 @@ export default {
     font-size: 1.5rem;
     margin-bottom: 1.25rem;
   }
-
-  .logo-center {
-    width: 80px;
-    margin-bottom: 0.5rem;
-  }
 }
 
 @media (max-width: 576px) {
@@ -244,10 +232,6 @@ export default {
     font-size: 1.3rem;
     margin-bottom: 1rem;
     padding: 0 0.5rem;
-  }
-
-  .logo-center {
-    width: 70px;
   }
 
   .lesson-container {

@@ -63,7 +63,7 @@ export default {
   data() {
     return {
       siteName: "ParentPay",
-      apiBaseUrl: "/api",
+      apiBaseUrl: "https://myserver-xy36.onrender.com",
       cartItems: [],
       lessons: [],
       searchResults: [],
@@ -79,8 +79,9 @@ export default {
     };
   },
   mounted() {
-    // Fetch lessons from API when component is mounted
-    this.fetchLessons();
+    // Load sample data directly
+    this.loadSampleData();
+    console.log("Sample data loaded:", this.lessons);
 
     // Add event listener for ESC key to close cart
     document.addEventListener("keydown", this.handleEscKey);
@@ -95,11 +96,13 @@ export default {
   methods: {
     async fetchLessons() {
       try {
+        console.log("Fetching lessons from:", `${this.apiBaseUrl}/lessons`);
         const response = await fetch(`${this.apiBaseUrl}/lessons`);
         if (!response.ok) {
           throw new Error("Failed to fetch lessons");
         }
         const data = await response.json();
+        console.log("Fetched lessons:", data);
         this.lessons = data;
       } catch (error) {
         console.error("Error fetching lessons:", error);
@@ -108,6 +111,7 @@ export default {
       }
     },
     loadSampleData() {
+      console.log("Loading sample data");
       // Sample data in case API is not available
       this.lessons = [
         {
@@ -117,7 +121,8 @@ export default {
           slots: 10,
           price: 25,
           rating: 4,
-          image: "image1.jpg",
+          image:
+            "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
         },
         {
           id: 2,
@@ -126,7 +131,8 @@ export default {
           slots: 8,
           price: 30,
           rating: 5,
-          image: "image2.jpg",
+          image:
+            "https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
         },
         {
           id: 3,
@@ -135,7 +141,8 @@ export default {
           slots: 15,
           price: 20,
           rating: 3,
-          image: "image3.jpg",
+          image:
+            "https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
         },
         {
           id: 4,
@@ -144,9 +151,11 @@ export default {
           slots: 2,
           price: 35,
           rating: 4,
-          image: "image4.jpg",
+          image:
+            "https://images.unsplash.com/photo-1513364776144-60967b0f800f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
         },
       ];
+      console.log("Sample data loaded successfully:", this.lessons);
     },
     handleSearch(query) {
       if (!query.trim()) {

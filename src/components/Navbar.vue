@@ -57,12 +57,7 @@
         </ul>
 
         <!-- Cart button -->
-        <button
-          type="button"
-          class="cart-button"
-          @click="toggleCart"
-          :disabled="cartIsEmpty"
-        >
+        <button type="button" class="cart-button" @click="toggleCart">
           <i class="fa-solid fa-cart-shopping orange"></i> Cart
           {{ cartCount }}
         </button>
@@ -84,10 +79,6 @@ export default {
     cartCount: {
       type: Number,
       default: 0,
-    },
-    cartIsEmpty: {
-      type: Boolean,
-      default: true,
     },
   },
   data() {

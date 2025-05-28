@@ -1,7 +1,7 @@
 <template>
   <div class="lesson-card">
     <img
-      :src="`${apiBaseUrl}/${lesson.image}`"
+      :src="lesson.image"
       class="card-image"
       alt="lesson image"
       @click="viewImage"
@@ -64,8 +64,7 @@ export default {
     },
     apiBaseUrl: {
       type: String,
-      default:
-        "https://vueappliaction-env.eba-qkd3evgp.eu-west-2.elasticbeanstalk.com",
+      default: import.meta.env.VITE_RENDER_URL,
     },
   },
   methods: {
@@ -83,7 +82,7 @@ export default {
 
 <style scoped>
 .lesson-card {
-  width: 18.5rem;
+  width: 100%;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   height: 100%;
   display: flex;
@@ -91,9 +90,6 @@ export default {
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1.5rem;
-  margin-right: 0.5rem;
-  margin-left: 0.5rem;
   background-color: white;
 }
 
@@ -104,7 +100,7 @@ export default {
 
 .card-image {
   width: 100%;
-  height: 20vh;
+  height: auto;
   object-fit: cover;
   transition: transform 0.2s;
   cursor: pointer;
@@ -182,7 +178,6 @@ export default {
 
 .rating {
   margin-top: 0.5rem;
-  margin-top: auto;
 }
 
 .star {
@@ -206,34 +201,22 @@ export default {
   }
 }
 
-@media (max-width: 576px) {
-  .card-image {
-    height: 15vh;
-  }
-
-  /* Ensure full card is tappable on mobile */
-  .lesson-card {
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
-
 /* Responsive grid sizing */
 @media (min-width: 1200px) {
   .lesson-card {
-    width: 22%;
+    width: 100%;
   }
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
   .lesson-card {
-    width: 30%;
+    width: 100%;
   }
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
   .lesson-card {
-    width: 45%;
+    width: 100%;
   }
 }
 
