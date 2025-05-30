@@ -5,8 +5,8 @@ import vue from "@vitejs/plugin-vue";
 import vueDevTools from "vite-plugin-vue-devtools";
 
 // https://vite.dev/config/
-export default defineConfig({
-  base: "/Vue/",
+export default defineConfig(({ command }) => ({
+  base: command === "build" ? "/Vue/" : "/",
   plugins: [vue(), vueDevTools()],
   resolve: {
     alias: {
@@ -27,4 +27,4 @@ export default defineConfig({
     outDir: "dist",
     assetsDir: "assets",
   },
-});
+}));
