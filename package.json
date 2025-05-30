@@ -6,15 +6,16 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-<<<<<<< HEAD
     "build:prod": "NODE_ENV=production vite build",
     "preview": "vite preview",
+    "build-for-server": "NODE_ENV=production vite build",
     "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
     "lint:eslint": "eslint . --fix",
     "lint": "run-s lint:*",
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.7.2",
     "pinia": "^3.0.1",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
@@ -31,17 +32,6 @@
     "oxlint": "^0.16.0",
     "prettier": "3.5.3",
     "terser": "^5.37.0",
-=======
-    "preview": "vite preview",
-    "build-for-server": "NODE_ENV=production vite build"
-  },
-  "dependencies": {
-    "@fortawesome/fontawesome-free": "^6.7.2",
-    "vue": "^3.5.13"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.3",
->>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
     "vite": "^6.2.4",
     "vite-plugin-vue-devtools": "^7.7.2"
   }
