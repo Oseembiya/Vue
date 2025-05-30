@@ -1,5 +1,14 @@
 <template>
+<<<<<<< HEAD
   <div class="cart-canvas" tabindex="-1" id="cartCanvas" aria-labelledby="cartCanvasLabel">
+=======
+  <div
+    class="cart-canvas"
+    tabindex="-1"
+    id="cartCanvas"
+    aria-labelledby="cartCanvasLabel"
+  >
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
     <div class="canvas-header">
       <h5 class="canvas-title" id="cartCanvasLabel">Your Cart</h5>
       <button type="button" class="close-button" aria-label="Close"></button>
@@ -7,14 +16,30 @@
     <div class="canvas-body">
       <!-- Display Cart Items or "Cart is empty" message -->
       <ul class="cart-list" v-if="cartItems.length > 0">
+<<<<<<< HEAD
         <li v-for="(lesson, index) in cartItems" :key="lesson.id + '-' + index" class="cart-item">
+=======
+        <li
+          v-for="(lesson, index) in cartItems"
+          :key="lesson.id + '-' + index"
+          class="cart-item"
+        >
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
           <!-- Delete button placed on the left -->
           <button class="delete-btn" @click="removeItem(lesson.id)">
             <i class="fa-solid fa-trash-can delete-icon"></i>
           </button>
 
           <div class="cart-item-content">
+<<<<<<< HEAD
             <img :src="`${apiBaseUrl}/${lesson.image}`" alt="Lesson image" class="cart-image" />
+=======
+            <img
+              :src="`${apiBaseUrl}/${lesson.image}`"
+              alt="Lesson image"
+              class="cart-image"
+            />
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
             <div class="cart-item-details">
               <h6 class="item-title">{{ lesson.subject }}</h6>
               <p class="item-info">
@@ -31,7 +56,13 @@
         </li>
       </ul>
       <p v-else class="empty-cart-message">
+<<<<<<< HEAD
         Your cart is empty. <br /><i class="fa-solid fa-cart-shopping orange cart-icon"></i>
+=======
+        Your cart is empty. <br /><i
+          class="fa-solid fa-cart-shopping orange cart-icon"
+        ></i>
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
       </p>
 
       <!-- Checkout Form -->
@@ -92,13 +123,29 @@
               @input="validateFullName"
               required
             />
+<<<<<<< HEAD
             <small v-if="!isFullNameValid && orderInfo.fullName" class="error-message">
+=======
+            <small
+              v-if="!isFullNameValid && orderInfo.fullName"
+              class="error-message"
+            >
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
               Full Name must contain letters only.
             </small>
           </div>
           <div class="form-group">
             <label for="city" class="form-label">City</label>
+<<<<<<< HEAD
             <select v-model="orderInfo.city" id="city" class="form-select" required>
+=======
+            <select
+              v-model="orderInfo.city"
+              id="city"
+              class="form-select"
+              required
+            >
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
               <option disabled value="">Select a city</option>
               <option v-for="city in cities" :key="city" :value="city">
                 {{ city }}
@@ -125,13 +172,28 @@
               @input="validatePhone"
               required
             />
+<<<<<<< HEAD
             <small v-if="!isPhoneValid && orderInfo.phoneNum" class="error-message">
+=======
+            <small
+              v-if="!isPhoneValid && orderInfo.phoneNum"
+              class="error-message"
+            >
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
               Phone must be number only & 12 digits.
             </small>
           </div>
           <!-- Submit Button -->
           <div class="submit-container">
+<<<<<<< HEAD
             <button type="submit" class="submit-button" :disabled="!isSubmitEnabled">
+=======
+            <button
+              type="submit"
+              class="submit-button"
+              :disabled="!isSubmitEnabled"
+            >
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
               Place Order
             </button>
           </div>
@@ -143,7 +205,11 @@
 
 <script>
 export default {
+<<<<<<< HEAD
   name: 'CartCanvas',
+=======
+  name: "CartCanvas",
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
   props: {
     cartItems: {
       type: Array,
@@ -151,11 +217,17 @@ export default {
     },
     apiBaseUrl: {
       type: String,
+<<<<<<< HEAD
       default: 'https://vueappliaction-env.eba-qkd3evgp.eu-west-2.elasticbeanstalk.com',
+=======
+      default:
+        "https://vueappliaction-env.eba-qkd3evgp.eu-west-2.elasticbeanstalk.com",
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
     },
   },
   data() {
     return {
+<<<<<<< HEAD
       cities: ['London', 'Manchester', 'Birmingham', 'Edinburgh', 'Liverpool'],
       orderInfo: {
         gift: false,
@@ -172,10 +244,29 @@ export default {
   computed: {
     isSubmitEnabled() {
       return this.isFullNameValid && this.isPhoneValid
+=======
+      cities: ["London", "Manchester", "Birmingham", "Edinburgh", "Liverpool"],
+      orderInfo: {
+        gift: false,
+        method: "Home",
+        fullName: "",
+        city: "",
+        postCode: "",
+        phoneNum: "",
+      },
+      isFullNameValid: false,
+      isPhoneValid: false,
+    };
+  },
+  computed: {
+    isSubmitEnabled() {
+      return this.isFullNameValid && this.isPhoneValid;
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
     },
   },
   methods: {
     removeItem(lessonId) {
+<<<<<<< HEAD
       this.$emit('remove-item', lessonId)
     },
     getItemCount(lessonId) {
@@ -191,17 +282,43 @@ export default {
       if (!this.isSubmitEnabled) {
         alert('Please ensure all fields are valid.')
         return
+=======
+      this.$emit("remove-item", lessonId);
+    },
+    getItemCount(lessonId) {
+      return this.cartItems.filter((item) => item.id === lessonId).length;
+    },
+    validateFullName() {
+      this.isFullNameValid = /^[A-Za-z\s]+$/.test(this.orderInfo.fullName);
+    },
+    validatePhone() {
+      this.isPhoneValid = /^\d{12}$/.test(this.orderInfo.phoneNum);
+    },
+    submitOrder() {
+      if (!this.isSubmitEnabled) {
+        alert("Please ensure all fields are valid.");
+        return;
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
       }
 
       const orderData = {
         orderInfo: this.orderInfo,
         lessonId: this.cartItems.map((item) => item.id),
+<<<<<<< HEAD
       }
 
       this.$emit('submit-order', orderData)
     },
   },
 }
+=======
+      };
+
+      this.$emit("submit-order", orderData);
+    },
+  },
+};
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
 </script>
 
 <style scoped>
@@ -255,7 +372,11 @@ export default {
 
 .close-button::before,
 .close-button::after {
+<<<<<<< HEAD
   content: '';
+=======
+  content: "";
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
   position: absolute;
   width: 20px;
   height: 2px;

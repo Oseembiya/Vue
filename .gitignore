@@ -13,6 +13,10 @@ dist
 dist-ssr
 coverage
 *.local
+<<<<<<< HEAD
+=======
+.env
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
 
 /cypress/videos/
 /cypress/screenshots/

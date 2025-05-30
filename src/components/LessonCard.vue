@@ -1,6 +1,15 @@
 <template>
   <div class="lesson-card">
+<<<<<<< HEAD
     <img :src="lesson.image" class="card-image" alt="lesson image" @click="viewImage" />
+=======
+    <img
+      :src="lesson.image"
+      class="card-image"
+      alt="lesson image"
+      @click="viewImage"
+    />
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
 
     <div class="card-content">
       <h6 class="card-title">{{ lesson.subject }}</h6>
@@ -8,7 +17,15 @@
       <p class="card-text">Space: {{ lesson.slots }}</p>
       <p class="card-text">Price: £{{ lesson.price }}</p>
       <div class="card-actions">
+<<<<<<< HEAD
         <button class="add-button" @click="addToCart" :disabled="lesson.slots <= 0">
+=======
+        <button
+          class="add-button"
+          @click="addToCart"
+          :disabled="lesson.slots <= 0"
+        >
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
           Add to Cart
         </button>
         <span
@@ -20,16 +37,35 @@
           }"
         >
           <span v-if="lesson.slots === 0">All Out!</span>
+<<<<<<< HEAD
           <span v-else-if="lesson.slots < 5">Only {{ lesson.slots }} left!</span>
+=======
+          <span v-else-if="lesson.slots < 5"
+            >Only {{ lesson.slots }} left!</span
+          >
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
           <span v-else>Buy Now!</span>
         </span>
       </div>
       <!-- Display the rating as stars -->
       <div class="rating">
+<<<<<<< HEAD
         <span v-for="(star, index) in lesson.rating" :key="`filled-${index}`" class="star filled"
           >★</span
         >
         <span v-for="(star, index) in 5 - lesson.rating" :key="`empty-${index}`" class="star empty"
+=======
+        <span
+          v-for="(star, index) in lesson.rating"
+          :key="`filled-${index}`"
+          class="star filled"
+          >★</span
+        >
+        <span
+          v-for="(star, index) in 5 - lesson.rating"
+          :key="`empty-${index}`"
+          class="star empty"
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
           >☆</span
         >
       </div>
@@ -39,7 +75,11 @@
 
 <script>
 export default {
+<<<<<<< HEAD
   name: 'LessonCard',
+=======
+  name: "LessonCard",
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
   props: {
     lesson: {
       type: Object,
@@ -53,6 +93,7 @@ export default {
   methods: {
     addToCart() {
       if (this.lesson.slots > 0) {
+<<<<<<< HEAD
         this.$emit('add-to-cart', this.lesson)
       }
     },
@@ -61,14 +102,28 @@ export default {
     },
   },
 }
+=======
+        this.$emit("add-to-cart", this.lesson);
+      }
+    },
+    viewImage() {
+      this.$emit("view-image", this.lesson.image);
+    },
+  },
+};
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
 </script>
 
 <style scoped>
 .lesson-card {
   width: 100%;
+<<<<<<< HEAD
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
+=======
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
   height: 100%;
   display: flex;
   flex-direction: column;

@@ -5,6 +5,7 @@
         <div class="footer-column">
           <h5 class="footer-heading">{{ siteName }}</h5>
           <p>
+<<<<<<< HEAD
             Connecting parents with the best school activities for their children. Pay with
             confidence, learn with joy.
           </p>
@@ -13,6 +14,24 @@
             <a href="#" class="social-icon"><i class="fa-brands fa-twitter"></i></a>
             <a href="#" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
             <a href="#" class="social-icon"><i class="fa-brands fa-linkedin-in"></i></a>
+=======
+            Connecting parents with the best school activities for their
+            children. Pay with confidence, learn with joy.
+          </p>
+          <div class="social-icons">
+            <a href="#" class="social-icon"
+              ><i class="fa-brands fa-facebook-f"></i
+            ></a>
+            <a href="#" class="social-icon"
+              ><i class="fa-brands fa-twitter"></i
+            ></a>
+            <a href="#" class="social-icon"
+              ><i class="fa-brands fa-instagram"></i
+            ></a>
+            <a href="#" class="social-icon"
+              ><i class="fa-brands fa-linkedin-in"></i
+            ></a>
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
           </div>
         </div>
         <div class="footer-column">
@@ -34,9 +53,18 @@
           <h5 class="footer-heading">Contact Us</h5>
           <ul class="footer-links">
             <li>
+<<<<<<< HEAD
               <i class="fa-solid fa-location-dot icon-space"></i> 123 Education St, London, UK
             </li>
             <li><i class="fa-solid fa-phone icon-space"></i> +44 7855 464 55 755</li>
+=======
+              <i class="fa-solid fa-location-dot icon-space"></i> 123 Education
+              St, London, UK
+            </li>
+            <li>
+              <i class="fa-solid fa-phone icon-space"></i> +44 7855 464 55 755
+            </li>
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
             <li>
               <i class="fa-solid fa-envelope icon-space"></i>
               support@parentpay.com
@@ -50,7 +78,14 @@
           <p>&copy; {{ currentYear }} {{ siteName }}. All rights reserved.</p>
         </div>
         <div class="credits">
+<<<<<<< HEAD
           <p>Designed with <i class="fa-solid fa-heart heart-icon"></i> for education</p>
+=======
+          <p>
+            Designed with <i class="fa-solid fa-heart heart-icon"></i> for
+            education
+          </p>
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
         </div>
       </div>
     </div>
@@ -59,19 +94,34 @@
 
 <script>
 export default {
+<<<<<<< HEAD
   name: 'FooterSection',
   props: {
     siteName: {
       type: String,
       default: 'ParentPay',
+=======
+  name: "FooterSection",
+  props: {
+    siteName: {
+      type: String,
+      default: "ParentPay",
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
     },
   },
   computed: {
     currentYear() {
+<<<<<<< HEAD
       return new Date().getFullYear()
     },
   },
 }
+=======
+      return new Date().getFullYear();
+    },
+  },
+};
+>>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
 </script>
 
 <style scoped>
