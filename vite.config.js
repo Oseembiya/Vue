@@ -12,7 +12,10 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-  base: '/Vue/',
+  // Conditional base path - only for production if needed
+  // base: process.env.NODE_ENV === 'production' ? '/Vue/' : '/',
+  // Comment out base path if serving from root
+  // base: '/Vue/',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
