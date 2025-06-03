@@ -22,6 +22,17 @@ export const useAppStore = defineStore('app', {
     cartIsEmpty: (state) => state.cartItems.length === 0,
     filteredLessons: (state) => (state.searchActive ? state.searchResults : state.lessons),
     totalCartValue: (state) => state.cartItems.reduce((total, item) => total + item.price, 0),
+    uniqueCartItems: (state) => {
+      const grouped = {}
+      state.cartItems.forEach((item) => {
+        if (!grouped[item.id]) {
+          grouped[item.id] = { lesson: item, quantity: 1 }
+        } else {
+          grouped[item.id].quantity++
+        }
+      })
+      return Object.values(grouped).length
+    },
   },
 
   actions: {
@@ -127,6 +138,29 @@ export const useAppStore = defineStore('app', {
     },
 
     removeFromCart(lessonId) {
+      const cartIndex = this.cartItems.findIndex((item) => item.id === lessonId)
+      if (cartIndex !== -1) {
+        const lessonIndex = this.lessons.findIndex((l) => l.id === lessonId)
+        if (lessonIndex !== -1) {
+          this.lessons[lessonIndex].slots++
+        }
+        this.cartItems.splice(cartIndex, 1)
+      }
+    },
+
+    increaseQuantity(lessonId) {
+      // Find the lesson to add
+      const lesson = this.lessons.find((l) => l.id === lessonId)
+      if (lesson && lesson.slots > 0) {
+        // Decrease available slots
+        lesson.slots--
+        // Add another instance to cart
+        this.cartItems.push({ ...lesson })
+      }
+    },
+
+    decreaseQuantity(lessonId) {
+      // Find and remove one instance from cart
       const cartIndex = this.cartItems.findIndex((item) => item.id === lessonId)
       if (cartIndex !== -1) {
         const lessonIndex = this.lessons.findIndex((l) => l.id === lessonId)

@@ -34,10 +34,13 @@
   />
 
   <CartCanvas
+    v-if="store.showCart"
     :cartItems="store.cartItems"
     :apiBaseUrl="store.apiBaseUrl"
-    :class="{ show: store.showCart }"
     @remove-item="store.removeFromCart"
+    @increase-quantity="store.increaseQuantity"
+    @decrease-quantity="store.decreaseQuantity"
+    @close-cart="store.closeCart"
     @submit-order="handleOrderSubmission"
   />
 
