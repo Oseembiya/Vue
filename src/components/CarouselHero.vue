@@ -112,8 +112,9 @@ export default {
 .carousel {
   position: relative;
   height: 50vh;
-  margin-top: 4rem;
+  margin-top: 0;
   overflow: hidden;
+  width: 100%;
 }
 
 .carousel-inner {
@@ -215,7 +216,7 @@ export default {
   background-color: white;
 }
 
-/* Responsive styling */
+/* Updated responsive styling */
 @media (max-width: 991px) {
   .carousel {
     height: 45vh;
@@ -225,7 +226,6 @@ export default {
 @media (max-width: 768px) {
   .carousel {
     height: 40vh;
-    margin-top: 4rem;
   }
 
   .control-icon {
@@ -240,8 +240,7 @@ export default {
 
 @media (max-width: 576px) {
   .carousel {
-    height: 30vh;
-    margin-top: 3.5rem;
+    height: 35vh;
   }
 
   .carousel-control {
@@ -251,8 +250,7 @@ export default {
 
 @media (max-width: 480px) {
   .carousel {
-    height: 25vh;
-    margin-top: 3rem;
+    height: 30vh;
   }
 
   .control-icon {
@@ -266,24 +264,10 @@ export default {
   }
 }
 
-@media (max-height: 500px) and (orientation: landscape) {
-  .carousel {
-    height: 70vh;
-  }
-}
-
-/* Fix for iOS Safari 100vh issue */
-@supports (-webkit-touch-callout: none) {
-  .carousel {
-    height: 50vh;
-    height: -webkit-fill-available;
-  }
-}
-
 /* Make sure carousel adapts to very small screens */
 @media (max-width: 320px) {
   .carousel {
-    height: 22vh;
+    height: 25vh;
   }
 }
 </style>

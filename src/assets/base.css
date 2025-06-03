@@ -6,6 +6,7 @@
   --color-secondary: #6c757d;
   --color-accent: #f8f9fa;
   --color-error: #dc3545;
+  --navbar-height: 80px;
 }
 
 * {
@@ -37,4 +38,26 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding-top: var(--navbar-height);
+}
+
+/* Smooth scroll behavior for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Container class for consistent max-width */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Utility classes for spacing */
+.mt-navbar {
+  margin-top: var(--navbar-height);
+}
+
+.section-spacing {
+  margin: 2rem 0;
 }

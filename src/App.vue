@@ -1,59 +1,63 @@
 <template>
-  <Navbar
-    :siteName="store.siteName"
-    :cartCount="store.cartCount"
-    :cartIsEmpty="store.cartIsEmpty"
-    @search="store.handleSearch"
-    @clear-search="store.clearSearch"
-    @toggle-cart="store.toggleCart"
-  />
-
-  <CarouselHero :carouselImages="carouselImages" />
-
-  <!-- Loading State -->
-  <div v-if="store.loading" class="loading-container">
-    <div class="loading-spinner"></div>
-    <p>Loading lessons...</p>
-  </div>
-
-  <!-- Error State -->
-  <div v-else-if="store.error" class="error-container">
-    <div class="error-message">
-      <h3>⚠️ {{ store.error }}</h3>
-      <p>Using sample data for demonstration.</p>
-    </div>
-  </div>
-
-  <LessonList
-    :lessons="store.filteredLessons"
-    :searchResults="store.searchResults"
-    :searchActive="store.searchActive"
-    :apiBaseUrl="store.apiBaseUrl"
-    @add-to-cart="store.addToCart"
-    @view-image="store.viewImage"
-  />
-
-  <CartCanvas
-    v-if="store.showCart"
-    :cartItems="store.cartItems"
-    :apiBaseUrl="store.apiBaseUrl"
-    @remove-item="store.removeFromCart"
-    @increase-quantity="store.increaseQuantity"
-    @decrease-quantity="store.decreaseQuantity"
-    @close-cart="store.closeCart"
-    @submit-order="handleOrderSubmission"
-  />
-
-  <FooterSection :siteName="store.siteName" />
-
-  <!-- Image Modal -->
-  <div v-if="store.showImageModal" class="image-modal" @click="store.closeImageModal">
-    <span class="close-modal">&times;</span>
-    <img
-      :src="`${store.apiBaseUrl}/${store.selectedImage}`"
-      class="modal-content"
-      alt="Enlarged view"
+  <div id="app">
+    <Navbar
+      :siteName="store.siteName"
+      :cartCount="store.cartCount"
+      :cartIsEmpty="store.cartIsEmpty"
+      @search="store.handleSearch"
+      @clear-search="store.clearSearch"
+      @toggle-cart="store.toggleCart"
     />
+
+    <main class="main-content">
+      <CarouselHero :carouselImages="carouselImages" />
+
+      <!-- Loading State -->
+      <div v-if="store.loading" class="loading-container section-spacing">
+        <div class="loading-spinner"></div>
+        <p>Loading lessons...</p>
+      </div>
+
+      <!-- Error State -->
+      <div v-else-if="store.error" class="error-container section-spacing">
+        <div class="error-message">
+          <h3>⚠️ {{ store.error }}</h3>
+          <p>Using sample data for demonstration.</p>
+        </div>
+      </div>
+
+      <LessonList
+        :lessons="store.filteredLessons"
+        :searchResults="store.searchResults"
+        :searchActive="store.searchActive"
+        :apiBaseUrl="store.apiBaseUrl"
+        @add-to-cart="store.addToCart"
+        @view-image="store.viewImage"
+      />
+    </main>
+
+    <CartCanvas
+      v-if="store.showCart"
+      :cartItems="store.cartItems"
+      :apiBaseUrl="store.apiBaseUrl"
+      @remove-item="store.removeFromCart"
+      @increase-quantity="store.increaseQuantity"
+      @decrease-quantity="store.decreaseQuantity"
+      @close-cart="store.closeCart"
+      @submit-order="handleOrderSubmission"
+    />
+
+    <FooterSection :siteName="store.siteName" />
+
+    <!-- Image Modal -->
+    <div v-if="store.showImageModal" class="image-modal" @click="store.closeImageModal">
+      <span class="close-modal">&times;</span>
+      <img
+        :src="`${store.apiBaseUrl}/${store.selectedImage}`"
+        class="modal-content"
+        alt="Enlarged view"
+      />
+    </div>
   </div>
 </template>
 
@@ -88,14 +92,10 @@ export default {
     }
   },
   async mounted() {
-    // Fetch lessons from API
     await this.store.fetchLessons()
-
-    // Add event listener for ESC key to close modals
     document.addEventListener('keydown', this.handleEscKey)
   },
   beforeUnmount() {
-    // Remove event listeners
     document.removeEventListener('keydown', this.handleEscKey)
   },
   methods: {
@@ -123,6 +123,17 @@ export default {
 </script>
 
 <style scoped>
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  min-height: calc(100vh - var(--navbar-height));
+}
+
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -152,8 +163,9 @@ export default {
 }
 
 .error-container {
-  margin: 2rem;
+  margin: 2rem auto;
   padding: 1rem;
+  max-width: 800px;
   background-color: #fff3cd;
   border: 1px solid #ffeaa7;
   border-radius: 8px;
@@ -204,5 +216,14 @@ export default {
   max-height: 90%;
   object-fit: contain;
   border-radius: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .close-modal {
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+  }
 }
 </style>
