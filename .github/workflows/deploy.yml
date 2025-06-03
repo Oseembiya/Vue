@@ -25,14 +25,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
-      - name: Clear npm cache
-        run: npm cache clean --force
-
-      - name: Install dependencies
+      - name: Clean and install dependencies
         run: |
+          # Clean up any existing installations
           rm -rf node_modules package-lock.json
-          npm install
+          # Install dependencies with proper handling of optional deps
+          npm install --legacy-peer-deps
+          # Explicitly install rollup if needed
+          npm ls rollup || npm install rollup --save-dev
 
       - name: Build app
         run: npm run build:github
