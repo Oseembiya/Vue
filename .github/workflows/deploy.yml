@@ -27,10 +27,14 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          cd Vue
+          npm ci
 
       - name: Build app
-        run: npm run build:github
+        run: |
+          cd Vue
+          npm run build:github
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -38,7 +42,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: Vue/dist
 
   deploy:
     environment:
