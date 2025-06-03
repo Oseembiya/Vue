@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => ({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-  // Base path for GitHub Pages deployment
+  // Base path for GitHub Pages deployment - must match your repo name
   base: mode === 'production' ? '/Vue/' : '/',
   build: {
     outDir: 'dist',
@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['vue', 'vue-router', 'pinia'],
+          vendor: ['vue', 'pinia'],
         },
       },
     },
