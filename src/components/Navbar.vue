@@ -10,7 +10,7 @@
       </div>
 
       <!-- Search Bar (visible on 768px+) -->
-      <form class="search-form" role="search" @submit.prevent="search">
+      <form class="search-form desktop-search" role="search" @submit.prevent="search">
         <input
           v-model="searchQuery"
           class="search-input"
@@ -21,6 +21,11 @@
         />
         <i class="fa-solid fa-search search-icon"></i>
       </form>
+
+      <!-- Mobile Search Icon (visible on small screens) -->
+      <button class="mobile-search-btn" @click="toggleMobileSearch" type="button">
+        <i class="fa-solid fa-search"></i>
+      </button>
 
       <!-- Navigation links (desktop only - 992px+) -->
       <ul class="nav-links desktop-nav">
@@ -91,6 +96,38 @@
         </ul>
       </div>
     </div>
+
+    <!-- Mobile Search Overlay -->
+    <div
+      class="mobile-search-overlay"
+      :class="{ active: mobileSearchOpen }"
+      @click="closeMobileSearch"
+    >
+      <div class="mobile-search-container" @click.stop>
+        <div class="mobile-search-header">
+          <h3>Search Lessons</h3>
+          <button class="close-search-btn" @click="closeMobileSearch">
+            <i class="fa-solid fa-times"></i>
+          </button>
+        </div>
+        <form class="mobile-search-form" @submit.prevent="handleMobileSearch">
+          <div class="mobile-search-input-group">
+            <input
+              v-model="mobileSearchQuery"
+              ref="mobileSearchInput"
+              class="mobile-search-input"
+              type="search"
+              placeholder="Search for lessons..."
+              aria-label="Search lessons"
+              autocomplete="off"
+            />
+            <button type="submit" class="mobile-search-submit-btn">
+              <i class="fa-solid fa-search"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </nav>
 </template>
 
@@ -113,7 +150,9 @@ export default {
     return {
       logoUrl: logoImage,
       searchQuery: '',
+      mobileSearchQuery: '',
       mobileMenuOpen: false,
+      mobileSearchOpen: false,
       dropdownOpen: false,
     }
   },
@@ -121,23 +160,68 @@ export default {
     search() {
       this.$emit('search', this.searchQuery)
     },
+    handleMobileSearch() {
+      this.$emit('search', this.mobileSearchQuery)
+      this.closeMobileSearch()
+    },
     toggleCart() {
       this.$emit('toggle-cart')
       this.closeMobileMenu()
     },
     toggleMobileMenu() {
       this.mobileMenuOpen = !this.mobileMenuOpen
+      // Close search if menu is opened
+      if (this.mobileMenuOpen) {
+        this.mobileSearchOpen = false
+      }
+    },
+    toggleMobileSearch() {
+      this.mobileSearchOpen = !this.mobileSearchOpen
+      // Close menu if search is opened
+      if (this.mobileSearchOpen) {
+        this.mobileMenuOpen = false
+        this.dropdownOpen = false
+        // Focus on search input when opened
+        this.$nextTick(() => {
+          if (this.$refs.mobileSearchInput) {
+            this.$refs.mobileSearchInput.focus()
+          }
+        })
+      }
     },
     closeMobileMenu() {
       this.mobileMenuOpen = false
       this.dropdownOpen = false
     },
+    closeMobileSearch() {
+      this.mobileSearchOpen = false
+    },
     toggleDropdown() {
       this.dropdownOpen = !this.dropdownOpen
     },
+    handleEscapeKey(event) {
+      if (event.key === 'Escape') {
+        if (this.mobileSearchOpen) {
+          this.closeMobileSearch()
+        } else if (this.mobileMenuOpen) {
+          this.closeMobileMenu()
+        }
+      }
+    },
+  },
+  mounted() {
+    document.addEventListener('keydown', this.handleEscapeKey)
+  },
+  beforeUnmount() {
+    document.removeEventListener('keydown', this.handleEscapeKey)
   },
   watch: {
     searchQuery(newQuery) {
+      if (newQuery.trim() === '') {
+        this.$emit('clear-search')
+      }
+    },
+    mobileSearchQuery(newQuery) {
       if (newQuery.trim() === '') {
         this.$emit('clear-search')
       }
@@ -204,8 +288,8 @@ export default {
   }
 }
 
-/* Search Form */
-.search-form {
+/* Desktop Search Form */
+.desktop-search {
   position: relative;
   display: flex;
   flex-grow: 1;
@@ -235,13 +319,138 @@ export default {
   cursor: pointer;
 }
 
+/* Mobile Search Button */
+.mobile-search-btn {
+  display: none;
+  background: transparent;
+  border: 1px solid white;
+  color: #ff8800;
+  padding: 0.3rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+
+.mobile-search-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Mobile Search Overlay */
+.mobile-search-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1050;
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: var(--navbar-height, 80px);
+}
+
+.mobile-search-overlay.active {
+  display: flex;
+}
+
+.mobile-search-container {
+  background: white;
+  width: 90%;
+  max-width: 500px;
+  margin-top: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mobile-search-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.mobile-search-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.25rem;
+}
+
+.close-search-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #666;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: color 0.2s ease;
+}
+
+.close-search-btn:hover {
+  color: #333;
+}
+
+.mobile-search-form {
+  padding: 1.5rem;
+}
+
+.mobile-search-input-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.mobile-search-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.mobile-search-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+.mobile-search-submit-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.mobile-search-submit-btn:hover {
+  background: #0056b3;
+}
+
 /* Desktop Navigation Links (992px+) */
 .desktop-nav {
   display: flex;
   list-style: none;
   margin: 0;
   padding: 0;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 .nav-item {
@@ -252,7 +461,7 @@ export default {
 .nav-link {
   color: white;
   text-decoration: none;
-  padding: 0.5rem 0.75rem;
+  padding: 0.75rem;
   display: block;
   font-weight: 600;
   font-size: 1rem;
@@ -261,8 +470,8 @@ export default {
 }
 
 .nav-link:hover {
-  text-decoration: underline;
-  color: #f8f9fa;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
 }
 
 /* Dropdown */
@@ -273,17 +482,18 @@ export default {
 .dropdown-toggle {
   background: transparent;
   color: white;
-  border: 1px solid white;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  border: none;
+  padding: 0.75rem;
   cursor: pointer;
   font-weight: 600;
+  font-size: 1rem;
   transition: all 0.2s ease;
   white-space: nowrap;
 }
 
 .dropdown-toggle:hover {
   background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
 }
 
 .dropdown-menu {
@@ -486,14 +696,15 @@ a.mobile-dropdown-item:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Desktop (992px and up) - Show everything, hide toggle */
+/* Desktop (992px and up) - Show everything, hide toggle and mobile search */
 @media (min-width: 992px) {
-  .search-form {
+  .desktop-search {
     max-width: 250px;
     margin: 0 1rem;
   }
 
-  .nav-toggler {
+  .nav-toggler,
+  .mobile-search-btn {
     display: none;
   }
 }
@@ -508,7 +719,7 @@ a.mobile-dropdown-item:hover {
     display: block;
   }
 
-  .search-form {
+  .desktop-search {
     max-width: 200px;
   }
 
@@ -517,29 +728,30 @@ a.mobile-dropdown-item:hover {
     font-size: 0.9rem;
   }
 
+  .mobile-search-btn {
+    display: none;
+  }
+
   /* Hide mobile cart in menu since cart button is visible */
   .mobile-cart-item {
     display: none;
   }
 }
 
-/* Small devices (below 768px) - Hide desktop nav and cart, show toggle and searchbar only */
+/* Small devices (below 768px) - Hide desktop nav and cart, show mobile search icon */
 @media (max-width: 767px) {
-  .desktop-nav {
+  .desktop-nav,
+  .cart-button,
+  .desktop-search {
     display: none;
   }
 
-  .cart-button {
-    display: none;
+  .mobile-search-btn {
+    display: block;
   }
 
   .nav-toggler {
     display: block;
-  }
-
-  .search-form {
-    max-width: none;
-    flex-grow: 1;
   }
 
   .container {
@@ -569,14 +781,17 @@ a.mobile-dropdown-item:hover {
     padding: 0.5rem 0.75rem;
   }
 
-  .search-input {
-    font-size: 0.85rem;
-    padding: 0.4rem 1.8rem 0.4rem 0.6rem;
+  .mobile-search-container {
+    width: 95%;
+    margin-top: 1rem;
   }
 
-  .search-icon {
-    right: 8px;
-    font-size: 0.9rem;
+  .mobile-search-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .mobile-search-form {
+    padding: 1rem;
   }
 }
 
@@ -590,9 +805,14 @@ a.mobile-dropdown-item:hover {
     width: 30px;
   }
 
-  .search-input {
-    font-size: 0.8rem;
-    padding: 0.35rem 1.6rem 0.35rem 0.5rem;
+  .mobile-search-header h3 {
+    font-size: 1.1rem;
+  }
+
+  .mobile-search-input,
+  .mobile-search-submit-btn {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
   }
 }
 </style>
