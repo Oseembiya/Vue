@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "recommendations": [
     "Vue.volar",
     "dbaeumer.vscode-eslint",
@@ -7,7 +6,4 @@
     "oxc.oxc-vscode",
     "esbenp.prettier-vscode"
   ]
-=======
-  "recommendations": ["Vue.volar"]
->>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
 }

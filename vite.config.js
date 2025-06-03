@@ -5,17 +5,15 @@ import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [vue(), vueDevTools()],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-  // Conditional base path - only for production if needed
-  // base: process.env.NODE_ENV === 'production' ? '/Vue/' : '/',
-  // Comment out base path if serving from root
-  // base: '/Vue/',
+  // Base path for GitHub Pages deployment
+  base: mode === 'production' ? '/Vue/' : '/',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
@@ -38,4 +36,4 @@ export default defineConfig({
     port: 4173,
     open: true,
   },
-})
+}))

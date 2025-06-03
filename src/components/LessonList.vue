@@ -36,17 +36,10 @@
 </template>
 
 <script>
-<<<<<<< HEAD
 import LessonCard from './LessonCard.vue'
 
 export default {
   name: 'LessonList',
-=======
-import LessonCard from "./LessonCard.vue";
-
-export default {
-  name: "LessonList",
->>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
   components: {
     LessonCard,
   },
@@ -65,16 +58,11 @@ export default {
     },
     apiBaseUrl: {
       type: String,
-<<<<<<< HEAD
       default: 'https://myserver-xy36.onrender.com',
-=======
-      default: "https://myserver-xy36.onrender.com",
->>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
     },
   },
   data() {
     return {
-<<<<<<< HEAD
       sortCriteria: 'subject',
       sortOrder: 'asc',
     }
@@ -105,46 +93,10 @@ export default {
       return this.searchActive && this.searchResults.length > 0
         ? this.searchResults
         : this.sortedLessons
-=======
-      sortCriteria: "subject",
-      sortOrder: "asc",
-    };
-  },
-  computed: {
-    sortedLessons() {
-      console.log("Sorting lessons:", this.lessons);
-      return [...this.lessons].sort((a, b) => {
-        let comparison = 0;
-
-        // Sorting based on the selected criteria
-        if (this.sortCriteria === "subject") {
-          comparison = a.subject.localeCompare(b.subject);
-        } else if (this.sortCriteria === "location") {
-          comparison = a.location.localeCompare(b.location);
-        } else if (this.sortCriteria === "price") {
-          comparison = a.price - b.price;
-        } else if (this.sortCriteria === "slots") {
-          comparison = a.slots - b.slots;
-        }
-
-        // Return based on sort order
-        return this.sortOrder === "asc" ? comparison : -comparison;
-      });
-    },
-    displayedLessons() {
-      console.log(
-        "Displayed lessons:",
-        this.searchActive ? this.searchResults : this.sortedLessons
-      );
-      return this.searchActive && this.searchResults.length > 0
-        ? this.searchResults
-        : this.sortedLessons;
->>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
     },
   },
   methods: {
     addToCart(lesson) {
-<<<<<<< HEAD
       this.$emit('add-to-cart', lesson)
     },
     viewImage(image) {
@@ -152,15 +104,6 @@ export default {
     },
   },
 }
-=======
-      this.$emit("add-to-cart", lesson);
-    },
-    viewImage(image) {
-      this.$emit("view-image", image);
-    },
-  },
-};
->>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
 </script>
 
 <style scoped>

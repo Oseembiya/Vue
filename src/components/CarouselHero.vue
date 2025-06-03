@@ -19,15 +19,7 @@
         :class="{ active: currentSlide === index }"
         :style="{ transform: `translateX(${(index - currentSlide) * 100}%)` }"
       >
-<<<<<<< HEAD
         <img :src="image" class="carousel-image" :alt="`carousel image ${index + 1}`" />
-=======
-        <img
-          :src="image"
-          class="carousel-image"
-          :alt="`carousel image ${index + 1}`"
-        />
->>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
       </div>
     </div>
     <button class="carousel-control prev" type="button" @click="prevSlide">
@@ -43,30 +35,17 @@
 
 <script>
 export default {
-<<<<<<< HEAD
   name: 'CarouselHero',
   props: {
     carouselImages: {
       type: Array,
       default: () => ['asset/carousel-1.jpg', 'asset/carousel-2.jpg', 'asset/carousel-3.jpg'],
-=======
-  name: "CarouselHero",
-  props: {
-    carouselImages: {
-      type: Array,
-      default: () => [
-        "asset/carousel-1.jpg",
-        "asset/carousel-2.jpg",
-        "asset/carousel-3.jpg",
-      ],
->>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
     },
   },
   data() {
     return {
       currentSlide: 0,
       intervalId: null,
-<<<<<<< HEAD
     }
   },
   mounted() {
@@ -83,29 +62,10 @@ export default {
     carousel.addEventListener('touchend', (e) => {
       const endX = e.changedTouches[0].clientX
       const diff = startX - endX
-=======
-    };
-  },
-  mounted() {
-    this.startAutoSlide();
-
-    // Add touch event listeners for mobile swipe
-    const carousel = this.$refs.carousel;
-    let startX = 0;
-
-    carousel.addEventListener("touchstart", (e) => {
-      startX = e.touches[0].clientX;
-    });
-
-    carousel.addEventListener("touchend", (e) => {
-      const endX = e.changedTouches[0].clientX;
-      const diff = startX - endX;
->>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
 
       if (Math.abs(diff) > 50) {
         // Minimum swipe distance
         if (diff > 0) {
-<<<<<<< HEAD
           this.nextSlide()
         } else {
           this.prevSlide()
@@ -146,49 +106,6 @@ export default {
     },
   },
 }
-=======
-          this.nextSlide();
-        } else {
-          this.prevSlide();
-        }
-      }
-    });
-  },
-  beforeUnmount() {
-    this.stopAutoSlide();
-  },
-  methods: {
-    nextSlide() {
-      this.currentSlide = (this.currentSlide + 1) % this.carouselImages.length;
-      this.restartAutoSlide();
-    },
-    prevSlide() {
-      this.currentSlide =
-        (this.currentSlide - 1 + this.carouselImages.length) %
-        this.carouselImages.length;
-      this.restartAutoSlide();
-    },
-    goToSlide(index) {
-      this.currentSlide = index;
-      this.restartAutoSlide();
-    },
-    startAutoSlide() {
-      this.intervalId = setInterval(() => {
-        this.nextSlide();
-      }, 5000); // Change slide every 5 seconds
-    },
-    stopAutoSlide() {
-      if (this.intervalId) {
-        clearInterval(this.intervalId);
-      }
-    },
-    restartAutoSlide() {
-      this.stopAutoSlide();
-      this.startAutoSlide();
-    },
-  },
-};
->>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
 </script>
 
 <style scoped>

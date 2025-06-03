@@ -42,13 +42,7 @@
           </li>
 
           <li class="nav-item dropdown">
-<<<<<<< HEAD
             <button class="dropdown-toggle" @click="toggleDropdown">24/7 Help</button>
-=======
-            <button class="dropdown-toggle" @click="toggleDropdown">
-              24/7 Help
-            </button>
->>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
             <ul class="dropdown-menu" :class="{ show: dropdownOpen }">
               <li class="dropdown-item">Office line: 07855 464 55 755</li>
               <li>
@@ -71,8 +65,7 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-import logoImage from '@/assets/logo.jpg'
+import logoImage from '@/assets/logo.png'
 
 export default {
   name: 'MainNavbar',
@@ -80,16 +73,6 @@ export default {
     siteName: {
       type: String,
       default: 'ParentPay',
-=======
-import logoImage from "@/assets/logo.jpg";
-
-export default {
-  name: "MainNavbar",
-  props: {
-    siteName: {
-      type: String,
-      default: "ParentPay",
->>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
     },
     cartCount: {
       type: Number,
@@ -99,7 +82,6 @@ export default {
   data() {
     return {
       logoUrl: logoImage,
-<<<<<<< HEAD
       searchQuery: '',
       mobileMenuOpen: false,
       dropdownOpen: false,
@@ -117,44 +99,16 @@ export default {
     },
     toggleDropdown() {
       this.dropdownOpen = !this.dropdownOpen
-=======
-      searchQuery: "",
-      mobileMenuOpen: false,
-      dropdownOpen: false,
-    };
-  },
-  methods: {
-    search() {
-      this.$emit("search", this.searchQuery);
-    },
-    toggleCart() {
-      this.$emit("toggle-cart");
-    },
-    toggleMobileMenu() {
-      this.mobileMenuOpen = !this.mobileMenuOpen;
-    },
-    toggleDropdown() {
-      this.dropdownOpen = !this.dropdownOpen;
->>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
     },
   },
   watch: {
     searchQuery(newQuery) {
-<<<<<<< HEAD
       if (newQuery.trim() === '') {
         this.$emit('clear-search')
       }
     },
   },
 }
-=======
-      if (newQuery.trim() === "") {
-        this.$emit("clear-search");
-      }
-    },
-  },
-};
->>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
 </script>
 
 <style scoped>
@@ -188,11 +142,7 @@ export default {
   color: white;
   font-size: 1.5rem;
   margin-bottom: 0;
-<<<<<<< HEAD
   font-family: 'Luckiest Guy', cursive;
-=======
-  font-family: "Luckiest Guy", cursive;
->>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
 }
 
 .logo {
@@ -362,11 +312,7 @@ a.dropdown-item:hover {
 
   .toggler-icon::before,
   .toggler-icon::after {
-<<<<<<< HEAD
     content: '';
-=======
-    content: "";
->>>>>>> cf9a246d9dc8ab507e632c804ab75590264872cc
     position: absolute;
     width: 100%;
     height: 100%;
