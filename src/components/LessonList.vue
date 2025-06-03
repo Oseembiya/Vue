@@ -296,7 +296,7 @@ export default {
   }
 }
 
-/* sorting controls */
+/* Base sorting controls */
 .sort-controls {
   margin: 3rem 0 2rem 0;
   padding: 0 1rem;
@@ -315,13 +315,15 @@ export default {
   color: var(--color-text);
 }
 
+/* Base sort options - always flex row */
 .sort-options {
-  display: flex;
+  display: flex !important;
   align-items: center;
   gap: 1.5rem;
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
+  flex-direction: row !important; /* Force row layout always */
 }
 
 .sort-group {
@@ -363,7 +365,7 @@ export default {
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
   padding: 2rem 1rem;
-  min-height: 400px; /* Ensure consistent height */
+  min-height: 400px;
 }
 
 /* Pagination Styles */
@@ -461,15 +463,49 @@ export default {
   }
 }
 
-/* Tablet responsive */
-@media (max-width: 991px) {
+/* Large screens (1200px+) - Full layout */
+@media (min-width: 1200px) {
   .sort-options {
-    gap: 1rem;
+    gap: 2rem !important;
+  }
+
+  .sort-select {
+    min-width: 140px;
+  }
+}
+
+/* Desktop/Large Tablet (992px - 1199px) */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .sort-options {
+    gap: 1.5rem !important;
+  }
+
+  .sort-select {
+    min-width: 120px;
+    font-size: 0.95rem;
+  }
+
+  .sort-label {
+    font-size: 0.95rem;
+  }
+}
+
+/* Medium Tablet (768px - 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+  .sort-options {
+    gap: 1rem !important;
+    flex-direction: row !important;
+  }
+
+  .sort-group {
+    flex-direction: row !important;
+    gap: 0.5rem !important;
   }
 
   .sort-select {
     min-width: 100px;
     font-size: 0.9rem;
+    padding: 0.45rem 0.8rem;
   }
 
   .sort-label {
@@ -488,8 +524,8 @@ export default {
   }
 }
 
-/* Mobile responsive */
-@media (max-width: 767px) {
+/* Small Tablet/Large Mobile (576px - 767px) */
+@media (min-width: 576px) and (max-width: 767px) {
   .lesson-container {
     grid-template-columns: 1fr;
     gap: 1rem;
@@ -497,26 +533,30 @@ export default {
   }
 
   .sort-options {
-    gap: 0.75rem;
-    flex-direction: row;
+    gap: 1rem !important;
+    flex-direction: row !important;
     justify-content: center;
+    flex-wrap: wrap;
   }
 
   .sort-group {
-    flex-direction: column;
-    gap: 0.25rem;
+    flex-direction: column !important;
+    gap: 0.25rem !important;
     text-align: center;
+    min-width: 100px;
   }
 
   .sort-select {
-    min-width: 90px;
+    min-width: 100px !important;
     font-size: 0.85rem;
     padding: 0.4rem 0.6rem;
+    width: 100%;
   }
 
   .sort-label {
     font-size: 0.85rem;
     margin-bottom: 0;
+    font-weight: 600;
   }
 
   .section-title {
@@ -538,9 +578,21 @@ export default {
     gap: 0.125rem;
     padding: 0.375rem;
   }
+
+  .pagination-container {
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .pagination-info {
+    align-items: center;
+    text-align: center;
+  }
 }
 
-@media (max-width: 576px) {
+/* Mobile (400px - 575px) */
+@media (min-width: 400px) and (max-width: 575px) {
   .section-title {
     font-size: 1.5rem;
     padding: 0 0.5rem;
@@ -551,17 +603,27 @@ export default {
   }
 
   .sort-options {
-    gap: 0.5rem;
+    gap: 0.75rem !important;
+    flex-direction: row !important;
+  }
+
+  .sort-group {
+    flex-direction: column !important;
+    gap: 0.25rem !important;
+    text-align: center;
+    min-width: 90px;
   }
 
   .sort-select {
-    min-width: 80px;
+    min-width: 90px !important;
     font-size: 0.8rem;
     padding: 0.35rem 0.5rem;
+    width: 100%;
   }
 
   .sort-label {
     font-size: 0.8rem;
+    font-weight: 600;
   }
 
   .pagination-btn {
@@ -579,8 +641,8 @@ export default {
   }
 }
 
-/* Very small screens */
-@media (max-width: 400px) {
+/* Very small screens (below 400px) */
+@media (max-width: 399px) {
   .sort-controls {
     padding: 0 0.5rem;
   }
@@ -590,21 +652,28 @@ export default {
   }
 
   .sort-options {
-    gap: 0.4rem;
+    gap: 0.5rem !important;
+    flex-direction: row !important;
+    justify-content: space-around;
   }
 
   .sort-group {
-    gap: 0.2rem;
+    flex-direction: column !important;
+    gap: 0.2rem !important;
+    text-align: center;
+    min-width: 80px;
   }
 
   .sort-select {
-    min-width: 70px;
+    min-width: 80px !important;
     font-size: 0.75rem;
     padding: 0.3rem 0.4rem;
+    width: 100%;
   }
 
   .sort-label {
     font-size: 0.75rem;
+    font-weight: 600;
   }
 
   .pagination-container {

@@ -301,6 +301,7 @@ export default {
   border-radius: 4px;
   border: 1px solid #ddd;
   width: 100%;
+  font-size: 1.1rem;
   transition: all 0.3s ease;
 }
 
@@ -461,14 +462,13 @@ export default {
 .nav-link {
   color: white;
   text-decoration: none;
-  padding: 0.75rem;
+  padding: 0.5rem;
   display: block;
   font-weight: 600;
   font-size: 1rem;
   transition: all 0.2s ease;
   white-space: nowrap;
 }
-
 .nav-link:hover {
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 3px;
@@ -479,21 +479,21 @@ export default {
   position: relative;
 }
 
+.dropdown:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
 .dropdown-toggle {
   background: transparent;
   color: white;
   border: none;
-  padding: 0.75rem;
+  padding: 0.5rem;
   cursor: pointer;
   font-weight: 600;
   font-size: 1rem;
   transition: all 0.2s ease;
   white-space: nowrap;
-}
-
-.dropdown-toggle:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
 }
 
 .dropdown-menu {
@@ -629,7 +629,7 @@ a.dropdown-item:hover {
   padding: 0.75rem 0;
   display: block;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1rem;
   transition: all 0.2s ease;
 }
 
@@ -642,13 +642,13 @@ a.dropdown-item:hover {
   background: transparent;
   color: white;
   border: 1px solid white;
-  padding: 0.75rem 1rem;
+  padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
   font-weight: 600;
   width: 100%;
   text-align: left;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .mobile-dropdown-menu {
