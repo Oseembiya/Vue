@@ -240,7 +240,7 @@ export default {
   left: 0;
   right: 0;
   z-index: 1000;
-  height: var(--navbar-height, 80px);
+  height: 65px;
   display: flex;
   align-items: center;
 }
