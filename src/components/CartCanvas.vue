@@ -452,6 +452,9 @@ export default {
   position: relative;
   margin-bottom: 0;
   flex-shrink: 0;
+  width: 100%;
+  max-width: 300px;
+  min-width: 200px;
 }
 
 .cart-image {
@@ -459,6 +462,7 @@ export default {
   height: 200px;
   object-fit: cover;
   border-radius: 10px;
+  display: block;
 }
 
 .delete-btn {
