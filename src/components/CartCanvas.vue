@@ -1,11 +1,14 @@
 <template>
-  <div class="cart-overlay" @click="closeCart">
+  <div class="cart-overlay" @click="closeCart" @keydown.esc="closeCart">
     <div
       class="cart-canvas"
       @click.stop
+      @touchmove.stop
       tabindex="-1"
       id="cartCanvas"
       aria-labelledby="cartCanvasLabel"
+      role="dialog"
+      aria-modal="true"
     >
       <div class="canvas-header">
         <h5 class="canvas-title" id="cartCanvasLabel">
@@ -259,6 +262,21 @@ export default {
       isPhoneValid: false,
     }
   },
+  mounted() {
+    // Prevent background scrolling when cart is open
+    document.body.style.overflow = 'hidden'
+    document.body.style.paddingRight = this.getScrollbarWidth() + 'px'
+
+    // Focus the cart for accessibility
+    this.$nextTick(() => {
+      this.$el.querySelector('#cartCanvas').focus()
+    })
+  },
+  beforeUnmount() {
+    // Restore background scrolling when cart is closed
+    document.body.style.overflow = ''
+    document.body.style.paddingRight = ''
+  },
   computed: {
     isSubmitEnabled() {
       return (
@@ -316,6 +334,22 @@ export default {
 
       this.$emit('submit-order', orderData)
     },
+    getScrollbarWidth() {
+      // Create a temporary div to measure scrollbar width
+      const outer = document.createElement('div')
+      outer.style.visibility = 'hidden'
+      outer.style.overflow = 'scroll'
+      outer.style.msOverflowStyle = 'scrollbar'
+      document.body.appendChild(outer)
+
+      const inner = document.createElement('div')
+      outer.appendChild(inner)
+
+      const scrollbarWidth = outer.offsetWidth - inner.offsetWidth
+      outer.parentNode.removeChild(outer)
+
+      return scrollbarWidth
+    },
   },
 }
 </script>
@@ -333,6 +367,8 @@ export default {
   align-items: center;
   justify-content: center;
   backdrop-filter: blur(5px);
+  overflow: hidden;
+  touch-action: none;
 }
 
 .cart-canvas {
@@ -342,17 +378,9 @@ export default {
   flex-direction: column;
   overflow: hidden;
   color: #333;
+  width: 100%;
+  height: 100%;
 }
-
-/* Desktop: Full width modal */
-@media (min-width: 1024px) {
-  .cart-canvas {
-    width: 100%;
-    height: 100%;
-  }
-}
-
-/* Mobile */
 
 .canvas-header {
   background: #0d6efd;
@@ -398,6 +426,8 @@ export default {
   flex: 1;
   padding: 2rem;
   overflow-y: auto;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
 }
 
 .cart-content {
@@ -494,6 +524,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  position: relative;
 }
 
 .item-title {
@@ -516,11 +547,11 @@ export default {
 .item-quantity {
   background: #667eea;
   color: white;
-  padding: 0.5rem 1rem;
+  padding: 0.2rem 0.6rem;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
-  min-width: 40px;
+  min-width: 30px;
   text-align: center;
 }
 
@@ -528,7 +559,9 @@ export default {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin: 0.5rem 0;
+  margin-top: auto;
+  align-self: flex-end;
+  margin-bottom: 0;
 }
 
 .quantity-btn {
@@ -538,8 +571,8 @@ export default {
   cursor: pointer;
   padding: 0.5rem;
   border-radius: 8px;
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
