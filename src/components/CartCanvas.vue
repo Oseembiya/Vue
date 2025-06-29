@@ -403,11 +403,13 @@ export default {
 .cart-content {
   display: grid;
   gap: 2rem;
+  align-items: start;
 }
 
 @media (min-width: 1024px) {
   .cart-content {
     grid-template-columns: 1fr 400px;
+    align-items: start;
   }
 }
 
@@ -566,6 +568,8 @@ export default {
   border-radius: 15px;
   padding: 1.5rem;
   border: 1px solid #e9ecef;
+  height: fit-content;
+  align-self: start;
 }
 
 .checkout-form {
