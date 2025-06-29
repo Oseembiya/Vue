@@ -431,8 +431,8 @@ export default {
 
 @media (min-width: 768px) {
   .cart-grid {
-    /* Remove this line if it exists */
-    /* grid-template-rows: repeat(auto-fit, minmax(300px, 1fr)); */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
   }
 }
 
@@ -444,6 +444,7 @@ export default {
   transition: all 0.3s ease;
   box-shadow: none;
   gap: 1rem;
+
   /* Remove any height properties like height, min-height, max-height */
 }
 
