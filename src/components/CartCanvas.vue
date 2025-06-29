@@ -325,8 +325,8 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  height: 100%;
+  width: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1050;
   display: flex;
@@ -337,11 +337,9 @@ export default {
 
 .cart-canvas {
   background: white;
-  border-radius: 20px;
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
-  max-height: 90vh;
   overflow: hidden;
   color: #333;
 }
@@ -349,27 +347,12 @@ export default {
 /* Desktop: Full width modal */
 @media (min-width: 1024px) {
   .cart-canvas {
-    width: 95vw;
-    height: 85vh;
-  }
-}
-
-/* Tablet */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .cart-canvas {
-    width: 90vw;
-    height: 80vh;
+    width: 100%;
+    height: 100%;
   }
 }
 
 /* Mobile */
-@media (max-width: 767px) {
-  .cart-canvas {
-    width: 95vw;
-    height: 90vh;
-    border-radius: 15px;
-  }
-}
 
 .canvas-header {
   background: #0d6efd;
@@ -446,32 +429,31 @@ export default {
 
 @media (min-width: 768px) {
   .cart-grid {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    /* Remove this line if it exists */
+    /* grid-template-rows: repeat(auto-fit, minmax(300px, 1fr)); */
   }
 }
 
 .cart-item {
-  background: #f8f9fa;
-  border-radius: 15px;
+  display: flex;
   padding: 1rem;
-  border: 1px solid #e9ecef;
+  border: none;
+  border-bottom: 1px solid #e9ecef;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.cart-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: none;
+  gap: 1rem;
+  /* Remove any height properties like height, min-height, max-height */
 }
 
 .cart-item-image {
   position: relative;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
+  flex-shrink: 0;
 }
 
 .cart-image {
   width: 100%;
-  height: 120px;
+  height: 200px;
   object-fit: cover;
   border-radius: 10px;
 }
@@ -501,6 +483,10 @@ export default {
 
 .cart-item-details {
   text-align: left;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .item-title {
