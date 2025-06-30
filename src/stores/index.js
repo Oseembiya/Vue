@@ -1,5 +1,14 @@
 import { defineStore } from 'pinia'
 
+// Cache configuration
+const CACHE_KEYS = {
+  LESSONS: 'parentpay_lessons',
+  LESSONS_TIMESTAMP: 'parentpay_lessons_timestamp',
+  CART_ITEMS: 'parentpay_cart_items',
+}
+
+const CACHE_DURATION = 30 * 60 * 1000 // 30 minutes in milliseconds
+
 export const useAppStore = defineStore('app', {
   state: () => ({
     siteName: 'ParentPay',
@@ -15,6 +24,7 @@ export const useAppStore = defineStore('app', {
     showCart: false,
     loading: false,
     error: null,
+    cacheStatus: 'unknown', // 'fresh', 'stale', 'empty'
   }),
 
   getters: {
@@ -36,12 +46,104 @@ export const useAppStore = defineStore('app', {
   },
 
   actions: {
-    async fetchLessons() {
+    // Cache Helper Methods
+    getCachedLessons() {
+      try {
+        const cachedData = localStorage.getItem(CACHE_KEYS.LESSONS)
+        const cachedTimestamp = localStorage.getItem(CACHE_KEYS.LESSONS_TIMESTAMP)
+
+        if (!cachedData || !cachedTimestamp) {
+          this.cacheStatus = 'empty'
+          return null
+        }
+
+        const timestamp = parseInt(cachedTimestamp, 10)
+        const now = Date.now()
+        const isExpired = now - timestamp > CACHE_DURATION
+
+        if (isExpired) {
+          this.cacheStatus = 'stale'
+          return null
+        }
+
+        this.cacheStatus = 'fresh'
+        return JSON.parse(cachedData)
+      } catch (error) {
+        console.error('Error reading cached lessons:', error)
+        this.clearLessonsCache()
+        return null
+      }
+    },
+
+    setCachedLessons(lessons) {
+      try {
+        localStorage.setItem(CACHE_KEYS.LESSONS, JSON.stringify(lessons))
+        localStorage.setItem(CACHE_KEYS.LESSONS_TIMESTAMP, Date.now().toString())
+        this.cacheStatus = 'fresh'
+        console.log('Lessons cached successfully')
+      } catch (error) {
+        console.error('Error caching lessons:', error)
+      }
+    },
+
+    clearLessonsCache() {
+      try {
+        localStorage.removeItem(CACHE_KEYS.LESSONS)
+        localStorage.removeItem(CACHE_KEYS.LESSONS_TIMESTAMP)
+        this.cacheStatus = 'empty'
+        console.log('Lessons cache cleared')
+      } catch (error) {
+        console.error('Error clearing lessons cache:', error)
+      }
+    },
+
+    loadCartFromStorage() {
+      try {
+        const cachedCart = localStorage.getItem(CACHE_KEYS.CART_ITEMS)
+        if (cachedCart) {
+          this.cartItems = JSON.parse(cachedCart)
+          console.log('Cart restored from localStorage:', this.cartItems.length, 'items')
+        }
+      } catch (error) {
+        console.error('Error loading cart from storage:', error)
+        this.cartItems = []
+      }
+    },
+
+    saveCartToStorage() {
+      try {
+        localStorage.setItem(CACHE_KEYS.CART_ITEMS, JSON.stringify(this.cartItems))
+      } catch (error) {
+        console.error('Error saving cart to storage:', error)
+      }
+    },
+
+    clearCartFromStorage() {
+      try {
+        localStorage.removeItem(CACHE_KEYS.CART_ITEMS)
+      } catch (error) {
+        console.error('Error clearing cart from storage:', error)
+      }
+    },
+
+    async fetchLessons(forceRefresh = false) {
       this.loading = true
       this.error = null
 
+      // Check cache first unless forced refresh
+      if (!forceRefresh) {
+        const cachedLessons = this.getCachedLessons()
+        if (cachedLessons) {
+          console.log('Using cached lessons data ✅')
+          this.lessons = cachedLessons
+          this.loading = false
+          return
+        }
+      }
+
+      // Fetch from API
       try {
-        console.log('Fetching lessons from:', `${this.apiBaseUrl}/lessons`)
+        console.log('Fetching lessons from API:', `${this.apiBaseUrl}/lessons`)
         const response = await fetch(`${this.apiBaseUrl}/lessons`)
 
         if (!response.ok) {
@@ -49,15 +151,62 @@ export const useAppStore = defineStore('app', {
         }
 
         const data = await response.json()
-        console.log('Fetched lessons:', data)
+        console.log('Fetched lessons from API:', data)
+
+        // Update state and cache
         this.lessons = data
+        this.setCachedLessons(data)
       } catch (error) {
         console.error('Error fetching lessons:', error)
         this.error = 'Failed to fetch lessons from server'
-        // Use sample data if API fails
-        this.loadSampleData()
+
+        // Try to use stale cache as fallback
+        const staleCache = localStorage.getItem(CACHE_KEYS.LESSONS)
+        if (staleCache) {
+          console.log('Using stale cached data as fallback')
+          this.lessons = JSON.parse(staleCache)
+          this.error = 'Using cached data (connection issues)'
+        } else {
+          // Use sample data as last resort
+          this.loadSampleData()
+        }
       } finally {
         this.loading = false
+      }
+    },
+
+    // Force refresh from API (bypass cache)
+    async refreshLessons() {
+      console.log('Force refreshing lessons data...')
+      await this.fetchLessons(true)
+    },
+
+    // Initialize store - call this when app starts
+    async initializeStore() {
+      console.log('Initializing ParentPay store...')
+
+      // Load cart from localStorage first
+      this.loadCartFromStorage()
+
+      // Then fetch lessons (will use cache if available)
+      await this.fetchLessons()
+
+      console.log('Store initialized successfully')
+    },
+
+    // Get cache information for debugging
+    getCacheInfo() {
+      const hasCache = localStorage.getItem(CACHE_KEYS.LESSONS) !== null
+      const timestamp = localStorage.getItem(CACHE_KEYS.LESSONS_TIMESTAMP)
+      const cacheAge = timestamp ? Date.now() - parseInt(timestamp, 10) : 0
+      const cacheValid = cacheAge < CACHE_DURATION
+
+      return {
+        hasCache,
+        cacheAge: Math.round(cacheAge / 1000 / 60), // minutes
+        cacheValid,
+        status: this.cacheStatus,
+        expiresIn: cacheValid ? Math.round((CACHE_DURATION - cacheAge) / 1000 / 60) : 0,
       }
     },
 
@@ -134,6 +283,7 @@ export const useAppStore = defineStore('app', {
       if (lessonIndex !== -1 && this.lessons[lessonIndex].slots > 0) {
         this.lessons[lessonIndex].slots--
         this.cartItems.push(lessonCopy)
+        this.saveCartToStorage() // Save cart to localStorage
       }
     },
 
@@ -145,6 +295,7 @@ export const useAppStore = defineStore('app', {
           this.lessons[lessonIndex].slots++
         }
         this.cartItems.splice(cartIndex, 1)
+        this.saveCartToStorage() // Save cart to localStorage
       }
     },
 
@@ -156,6 +307,7 @@ export const useAppStore = defineStore('app', {
         lesson.slots--
         // Add another instance to cart
         this.cartItems.push({ ...lesson })
+        this.saveCartToStorage() // Save cart to localStorage
       }
     },
 
@@ -168,6 +320,7 @@ export const useAppStore = defineStore('app', {
           this.lessons[lessonIndex].slots++
         }
         this.cartItems.splice(cartIndex, 1)
+        this.saveCartToStorage() // Save cart to localStorage
       }
     },
 
@@ -217,6 +370,7 @@ export const useAppStore = defineStore('app', {
 
         // Clear cart after successful order
         this.cartItems = []
+        this.clearCartFromStorage() // Clear cart from localStorage
         this.closeCart()
 
         return { success: true, data: result }
