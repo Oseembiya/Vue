@@ -478,6 +478,14 @@ export default {
   /* Remove any height properties like height, min-height, max-height */
 }
 
+/* Small devices - Display cart-item children in columns */
+@media (max-width: 767px) {
+  .cart-item {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
 .cart-item-image {
   position: relative;
   margin-bottom: 0;
