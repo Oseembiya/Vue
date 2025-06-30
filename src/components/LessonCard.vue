@@ -134,6 +134,7 @@ export default {
   padding: 0.5rem 1rem;
   cursor: pointer;
   font-size: 0.9rem;
+  touch-action: manipulation;
 }
 
 .add-button:hover {
