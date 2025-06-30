@@ -424,7 +424,7 @@ export default {
 
 .canvas-body {
   flex: 1;
-  padding: 2rem;
+  padding: 1rem;
   overflow-y: auto;
   touch-action: pan-y;
   -webkit-overflow-scrolling: touch;
