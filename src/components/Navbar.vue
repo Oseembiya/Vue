@@ -101,7 +101,7 @@
           <!-- Cart in mobile menu (only show on small devices where cart button is hidden) -->
           <li class="mobile-nav-item mobile-cart-item">
             <button type="button" class="mobile-cart-button" @click="toggleCart">
-              <i class="fa-solid fa-cart-shopping orange"></i> Cart ({{ cartCount }})
+              <i class="fa-solid fa-cart-shopping orange"></i> Cart {{ cartCount }}
             </button>
           </li>
         </ul>
