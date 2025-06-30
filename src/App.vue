@@ -26,7 +26,7 @@
             {{
               store.error.includes('cached')
                 ? 'Using cached data due to connection issues.'
-                : 'Using sample data for demonstration.'
+                : 'Please check your internet connection and try refreshing the page.'
             }}
           </p>
         </div>
@@ -64,6 +64,12 @@
         alt="Enlarged view"
       />
     </div>
+
+    <Alert
+      v-if="orderPlaced"
+      message="🎉 Your order has been placed successfully!"
+      @close="orderPlaced = false"
+    />
   </div>
 </template>
 
@@ -74,6 +80,7 @@ import CarouselHero from './components/CarouselHero.vue'
 import LessonList from './components/LessonList.vue'
 import CartCanvas from './components/CartCanvas.vue'
 import FooterSection from './components/FooterSection.vue'
+import Alert from './components/Alert.vue'
 
 export default {
   name: 'App',
@@ -83,6 +90,7 @@ export default {
     LessonList,
     CartCanvas,
     FooterSection,
+    Alert,
   },
   setup() {
     const store = useAppStore()
@@ -95,6 +103,7 @@ export default {
         'https://images.unsplash.com/photo-1581078426770-6d336e5de7bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1050&q=80',
         'https://images.unsplash.com/photo-1594608661623-aa0bd3a69d98?ixlib=rb-4.0.3&auto=format&fit=crop&w=1050&q=80',
       ],
+      orderPlaced: false,
     }
   },
   async mounted() {
@@ -119,7 +128,8 @@ export default {
       const result = await this.store.processOrder(orderData)
 
       if (result.success) {
-        alert('🎉 Your order has been placed successfully!')
+        this.orderPlaced = true
+        console.log('Order placed successfully:', this.orderPlaced)
       } else {
         alert(`❌ Order failed: ${result.error}`)
       }
