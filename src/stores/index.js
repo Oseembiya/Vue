@@ -80,7 +80,6 @@ export const useAppStore = defineStore('app', {
         localStorage.setItem(CACHE_KEYS.LESSONS, JSON.stringify(lessons))
         localStorage.setItem(CACHE_KEYS.LESSONS_TIMESTAMP, Date.now().toString())
         this.cacheStatus = 'fresh'
-        console.log('Lessons cached successfully')
       } catch (error) {
         console.error('Error caching lessons:', error)
       }
@@ -143,7 +142,6 @@ export const useAppStore = defineStore('app', {
 
       // Fetch from API
       try {
-        console.log('Fetching lessons from API:', `${this.apiBaseUrl}/lessons`)
         const response = await fetch(`${this.apiBaseUrl}/lessons`)
 
         if (!response.ok) {
@@ -151,7 +149,6 @@ export const useAppStore = defineStore('app', {
         }
 
         const data = await response.json()
-        console.log('Fetched lessons from API:', data)
 
         // Update state and cache
         this.lessons = data
