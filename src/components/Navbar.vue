@@ -57,8 +57,19 @@
       </button>
 
       <!-- Mobile/Tablet toggle button (below 992px) -->
-      <button class="nav-toggler" type="button" @click="toggleMobileMenu">
-        <span class="toggler-icon"></span>
+      <button
+        class="nav-toggler"
+        type="button"
+        @click="toggleMobileMenu"
+        :class="{ active: mobileMenuOpen }"
+        :aria-label="mobileMenuOpen ? 'Close menu' : 'Open menu'"
+        :aria-expanded="mobileMenuOpen"
+      >
+        <span class="toggler-icon">
+          <span class="line line-1"></span>
+          <span class="line line-2"></span>
+          <span class="line line-3"></span>
+        </span>
       </button>
 
       <!-- Mobile/Tablet menu (below 992px) -->
@@ -561,66 +572,120 @@ a.dropdown-item:hover {
 .nav-toggler {
   display: none;
   background: transparent;
-  border: none;
+  border: 2px solid transparent;
   color: white;
-  font-size: 1.5rem;
   cursor: pointer;
-  padding: 0.25rem;
+  padding: 0.5rem;
   margin-left: 0.5rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-toggler:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.nav-toggler:focus {
+  outline: none;
+  border-color: #ff8800;
+  box-shadow: 0 0 0 2px rgba(255, 136, 0, 0.3);
 }
 
 .toggler-icon {
   display: block;
-  width: 25px;
-  height: 3px;
-  background-color: white;
+  width: 22px;
+  height: 16px;
   position: relative;
-  transition: all 0.3s ease;
+  transform: rotate(0deg);
+  transition: 0.5s ease-in-out;
 }
 
-.toggler-icon::before,
-.toggler-icon::after {
-  content: '';
+.line {
+  display: block;
   position: absolute;
+  height: 2px;
   width: 100%;
-  height: 100%;
-  background-color: white;
+  background: white;
+  border-radius: 2px;
+  opacity: 1;
   left: 0;
-  transition: all 0.3s ease;
+  transform: rotate(0deg);
+  transition: 0.3s ease-in-out;
 }
 
-.toggler-icon::before {
-  top: -8px;
+.line-1 {
+  top: 0px;
+  transform-origin: left center;
 }
 
-.toggler-icon::after {
-  bottom: -8px;
+.line-2 {
+  top: 7px;
+  transform-origin: left center;
+}
+
+.line-3 {
+  top: 14px;
+  transform-origin: left center;
+}
+
+/* Animation when active (menu open) */
+.nav-toggler.active .line-1 {
+  transform: rotate(45deg);
+  top: -1px;
+  left: 4px;
+}
+
+.nav-toggler.active .line-2 {
+  width: 0%;
+  opacity: 0;
+}
+
+.nav-toggler.active .line-3 {
+  transform: rotate(-45deg);
+  top: 15px;
+  left: 4px;
 }
 
 /* Mobile Navigation */
 .mobile-nav {
-  display: none;
   position: absolute;
   top: 100%;
-  left: 0;
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  width: 100vw;
   background-color: #0d6efd;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
   z-index: 999;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
 }
 
 .mobile-nav.show {
-  display: block;
+  max-height: 400px;
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 .mobile-nav-links {
   list-style: none;
-  margin: 0;
+  margin: 0 auto;
   padding: 1rem;
+  max-width: 1200px;
+  width: 100%;
 }
 
 .mobile-nav-item {
   margin: 0.5rem 0;
+  max-width: 110px;
 }
 
 .mobile-nav-link {
@@ -647,6 +712,7 @@ a.dropdown-item:hover {
   cursor: pointer;
   font-weight: 600;
   width: 100%;
+  max-width: 200px;
   text-align: left;
   font-size: 1rem;
 }
@@ -688,6 +754,7 @@ a.mobile-dropdown-item:hover {
   cursor: pointer;
   font-weight: 600;
   width: 100%;
+  max-width: 200px;
   text-align: left;
   font-size: 1.1rem;
 }
@@ -716,7 +783,7 @@ a.mobile-dropdown-item:hover {
   }
 
   .nav-toggler {
-    display: block;
+    display: flex;
   }
 
   .desktop-search {
@@ -751,7 +818,7 @@ a.mobile-dropdown-item:hover {
   }
 
   .nav-toggler {
-    display: block;
+    display: flex;
   }
 
   .container {
