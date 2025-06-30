@@ -22,7 +22,13 @@
       <div v-else-if="store.error" class="error-container section-spacing">
         <div class="error-message">
           <h3>⚠️ {{ store.error }}</h3>
-          <p>Using sample data for demonstration.</p>
+          <p>
+            {{
+              store.error.includes('cached')
+                ? 'Using cached data due to connection issues.'
+                : 'Using sample data for demonstration.'
+            }}
+          </p>
         </div>
       </div>
 
@@ -92,7 +98,7 @@ export default {
     }
   },
   async mounted() {
-    await this.store.fetchLessons()
+    await this.store.initializeStore()
     document.addEventListener('keydown', this.handleEscKey)
   },
   beforeUnmount() {
