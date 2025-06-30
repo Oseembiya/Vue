@@ -47,7 +47,7 @@ export const useAppStore = defineStore('app', {
 
   actions: {
     // Cache Helper Methods
-    getCachedLessons() {
+    getCachedLessons(allowStale = false) {
       try {
         const cachedData = localStorage.getItem(CACHE_KEYS.LESSONS)
         const cachedTimestamp = localStorage.getItem(CACHE_KEYS.LESSONS_TIMESTAMP)
@@ -61,12 +61,12 @@ export const useAppStore = defineStore('app', {
         const now = Date.now()
         const isExpired = now - timestamp > CACHE_DURATION
 
-        if (isExpired) {
+        if (isExpired && !allowStale) {
           this.cacheStatus = 'stale'
           return null
         }
 
-        this.cacheStatus = 'fresh'
+        this.cacheStatus = isExpired ? 'stale' : 'fresh'
         return JSON.parse(cachedData)
       } catch (error) {
         console.error('Error reading cached lessons:', error)
@@ -155,17 +155,20 @@ export const useAppStore = defineStore('app', {
         this.setCachedLessons(data)
       } catch (error) {
         console.error('Error fetching lessons:', error)
-        this.error = 'Failed to fetch lessons from server'
 
-        // Try to use stale cache as fallback
-        const staleCache = localStorage.getItem(CACHE_KEYS.LESSONS)
-        if (staleCache) {
-          console.log('Using stale cached data as fallback')
-          this.lessons = JSON.parse(staleCache)
-          this.error = 'Using cached data (connection issues)'
+        // Try to use any cached data (including stale) as fallback
+        const cachedLessons = this.getCachedLessons(true) // Allow stale cache
+        if (cachedLessons) {
+          console.log('Using cached data as fallback (may be stale)')
+          this.lessons = cachedLessons
+          this.error =
+            this.cacheStatus === 'stale'
+              ? 'Using cached data (connection issues, data may be outdated)'
+              : 'Using cached data (connection issues)'
         } else {
-          // Use sample data as last resort
-          this.loadSampleData()
+          // No cached data available
+          this.error = 'Failed to fetch lessons and no cached data available'
+          this.lessons = []
         }
       } finally {
         this.loading = false
@@ -205,52 +208,6 @@ export const useAppStore = defineStore('app', {
         status: this.cacheStatus,
         expiresIn: cacheValid ? Math.round((CACHE_DURATION - cacheAge) / 1000 / 60) : 0,
       }
-    },
-
-    loadSampleData() {
-      console.log('Loading sample data as fallback')
-      this.lessons = [
-        {
-          id: 1,
-          subject: 'Mathematics',
-          location: 'Room 101',
-          slots: 10,
-          price: 25,
-          rating: 4,
-          image:
-            'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-        },
-        {
-          id: 2,
-          subject: 'Science',
-          location: 'Lab 201',
-          slots: 8,
-          price: 30,
-          rating: 5,
-          image:
-            'https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-        },
-        {
-          id: 3,
-          subject: 'English',
-          location: 'Library',
-          slots: 15,
-          price: 20,
-          rating: 3,
-          image:
-            'https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-        },
-        {
-          id: 4,
-          subject: 'Art',
-          location: 'Studio 302',
-          slots: 2,
-          price: 35,
-          rating: 4,
-          image:
-            'https://images.unsplash.com/photo-1513364776144-60967b0f800f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-        },
-      ]
     },
 
     handleSearch(query) {
