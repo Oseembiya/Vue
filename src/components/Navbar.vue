@@ -278,7 +278,10 @@ export default {
   color: white;
   font-size: 1.5rem;
   margin-bottom: 0;
-  font-family: 'Luckiest Guy', cursive;
+  font-family: 'Luckiest Guy', 'Arial Black', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 900;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.5px;
 }
 
 .logo {
@@ -685,7 +688,7 @@ a.dropdown-item:hover {
 
 .mobile-nav-item {
   margin: 0.5rem 0;
-  max-width: 110px;
+  max-width: 130px;
 }
 
 .mobile-nav-link {
@@ -837,7 +840,8 @@ a.mobile-dropdown-item:hover {
 /* Very small screens (576px and below) */
 @media (max-width: 576px) {
   .navbar-brand .site-name {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+    letter-spacing: 0.3px;
   }
 
   .logo {
@@ -865,7 +869,9 @@ a.mobile-dropdown-item:hover {
 /* Extra small screens (400px and below) */
 @media (max-width: 400px) {
   .navbar-brand .site-name {
-    font-size: 1rem;
+    font-size: 1.1rem;
+    letter-spacing: 0.2px;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4);
   }
 
   .logo {
