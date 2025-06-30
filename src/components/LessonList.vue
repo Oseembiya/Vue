@@ -632,8 +632,16 @@ export default {
     font-size: 0.75rem;
   }
 
+  .pagination-container {
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
   .pagination-info {
     font-size: 0.75rem;
+    align-items: center;
+    text-align: center;
   }
 
   .items-info {
@@ -678,6 +686,14 @@ export default {
 
   .pagination-container {
     padding: 0.5rem;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .pagination-info {
+    align-items: center;
+    text-align: center;
   }
 }
 </style>
