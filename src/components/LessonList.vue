@@ -338,16 +338,37 @@ export default {
   padding: 0.5rem 1rem;
   border-radius: 0.375rem;
   min-height: 44px;
-  border: 1px solid #ced4da;
+  border: 2px solid #ced4da;
   background-color: white;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 2.5rem;
   min-width: 120px;
-  transition: border-color 0.2s ease;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  color: #374151;
+  font-weight: 500;
+}
+
+.sort-select:hover {
+  border-color: #007bff;
+  background-color: #f8f9fa;
 }
 
 .sort-select:focus {
   outline: none;
   border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+  background-color: #fff;
+}
+
+.sort-select:active {
+  background-color: #e9ecef;
 }
 
 .sort-label {
@@ -506,6 +527,10 @@ export default {
     min-width: 100px;
     font-size: 0.9rem;
     padding: 0.45rem 0.8rem;
+    padding-right: 2rem;
+    border: 2px solid #007bff;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   .sort-label {
@@ -550,7 +575,11 @@ export default {
     min-width: 100px !important;
     font-size: 0.85rem;
     padding: 0.4rem 0.6rem;
+    padding-right: 2rem !important;
     width: 100%;
+    border: 2px solid #007bff !important;
+    background-color: #fff !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
   }
 
   .sort-label {
@@ -618,7 +647,12 @@ export default {
     min-width: 90px !important;
     font-size: 0.8rem;
     padding: 0.35rem 0.5rem;
+    padding-right: 1.8rem !important;
     width: 100%;
+    border: 2px solid #007bff !important;
+    background-color: #fff !important;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2) !important;
+    min-height: 40px !important;
   }
 
   .sort-label {
@@ -676,7 +710,12 @@ export default {
     min-width: 80px !important;
     font-size: 0.75rem;
     padding: 0.3rem 0.4rem;
+    padding-right: 1.5rem !important;
     width: 100%;
+    border: 2px solid #007bff !important;
+    background-color: #fff !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25) !important;
+    min-height: 36px !important;
   }
 
   .sort-label {
