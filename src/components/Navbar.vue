@@ -245,13 +245,13 @@ export default {
 /* Navbar Styling */
 .navbar {
   background-color: #0d6efd;
-  padding: 0.75rem 1rem;
+  padding: 0.85rem 1rem;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
-  height: 65px;
+  height: var(--navbar-height);
   display: flex;
   align-items: center;
 }
