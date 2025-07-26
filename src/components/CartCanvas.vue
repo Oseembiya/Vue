@@ -386,6 +386,9 @@ export default {
   gap: 2rem;
   align-items: start;
   height: 100%;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 @media (min-width: 1024px) {
@@ -412,7 +415,6 @@ export default {
 .cart-grid {
   display: grid;
   gap: 1rem;
-  margin-bottom: 1.5rem;
 }
 
 
@@ -434,6 +436,10 @@ export default {
   .cart-item {
     flex-direction: column;
     align-items: center;
+  }
+
+  .cart-item-details {
+    width: 100%;
   }
 }
 
