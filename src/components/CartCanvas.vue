@@ -10,60 +10,51 @@
       role="dialog"
       aria-modal="true"
     >
-      <div class="canvas-header">
-        <h5 class="canvas-title" id="cartCanvasLabel">
-          <i class="fa-solid fa-shopping-cart"></i>
-          Your Cart ({{ groupedCartItems.length }}
-          {{ groupedCartItems.length === 1 ? 'item' : 'items' }})
-        </h5>
-        <button type="button" class="close-button" @click="closeCart" aria-label="Close">
-          <i class="fa-solid fa-times"></i>
-        </button>
-      </div>
-
       <div class="canvas-body">
         <!-- Display Cart Items or "Cart is empty" message -->
         <div v-if="cartItems.length > 0" class="cart-content">
           <div class="cart-items-section">
             <h6 class="section-title">Your Selected Lessons</h6>
-            <div class="cart-grid">
-              <div v-for="item in groupedCartItems" :key="item.lesson.id" class="cart-item">
-                <div class="cart-item-image">
-                  <img
-                    :src="`${apiBaseUrl}/${item.lesson.image}`"
-                    alt="Lesson image"
-                    class="cart-image"
-                  />
-                  <button
-                    class="delete-btn"
-                    @click="removeItem(item.lesson.id)"
-                    title="Remove item"
-                  >
-                    <i class="fa-solid fa-trash-can"></i>
-                  </button>
-                </div>
-                <div class="cart-item-details">
-                  <h6 class="item-title">{{ item.lesson.subject }}</h6>
-                  <p class="item-location">
-                    <i class="fa-solid fa-map-marker-alt"></i>
-                    {{ item.lesson.location }}
-                  </p>
-                  <p class="item-price">
-                    <i class="fa-solid fa-pound-sign"></i>
-                    £{{ item.lesson.price }} each
-                  </p>
-                  <div class="quantity-controls">
+            <div class="cart-items-container">
+              <div class="cart-grid">
+                <div v-for="item in groupedCartItems" :key="item.lesson.id" class="cart-item">
+                  <div class="cart-item-image">
+                    <img
+                      :src="`${apiBaseUrl}/${item.lesson.image}`"
+                      alt="Lesson image"
+                      class="cart-image"
+                    />
                     <button
-                      class="quantity-btn"
-                      @click="decreaseQuantity(item.lesson.id)"
-                      :disabled="item.quantity <= 1"
+                      class="delete-btn"
+                      @click="removeItem(item.lesson.id)"
+                      title="Remove item"
                     >
-                      <i class="fa-solid fa-minus"></i>
+                      <i class="fa-solid fa-trash-can"></i>
                     </button>
-                    <span class="item-quantity">{{ item.quantity }}</span>
-                    <button class="quantity-btn" @click="increaseQuantity(item.lesson.id)">
-                      <i class="fa-solid fa-plus"></i>
-                    </button>
+                  </div>
+                  <div class="cart-item-details">
+                    <h6 class="item-title">{{ item.lesson.subject }}</h6>
+                    <p class="item-location">
+                      <i class="fa-solid fa-map-marker-alt"></i>
+                      {{ item.lesson.location }}
+                    </p>
+                    <p class="item-price">
+                      <i class="fa-solid fa-pound-sign"></i>
+                      £{{ item.lesson.price }} each
+                    </p>
+                    <div class="quantity-controls">
+                      <button
+                        class="quantity-btn"
+                        @click="decreaseQuantity(item.lesson.id)"
+                        :disabled="item.quantity <= 1"
+                      >
+                        <i class="fa-solid fa-minus"></i>
+                      </button>
+                      <span class="item-quantity">{{ item.quantity }}</span>
+                      <button class="quantity-btn" @click="increaseQuantity(item.lesson.id)">
+                        <i class="fa-solid fa-plus"></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -357,9 +348,9 @@ export default {
 <style scoped>
 .cart-overlay {
   position: fixed;
-  top: 0;
+  top: var(--navbar-height); /* Position below navbar instead of top: 0 */
   left: 0;
-  height: 100%;
+  height: calc(100vh - var(--navbar-height)); /* Adjust height to account for navbar */
   width: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1050;
@@ -379,47 +370,7 @@ export default {
   overflow: hidden;
   color: #333;
   width: 100%;
-  height: 100%;
-}
-
-.canvas-header {
-  background: #0d6efd;
-  backdrop-filter: blur(10px);
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.canvas-title {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: white;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.close-button {
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
-  color: white;
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-}
-
-.close-button:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: scale(1.1);
+  height: 100%; /* Optional: limit maximum width */
 }
 
 .canvas-body {
@@ -434,6 +385,7 @@ export default {
   display: grid;
   gap: 2rem;
   align-items: start;
+  height: 100%;
 }
 
 @media (min-width: 1024px) {
@@ -441,6 +393,10 @@ export default {
     grid-template-columns: 1fr 400px;
     align-items: start;
   }
+}
+
+.cart-items-section {
+  height: 100%;
 }
 
 .section-title {
@@ -459,12 +415,7 @@ export default {
   margin-bottom: 1.5rem;
 }
 
-@media (min-width: 768px) {
-  .cart-grid {
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-  }
-}
+
 
 .cart-item {
   display: flex;
@@ -856,5 +807,23 @@ export default {
 
 .canvas-body::-webkit-scrollbar-thumb:hover {
   background: #999;
+}
+
+.cart-items-container {
+  height: 100%;
+  overflow-y: auto;
+  margin-bottom: 1.5rem;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scroll-behavior: smooth;
+}
+
+.cart-items-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+@media (min-width: 768px) {
+  .cart-items-container {
+    max-height: 600px;
+  }
 }
 </style>
