@@ -14,7 +14,7 @@
         <!-- Display Cart Items or "Cart is empty" message -->
         <div v-if="cartItems.length > 0" class="cart-content">
           <div class="cart-items-section">
-            <h6 class="section-title">Your Selected Lessons</h6>
+            <h6 class="section-title">Your Basket</h6>
             <div class="cart-items-container">
               <div class="cart-grid">
                 <div v-for="item in groupedCartItems" :key="item.lesson.id" class="cart-item">
