@@ -385,7 +385,7 @@ export default {
 .canvas-header {
   background: #0d6efd;
   backdrop-filter: blur(10px);
-  padding: 1.5rem 2rem;
+  padding: 0.75rem 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
