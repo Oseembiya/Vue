@@ -410,6 +410,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  padding-left: 1rem;
 }
 
 .cart-grid {
@@ -417,11 +418,8 @@ export default {
   gap: 1rem;
 }
 
-
-
 .cart-item {
   display: flex;
-  padding: 1rem;
   border: none;
   border-bottom: 1px solid #e9ecef;
   transition: all 0.3s ease;
