@@ -418,6 +418,7 @@ export default {
 }
 
 .cart-item {
+  width: 100%;
   display: flex;
   border: none;
   border-bottom: 1px solid #e9ecef;
@@ -437,6 +438,8 @@ export default {
 
   .cart-item-details {
     width: 100%;
+    max-width: 350px;
+    margin: auto 0;
   }
 }
 
@@ -445,7 +448,7 @@ export default {
   margin-bottom: 0;
   flex-shrink: 0;
   width: 100%;
-  max-width: 300px;
+  max-width: 350px;
   min-width: 200px;
 }
 
@@ -815,7 +818,6 @@ export default {
 .cart-items-container {
   height: 100%;
   overflow-y: auto;
-  margin-bottom: 1.5rem;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scroll-behavior: smooth;
